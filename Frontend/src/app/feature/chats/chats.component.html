@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-8">
+        <div *ngIf="isParticipant; else isAdvisory">
+            <video #remoteVideo autoplay controls></video>
+        </div>
+        <ng-template #isAdvisory>
+            <div class="row bg-black">
+                <div *ngFor="let id of cams; let i = index" [ngClass]="cams.length <= 3 ? 'col' : 'col-4'">
+                    <video #remoteVideo autoplay controls [id]="id"></video>
+                </div>
+            </div>
+        </ng-template>
+        <div *ngIf="advisory">
+            <h3>{{advisory.title}}</h3>
+            <p>{{advisory.description}}</p>
+            <td>Empieza el {{advisory.startDate}} a las {{advisory.startTime}}</td>
+        </div>
+    </div>
+    <div class="col-4" *ngIf="advisory">
+        <div class="bg-secondary">
+            <div class="chat-content">
+                <div class="p-3 mb-2 bg-light message" [ngClass]="{'me': username === msg.username}"
+                    *ngFor="let msg of messages">
+                    <h6>{{msg.username}}</h6>
+                    <div class="d-flex align-items-center justify-content-between gap-3">
+                        <span>{{msg.message}}</span>
+                        <span class="text-secondary">{{msg.date | date: 'short'}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex">
+                <input id="message" type="text" [(ngModel)]="message" class="form-control" (keyup.enter)="send()" />
+                <button class="btn btn-primary" type="button" id="send" (click)="send()">Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>
