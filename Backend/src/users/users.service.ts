@@ -2,8 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
-import { UserDto } from './dtos/user.dto';
 import { hash } from 'bcrypt';
+import { UserDto } from 'src/dtos/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -13,7 +13,7 @@ export class UsersService {
     ) { }
 
     async create(userDto: UserDto): Promise<User> {
-        const user = await this.findByEmail(userDto.email);
+        const user = await this.findByUsername(userDto.username);
 
         if (user) {
             throw new BadRequestException("El usuario ya se encuentra registrado");
@@ -30,12 +30,12 @@ export class UsersService {
         return this.userModel.findOne({ _id: id }).exec();
     }
 
-    async findByEmail(email: string): Promise<User> {
-        return this.userModel.findOne({ email }).exec();
+    async findByUsername(username: string): Promise<User> {
+        return this.userModel.findOne({ username }).exec();
     }
 
     async update(id: string, userDto: Partial<UserDto>): Promise<User> {
-        const user = await this.findByEmail(userDto.email);
+        const user = await this.findByUsername(userDto.username);
 
         if (user && user._id.toString() !== id) {
             throw new BadRequestException("El usuario ya se encuentra registrado");
