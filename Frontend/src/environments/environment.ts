@@ -1,4 +1,3 @@
 export const environment = {
-    BASE_URL: '',
-    API_LOGIN: '/login'
+  BASE_URL: '',
 };

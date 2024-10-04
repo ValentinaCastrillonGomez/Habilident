@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 
@@ -7,16 +7,16 @@ import { AuthService } from '../auth/auth.service';
   standalone: true,
   imports: [RouterOutlet],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
-export default class HomeComponent implements OnInit {
-  private _authService = inject(AuthService);
+export default class HomeComponent {
+  username: string;
 
-  ngOnInit(): void {
-
+  constructor(private authService: AuthService) {
+    this.username = this.authService.getUser().name;
   }
 
   logout() {
-    this._authService.logout();
+    this.authService.logout();
   }
 }

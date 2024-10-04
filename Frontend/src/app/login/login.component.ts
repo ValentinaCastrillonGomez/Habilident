@@ -1,35 +1,39 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export default class AuthComponent {
-  private _formBuilder = inject(NonNullableFormBuilder);
-  private _authService = inject(AuthService);
+  loginForm;
 
-  loginForm = this._formBuilder.group({
-    username: ['', Validators.required],
-    password: ['', Validators.required]
-  });
+  constructor(
+    private formBuilder: NonNullableFormBuilder,
+    private authService: AuthService
+  ) {
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+  }
 
   login() {
     this.loginForm.markAllAsTouched();
 
     if (this.loginForm.invalid) return;
 
-    const { username, password } = this.loginForm.getRawValue();
+    const login = this.loginForm.getRawValue();
 
-    try {
-      this._authService.singIn(username, password);
-    } catch ({ error }: any) {
-      console.log(error);
-    }
+    this.authService.singIn(login)
+      .catch(({ error }) => Swal.fire({
+        icon: 'error',
+        title: error.message,
+      }));
   }
-
-}
+} 

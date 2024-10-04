@@ -1,17 +1,24 @@
-<nav class="navbar bg-neutral text-neutral-content">
-    <div class="container mx-auto">
-        <div class="flex-1">
-            <span class="text-xl">Habilident</span>
-        </div>
-        <div class="flex-none">
-            <ul class="menu menu-horizontal px-1">
-                <li>
-                    <a (click)="logout()">Cerrar sesion</a>
-                </li>
-            </ul>
-        </div>
+<nav class="navbar bg-base-200">
+  <div class="container mx-auto">
+    <div class="flex-1">
+      <span class="text-xl">Habilident</span>
     </div>
+    <div class="flex-none">
+      <ul class="menu menu-horizontal px-1">
+        <li><a>Usuarios</a></li>
+        <li>
+          <details>
+            <summary>{{ username }}</summary>
+            <ul class="bg-base-100 rounded-t-none p-2">
+              <li><a>Administración</a></li>
+              <li><a (click)="logout()">Cerrar sesión</a></li>
+            </ul>
+          </details>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
 <main class="container mx-auto my-5">
-    <router-outlet />
+  <router-outlet />
 </main>

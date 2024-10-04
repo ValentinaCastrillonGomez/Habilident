@@ -1,17 +1,20 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { ENV } from '../app.config';
 import { Router } from '@angular/router';
 import { paths } from '../app.routes';
+import { Login } from '@tipos/login';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  private _http = inject(HttpClient);
-  private _apiLogin = inject(ENV).API_LOGIN;
-  private _router = inject(Router);
+  private API_LOGIN = '/login';
+
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) { }
 
   get isLoggedIn() {
     return !!this.getToken();
@@ -21,14 +24,20 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
-  async singIn(username: string, password: string) {
-    const { access_token } = await firstValueFrom(this._http.post<{ access_token: string }>(this._apiLogin, { username, password }));
+  getUser(): { name: string; roles: string[] } {
+    return JSON.parse(window.atob(this.getToken()!.split('.')[1]));
+  }
+
+  async singIn(login: Login) {
+    const { access_token } = await firstValueFrom(
+      this.http.post<{ access_token: string }>(this.API_LOGIN, login)
+    );
     localStorage.setItem('token', access_token);
-    this._router.navigate([paths.HOME]);
+    this.router.navigate([paths.HOME]);
   }
 
   logout() {
     localStorage.removeItem('token');
-    this._router.navigate([paths.LOGIN]);
+    this.router.navigate([paths.LOGIN]);
   }
 }

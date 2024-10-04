@@ -6,15 +6,14 @@ import { routes } from './app.routes';
 import { authInterceptor } from './auth/auth.interceptor';
 import { environment } from '../environments/environment';
 
-export const ENV = new InjectionToken<typeof environment>('ENV', { factory: () => environment });
+export const BASE_URL = new InjectionToken<string>('ENV', {
+  factory: () => environment.BASE_URL,
+});
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(
-      withFetch(),
-      withInterceptors([authInterceptor])
-    ),
-  ]
+    provideHttpClient(withInterceptors([authInterceptor]), withFetch()),
+  ],
 };
