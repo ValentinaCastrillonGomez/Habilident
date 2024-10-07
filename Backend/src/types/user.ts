@@ -2,11 +2,19 @@ import { Role } from "./roles";
 
 export type User = {
     _id?: any;
-    fullName: string;
-    username: string;
-    password: string;
+    firstNames: string;
+    lastNames: string;
+    birdthday: Date;
+    typeDocument: TypeDocument;
+    numberDocument: number;
     email: string;
-    phone?: number;
-    roles: Role[];
-    state?: boolean;
+    gender: Gender;
+    address: string;
+    phone: number;
+    office: Office;
+    cargo: string;
+    role: Role;
+    password: string;
+    signature?: Blob[]
+    state: boolean;
 }

@@ -2,7 +2,7 @@
   <div class="navbar-start">
     <a class="btn btn-ghost text-xl">Habilident</a>
   </div>
-  <div class="navbar-center lg:flex">
+  <div class="navbar-center flex">
     <ul class="menu menu-horizontal px-1">
       @for (item of menu; track item.id) {
       <li><a [routerLink]="item.path" routerLinkActive="active">{{item.title}}</a></li>
