@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/types/user';
@@ -9,8 +9,8 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
     @Get()
-    findAll() {
-        return this.usersService.findAll();
+    findAll(@Query() { skip = 0, limit = 10, query = '' }) {
+        return this.usersService.findAll(skip, limit, query);
     }
 
     @Post()

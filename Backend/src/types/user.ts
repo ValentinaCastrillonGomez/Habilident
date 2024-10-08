@@ -4,17 +4,17 @@ export type User = {
     _id?: any;
     firstNames: string;
     lastNames: string;
-    birdthday: Date;
-    typeDocument: TypeDocument;
+    birthday: Date;
+    typeDocument: string;
     numberDocument: number;
     email: string;
-    gender: Gender;
+    gender: string;
     address: string;
     phone: number;
-    office: Office;
+    office: string;
     cargo: string;
     role: Role;
     password: string;
-    signature?: Blob[]
+    signature?: string;
     state: boolean;
 }

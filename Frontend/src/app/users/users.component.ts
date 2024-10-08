@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UsersService } from './services/users.service';
 import { User } from '@tipos/user';
 import Swal from 'sweetalert2';
+import { Page } from '@tipos/page';
 
 @Component({
   selector: 'app-users',
@@ -12,12 +13,12 @@ import Swal from 'sweetalert2';
   styleUrl: './users.component.scss',
 })
 export default class UsersComponent implements OnInit {
-  users: User[] = [];
+  users?: Page<User>;
 
   constructor(private usersService: UsersService) { }
 
   async ngOnInit() {
-    this.users = await this.usersService.getUsers();
+    this.users = await this.usersService.getAll();
   }
 
   async remove(id: string) {
@@ -27,7 +28,7 @@ export default class UsersComponent implements OnInit {
       icon: "question",
     })
     if (isConfirmed) {
-      await this.usersService.deleteUser(id);
+      await this.usersService.delete(id);
       Swal.fire({
         title: "Usuario eliminado",
         icon: "success",

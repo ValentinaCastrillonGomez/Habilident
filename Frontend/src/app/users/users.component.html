@@ -27,7 +27,7 @@
                 <tr>
                     <th scope="col" class="px-4 py-3">Nombre</th>
                     <th scope="col" class="px-4 py-3">Correo</th>
-                    <th scope="col" class="px-4 py-3">Roles</th>
+                    <th scope="col" class="px-4 py-3">Rol</th>
                     <th scope="col" class="px-4 py-3">Estado</th>
                     <th scope="col" class="px-4 py-3">
                         <span class="sr-only">Acciones</span>
@@ -35,11 +35,11 @@
                 </tr>
             </thead>
             <tbody>
-                @for (user of users; track user._id) {
+                @for (user of users?.data; track user._id) {
                 <tr>
-                    <td class="px-4 py-3">{{user.fullName}}</td>
+                    <td class="px-4 py-3">{{user.firstNames}} {{user.lastNames}}</td>
                     <td class="px-4 py-3">{{user.email}}</td>
-                    <td class="px-4 py-3">{{user.roles}}</td>
+                    <td class="px-4 py-3">{{user.role}}</td>
                     <td class="px-4 py-3">{{user.state ? 'Activo' : 'Inactivo'}}</td>
                     <td class="px-4 py-3 flex items-center justify-end">
                         <div class="dropdown dropdown-end">
@@ -60,19 +60,19 @@
                 </tr>
                 } @empty {
                 <tr>
-                    <td colspan="5">No hay</td>
+                    <td colspan="5">No hay nichi</td>
                 </tr>
                 }
             </tbody>
         </table>
     </div>
-    <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
+    <nav class="flex flex-col md:flex-row justify-between items-start space-y-3 md:space-y-0 p-4"
         aria-label="Table navigation">
-        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+        <span class="text-sm font-normal text-gray-500">
             Mostrando
-            <span class="font-semibold text-gray-900 dark:text-white">1-10</span>
+            <span class="font-semibold text-gray-900">1-10</span>
             de
-            <span class="font-semibold text-gray-900 dark:text-white">1000</span>
+            <span class="font-semibold text-gray-900">1000</span>
         </span>
         <ul class="inline-flex items-stretch -space-x-px">
             <li>

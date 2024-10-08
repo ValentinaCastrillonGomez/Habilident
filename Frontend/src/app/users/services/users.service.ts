@@ -1,20 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { User } from '@tipos/user';
-import { firstValueFrom } from 'rxjs';
+import { GenericService } from '../../shared/classes/generic.service';
+import { ENV, Environment } from '../../app.config';
 
 @Injectable()
-export class UsersService {
-  private API_USERS = '/users';
+export class UsersService extends GenericService<User> {
 
-  constructor(private http: HttpClient) { }
-
-  getUsers() {
-    return firstValueFrom(this.http.get<User[]>(this.API_USERS));
-  }
-
-  deleteUser(id: string) {
-    return firstValueFrom(this.http.delete<User>(`${this.API_USERS}/${id}`));
+  constructor(private http: HttpClient, @Inject(ENV) { API_USERS }: Environment) {
+    super(http, API_USERS)
   }
 
 }

@@ -1,7 +1,6 @@
-export const roles = {
-    ADMIN: 'Administrador',
-    AUXILIAR: 'Personal Operativo',
-    AUDITOR: 'Auditor',
-} as const;
+import { Permission } from "./permission";
 
-export type Role = typeof roles[keyof typeof roles];
+export type Role = {
+    name: string;
+    permissions: Permission[];
+};

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from './users/users.service';
 import { User } from './types/user';
-import { roles } from './types/roles';
 
 @Injectable()
 export class AppService {
@@ -15,22 +14,29 @@ export class AppService {
   }
 
   async getInit() {
-    const usersAdmin = await this.usersService.findByRoles([roles.ADMIN]);
-    if (!usersAdmin.length) {
-      await this.usersService.create(this.getUserInit());
-    }
-
+    await this.usersService.create(this.getUserInit());
     return { status: 'INIT' };
   }
 
   private getUserInit(): User {
-    const admin = 'admin';
     return {
-      fullName: admin,
-      username: admin,
-      password: admin,
-      email: admin,
-      roles: [roles.ADMIN],
+      firstNames: 'admin',
+      lastNames: '',
+      birthday: new Date(),
+      typeDocument: '',
+      numberDocument: 0,
+      email: 'admin@admin.com',
+      gender: '',
+      address: '',
+      phone: 0,
+      office: '',
+      cargo: '',
+      role: {
+        name: 'Administrador',
+        permissions: [],
+      },
+      password: 'admin',
+      state: true,
     }
   }
 }
