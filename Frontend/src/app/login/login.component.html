@@ -12,11 +12,11 @@
         <div>
           <label class="form-control w-full">
             <div class="label">
-              <span class="label-text">Nombre de usuario</span>
+              <span class="label-text">Correo electronico</span>
             </div>
-            <input type="text" name="username" id="username" formControlName="username" placeholder="pepito"
+            <input type="email" name="email" id="email" formControlName="email" placeholder="pepito@example.com"
               class="input input-bordered w-full" />
-            @if ( loginForm.controls.username.touched && loginForm.controls.username.errors ) {
+            @if ( loginForm.controls.email.touched && loginForm.controls.email.errors ) {
             <div class="label">
               <span class="label-text-alt text-red-400">Introduce un nombre de usuario válido</span>
             </div>

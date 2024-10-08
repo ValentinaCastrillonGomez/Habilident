@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
+import { RoleEntity } from 'src/roles/entities/role.entity';
 import { User } from 'src/types/user';
-import { RoleEntity } from './role.entity';
 
 export type UserDocument = HydratedDocument<UserEntity>;
 
@@ -24,7 +24,7 @@ export class UserEntity implements User {
     @Prop({ required: true })
     numberDocument: number;
 
-    @Prop({ required: true })
+    @Prop({ required: true, unique: true })
     email: string;
 
     @Prop({ required: true })
@@ -40,9 +40,9 @@ export class UserEntity implements User {
     office: string;
 
     @Prop({ required: true })
-    cargo: string;
+    position: string;
 
-    @Prop({ required: true })
+    @Prop({ type: Types.ObjectId, ref: 'RoleEntity', required: true })
     role: RoleEntity;
 
     @Prop({ required: true })

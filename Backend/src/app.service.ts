@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from './users/users.service';
 import { User } from './types/user';
+import { RolesService } from './roles/roles.service';
+import { Role } from './types/roles';
+import { PERMISSIONS } from './types/permission';
+import { hashSync } from 'bcrypt';
 
 @Injectable()
 export class AppService {
 
   constructor(
-    private usersService: UsersService
+    private usersService: UsersService,
+    private rolesService: RolesService
   ) { }
 
   getHealth() {
@@ -14,28 +19,33 @@ export class AppService {
   }
 
   async getInit() {
-    await this.usersService.create(this.getUserInit());
+    const rol = await this.rolesService.create(this.getRoleInit());
+    await this.usersService.create(this.getUserInit(rol));
     return { status: 'INIT' };
   }
 
-  private getUserInit(): User {
+  private getRoleInit(): Role {
+    return {
+      name: 'admin',
+      permissions: PERMISSIONS
+    }
+  }
+
+  private getUserInit(rol: Role): User {
     return {
       firstNames: 'admin',
-      lastNames: '',
+      lastNames: 'admin',
       birthday: new Date(),
-      typeDocument: '',
+      typeDocument: '1',
       numberDocument: 0,
       email: 'admin@admin.com',
-      gender: '',
-      address: '',
+      gender: 'H',
+      address: '1',
       phone: 0,
-      office: '',
-      cargo: '',
-      role: {
-        name: 'Administrador',
-        permissions: [],
-      },
-      password: 'admin',
+      office: '1',
+      position: '1',
+      role: rol._id,
+      password: hashSync('admin', 10),
       state: true,
     }
   }

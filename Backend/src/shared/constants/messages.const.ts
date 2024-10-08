@@ -1,5 +1,5 @@
 export const ERROR_MESSAGES = {
-    USER_REGISTERED: "El usuario ya se encuentra registrado",
+    REGISTERED: "El registro ya existe",
     USER_INVALID: 'Usuario o contraseña invalidos',
     USER_UNAUTHORIZED: 'Acceso no autorizado',
 

@@ -1,5 +1,3 @@
-import { Role } from "./roles";
-
 export type User = {
     _id?: any;
     firstNames: string;
@@ -12,8 +10,8 @@ export type User = {
     address: string;
     phone: number;
     office: string;
-    cargo: string;
-    role: Role;
+    position: string;
+    role: any;
     password: string;
     signature?: string;
     state: boolean;
