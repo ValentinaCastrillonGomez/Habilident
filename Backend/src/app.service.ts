@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from './users/users.service';
 import { User } from './types/user';
 import { RolesService } from './roles/roles.service';
-import { Role } from './types/roles';
+import { Role } from './types/role';
 import { PERMISSIONS } from './types/permission';
 import { hashSync } from 'bcrypt';
 

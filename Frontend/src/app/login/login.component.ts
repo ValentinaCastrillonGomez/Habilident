@@ -2,11 +2,18 @@ import { Component } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 import Swal from 'sweetalert2';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule,
+    MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -24,8 +31,6 @@ export default class AuthComponent {
   }
 
   login() {
-    this.loginForm.markAllAsTouched();
-
     if (this.loginForm.invalid) return;
 
     const login = this.loginForm.getRawValue();

@@ -5,5 +5,9 @@ export default [
   {
     path: paths.USERS,
     loadComponent: () => import('../users/users.component'),
+  },
+  {
+    path: paths.ROLES,
+    loadComponent: () => import('../roles/roles.component'),
   }
 ] as Routes;

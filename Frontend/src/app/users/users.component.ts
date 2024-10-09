@@ -18,7 +18,7 @@ export default class UsersComponent implements OnInit {
   constructor(private usersService: UsersService) { }
 
   async ngOnInit() {
-    this.users = await this.usersService.getAll();
+    // this.users = await this.usersService.getAll();
   }
 
   async remove(id: string) {

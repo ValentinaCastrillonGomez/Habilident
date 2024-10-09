@@ -6,9 +6,9 @@ export const PERMISSION = {
     DELETE_USERS: 'Eliminar usuarios',
     //Roles
     CREATE_ROLES: 'Crear roles',
-    READ_ROLES: 'Listar usuarios',
-    UPDATE_ROLES: 'Actualizar usuarios',
-    DELETE_ROLES: 'Eliminar usuarios',
+    READ_ROLES: 'Listar roles',
+    UPDATE_ROLES: 'Actualizar roles',
+    DELETE_ROLES: 'Eliminar roles',
 } as const;
 
 export const PERMISSIONS = Object.values(PERMISSION);

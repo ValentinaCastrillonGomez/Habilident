@@ -5,6 +5,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { routes } from './app.routes';
 import { authInterceptor } from './auth/auth.interceptor';
 import { environment } from '../environments/environment';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export type Environment = typeof environment;
 
@@ -16,5 +17,6 @@ export const appConfig: ApplicationConfig = {
     { provide: ENV, useValue: environment },
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor]), withFetch()),
+    provideAnimationsAsync(),
   ],
 };

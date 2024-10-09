@@ -1,17 +1,17 @@
-import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { User } from '@tipos/user';
 import { GenericService } from '../../shared/classes/generic.service';
+import { Role } from '@tipos/role';
+import { HttpClient } from '@angular/common/http';
 import { ENV, Environment } from '../../app.config';
 
 @Injectable()
-export class UsersService extends GenericService<User> {
+export class RolesService extends GenericService<Role> {
 
   constructor(
     private http: HttpClient,
-    @Inject(ENV) { API_USERS }: Environment
+    @Inject(ENV) { API_ROLES }: Environment
   ) {
-    super(http, API_USERS)
+    super(http, API_ROLES);
   }
 
 }
