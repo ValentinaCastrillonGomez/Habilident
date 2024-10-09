@@ -1,124 +1,51 @@
-<div class="bg-white relative shadow-md rounded-lg overflow-hidden">
-    <div class="flex flex-row items-center justify-between space-y-0 space-x-4 p-4">
-        <div class="w-1/2">
-            <label class="input input-bordered flex items-center gap-2">
-                <input type="text" class="grow" placeholder="Buscar" />
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
-                    class="h-4 w-4 opacity-70">
-                    <path fill-rule="evenodd"
-                        d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                        clip-rule="evenodd" />
-                </svg>
-            </label>
-        </div>
-        <div class="w-auto flex flex-row space-y-0 items-center justify-end space-x-3 flex-shrink-0">
-            <button class="btn">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                Añadir Usuario
-            </button>
-        </div>
+<div class="flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+        <h3 class="mb-0">Listado de Usuarios</h3>
+        <button mat-flat-button (click)="open()"><mat-icon>add</mat-icon>Añadir Usuario</button>
     </div>
-    <div class="overflow-hidden">
-        <table class="table w-full text-sm text-left">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                <tr>
-                    <th scope="col" class="px-4 py-3">Nombre</th>
-                    <th scope="col" class="px-4 py-3">Correo</th>
-                    <th scope="col" class="px-4 py-3">Rol</th>
-                    <th scope="col" class="px-4 py-3">Estado</th>
-                    <th scope="col" class="px-4 py-3">
-                        <span class="sr-only">Acciones</span>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (user of users?.data; track user._id) {
-                <tr>
-                    <td class="px-4 py-3">{{user.firstNames}} {{user.lastNames}}</td>
-                    <td class="px-4 py-3">{{user.email}}</td>
-                    <td class="px-4 py-3">{{user.role}}</td>
-                    <td class="px-4 py-3">{{user.state ? 'Activo' : 'Inactivo'}}</td>
-                    <td class="px-4 py-3 flex items-center justify-end">
-                        <div class="dropdown dropdown-end">
-                            <div tabindex="0" role="button" class="btn btn-circle btn-ghost btn-xs">
-                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                </svg>
-                            </div>
-                            <ul tabindex="0"
-                                class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                                <li><a>Actualizar</a></li>
-                                <li><a (click)="remove(user._id)">Eliminar</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-                } @empty {
-                <tr>
-                    <td colspan="5">No hay nichi</td>
-                </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <nav class="flex flex-col md:flex-row justify-between items-start space-y-3 md:space-y-0 p-4"
-        aria-label="Table navigation">
-        <span class="text-sm font-normal text-gray-500">
-            Mostrando
-            <span class="font-semibold text-gray-900">1-10</span>
-            de
-            <span class="font-semibold text-gray-900">1000</span>
-        </span>
-        <ul class="inline-flex items-stretch -space-x-px">
-            <li>
-                <a href="#"
-                    class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                    <span class="sr-only">Anterior</span>
-                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </a>
-            </li>
-            <li>
-                <a href="#"
-                    class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-            </li>
-            <li>
-                <a href="#"
-                    class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-            </li>
-            <li>
-                <a href="#" aria-current="page"
-                    class="flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-            </li>
-            <li>
-                <a href="#"
-                    class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-            </li>
-            <li>
-                <a href="#"
-                    class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-            </li>
-            <li>
-                <a href="#"
-                    class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                    <span class="sr-only">Siguiente</span>
-                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </a>
-            </li>
-        </ul>
-    </nav>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Filtrar usuarios</mat-label>
+        <input matInput #filter id="filterUsers" (input)="search(filter.value)">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+</div>
+
+<div class="my-2 shadow">
+    <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="firstNames">
+            <mat-header-cell *matHeaderCellDef> Nombres </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.firstNames}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="lastNames">
+            <mat-header-cell *matHeaderCellDef> Apellidos </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.lastNames}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="justify-end">
+                <button mat-icon-button [matMenuTriggerFor]="actions">
+                    <mat-icon class="">more_horiz</mat-icon>
+                </button>
+
+                <mat-menu #actions="matMenu">
+                    <button mat-menu-item (click)="open(element)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Actualizar</span>
+                    </button>
+                    <button mat-menu-item (click)="remove(element._id)">
+                        <mat-icon class="text-red-600">delete</mat-icon>
+                        <span class="text-red-600">Eliminar</span>
+                    </button>
+                </mat-menu>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-divider></mat-divider>
+    <mat-paginator [length]="totalRecords" [pageSize]="pageSize"></mat-paginator>
 </div>

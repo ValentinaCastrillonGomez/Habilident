@@ -6,7 +6,7 @@
 
     <mat-form-field appearance="outline" subscriptSizing="dynamic">
         <mat-label>Filtrar roles</mat-label>
-        <input matInput #filter id="filtrarRoles" (input)="search(filter.value)">
+        <input matInput #filter id="filterRoles" (input)="search(filter.value)">
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 </div>
@@ -21,7 +21,7 @@
         <ng-container matColumnDef="permissions">
             <mat-header-cell *matHeaderCellDef> Permisos </mat-header-cell>
             <mat-cell *matCellDef="let element">
-                <div class="truncate">{{element.permissions}} {{element.permissions}}</div>
+                <div class="truncate">{{element.permissions}}</div>
             </mat-cell>
         </ng-container>
 

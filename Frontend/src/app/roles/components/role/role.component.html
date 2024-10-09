@@ -1,8 +1,32 @@
-<h2 mat-dialog-title>Guardar Rol</h2>
-<mat-dialog-content class="mat-typography">
-    formulario
-</mat-dialog-content>
-<mat-dialog-actions>
-    <button mat-stroked-button mat-dialog-close>Cancelar</button>
-    <button mat-flat-button cdkFocusInitial (click)="save()">Guardar</button>
-</mat-dialog-actions>
+<form [formGroup]="roleForm" (ngSubmit)="save()">
+    <h2 mat-dialog-title>Guardar rol</h2>
+    <mat-dialog-content class="mat-typography">
+        <div class="space-y-1 mt-1">
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Nombre</mat-label>
+                <input matInput type="text" id="name" formControlName="name" required class="w-full">
+                @if (roleForm.controls.name.invalid) {
+                <mat-error>Introduce un nombre válido</mat-error>
+                }
+            </mat-form-field>
+
+            <section formGroupName="permissions">
+                <p class="font-bold">Permisos</p>
+
+                @for (permissions of permissionsGroup; track $index) {
+                <div class="flex space-x-1" [formArrayName]="permissions">
+                    @for (permission of roleForm.controls.permissions.controls[permissions].controls; track $index) {
+                    <p [formGroupName]="$index">
+                        <mat-checkbox formControlName="selected">{{permission.get('name')!.value}}</mat-checkbox>
+                    </p>
+                    }
+                </div>
+                }
+            </section>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-stroked-button mat-dialog-close>Cancelar</button>
+        <button mat-flat-button cdkFocusInitial type="submit">Guardar</button>
+    </mat-dialog-actions>
+</form>

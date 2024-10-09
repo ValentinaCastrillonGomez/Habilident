@@ -27,7 +27,7 @@ export class AppService {
   private getRoleInit(): Role {
     return {
       name: 'admin',
-      permissions: PERMISSIONS
+      permissions: Object.values(PERMISSIONS).flat(),
     }
   }
 
