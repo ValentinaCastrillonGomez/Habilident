@@ -1,26 +1,18 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import Swal from 'sweetalert2';
 import { RolesService } from './services/roles.service';
 import { Role } from '@tipos/role';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginator } from '@angular/material/paginator';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { RoleComponent } from './components/role/role.component';
+import { MaterialModule } from '@shared/modules/material/material.module';
 
 @Component({
   selector: 'app-roles',
   standalone: true,
   imports: [
-    MatFormFieldModule, MatIconModule, MatInputModule, MatButtonModule,
-    MatTableModule, MatPaginatorModule, MatDividerModule, MatMenuModule,
-    MatDialogModule, RoleComponent
+    MaterialModule,
+    RoleComponent,
   ],
   providers: [RolesService],
   templateUrl: './roles.component.html',

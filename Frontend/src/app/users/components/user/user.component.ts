@@ -1,33 +1,27 @@
-import { Component, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { User } from '@tipos/user';
 import Swal from 'sweetalert2';
 import { UsersService } from '../../services/users.service';
-import { CommonModule } from '@angular/common';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatButtonModule } from '@angular/material/button';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MaterialModule } from '@shared/modules/material/material.module';
 
 @Component({
   selector: 'app-user',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule,
-    MatCheckboxModule, MatGridListModule, CommonModule
+    MaterialModule,
   ],
   providers: [UsersService],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
 })
 export class UserComponent {
-  user = inject<User | null>(MAT_DIALOG_DATA);
   userForm;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public user: User | null,
     private dialog: MatDialogRef<UserComponent>,
     private formBuilder: NonNullableFormBuilder,
     private usersService: UsersService

@@ -14,9 +14,12 @@ export const ENV = new InjectionToken<Environment>('ENV');
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    { provide: ENV, useValue: environment },
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor]), withFetch()),
+    provideHttpClient(
+      withInterceptors([authInterceptor]),
+      withFetch()
+    ),
     provideAnimationsAsync(),
+    { provide: ENV, useValue: environment },
   ],
 };

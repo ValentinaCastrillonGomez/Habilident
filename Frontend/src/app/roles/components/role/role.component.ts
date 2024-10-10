@@ -1,34 +1,28 @@
-import { Component, inject } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Role } from '@tipos/role';
 import { RolesService } from '../../services/roles.service';
 import { FormArray, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PERMISSIONS } from '@tipos/permission';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { MaterialModule } from '@shared/modules/material/material.module';
 
 @Component({
   selector: 'app-role',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule,
-    MatCheckboxModule, MatGridListModule, CommonModule
+    MaterialModule,
   ],
   providers: [RolesService],
   templateUrl: './role.component.html',
   styleUrl: './role.component.scss'
 })
 export class RoleComponent {
-  role = inject<Role | null>(MAT_DIALOG_DATA);
   roleForm;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public role: Role | null,
     private dialog: MatDialogRef<RoleComponent>,
     private formBuilder: NonNullableFormBuilder,
     private rolesService: RolesService

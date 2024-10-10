@@ -1,8 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@use './app/shared/styles/m3-theme.scss';
 
-// @tailwind base;
-@tailwind components;
-@tailwind utilities;
+@include mat.core();
+
+:root {
+    @include mat.all-component-themes(m3-theme.$light-theme);
+    @include mat.typography-hierarchy(m3-theme.$light-theme);
+}
 
 html,
 body {
@@ -10,11 +14,9 @@ body {
 }
 
 body {
-    @apply bg-gray-100;
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.cdk-overlay-pane.mat-mdc-dialog-panel {
-    max-width: 80vw !important;
-}
+@tailwind components;
+@tailwind utilities;

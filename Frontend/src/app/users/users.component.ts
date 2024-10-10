@@ -1,25 +1,18 @@
 import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { UsersService } from './services/users.service';
 import { User } from '@tipos/user';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatTableModule } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { UserComponent } from './components/user/user.component';
+import { MaterialModule } from '@shared/modules/material/material.module';
 
 @Component({
   selector: 'app-users',
   standalone: true,
   imports: [
-    MatFormFieldModule, MatIconModule, MatInputModule, MatButtonModule,
-    MatTableModule, MatPaginatorModule, MatDividerModule, MatMenuModule,
-    MatDialogModule, UserComponent
+    MaterialModule,
+    UserComponent,
   ],
   providers: [UsersService],
   templateUrl: './users.component.html',

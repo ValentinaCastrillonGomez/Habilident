@@ -3,6 +3,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
@@ -26,6 +27,9 @@
     "paths": {
       "@tipos/*": [
         "../Backend/src/types/*"
+      ],
+      "@shared/*": [
+        "src/app/shared/*"
       ]
     },
   },

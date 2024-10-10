@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { GenericService } from '../../shared/classes/generic.service';
+import { GenericService } from '@shared/classes/generic.service';
 import { Role } from '@tipos/role';
 import { HttpClient } from '@angular/common/http';
 import { ENV, Environment } from '../../app.config';
