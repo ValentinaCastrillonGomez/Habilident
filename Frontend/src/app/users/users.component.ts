@@ -23,7 +23,7 @@ export default class UsersComponent implements AfterViewInit {
   dataSource: User[] = [];
   totalRecords = 0;
   pageSize = 10;
-  displayedColumns: string[] = ['firstNames', 'lastNames', 'actions'];
+  displayedColumns: string[] = ['firstNames', 'lastNames', 'typeDocument', 'numberDocument', 'email', 'actions'];
   private searchTerms = new BehaviorSubject<string>('');
   private actions = new Subject<void>();
 

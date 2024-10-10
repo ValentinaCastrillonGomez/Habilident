@@ -1,10 +1,10 @@
 <form [formGroup]="userForm" (ngSubmit)="save()">
     <h5 mat-dialog-title>Guardar Usuario</h5>
     <mat-dialog-content class="mat-typography">
-        <div class="space-y-1 mt-1">
+        <div class="grid grid-cols-4  gap-4 mt-2 mb-4 w-full">
             <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Nombres</mat-label>
-                <input matInput type="text" id="firstNames" formControlName="firstNames" required class="w-full">
+                <input matInput type="text" id="firstNames" formControlName="firstNames" required>
                 @if (userForm.controls.firstNames.invalid) {
                 <mat-error>Introduce nombres válidos</mat-error>
                 }
@@ -12,11 +12,105 @@
 
             <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Apellidos</mat-label>
-                <input matInput type="text" id="lastNames" formControlName="lastNames" required class="w-full">
+                <input matInput type="text" id="lastNames" formControlName="lastNames" required>
                 @if (userForm.controls.lastNames.invalid) {
                 <mat-error>Introduce apellidos válidos</mat-error>
                 }
             </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Tipo de documento</mat-label>
+                <input matInput type="text" id="typeDocument" formControlName="typeDocument" required>
+                @if (userForm.controls.typeDocument.invalid) {
+                <mat-error>Introduce un tipo de documento válido</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Número de documento</mat-label>
+                <input matInput type="number" id="numberDocument" formControlName="numberDocument" required>
+                @if (userForm.controls.numberDocument.invalid) {
+                <mat-error>Introduce un número de documento válido</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full col-span-2">
+                <mat-label>Correo electrónico</mat-label>
+                <input matInput type="email" id="email" formControlName="email" required>
+                @if (userForm.controls.email.invalid) {
+                <mat-error>Introduce un correo válido</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Dirección</mat-label>
+                <input matInput type="text" id="address" formControlName="address" required>
+                @if (userForm.controls.address.invalid) {
+                <mat-error>Introduce una dirección válida</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Teléfono</mat-label>
+                <input matInput type="number" id="phone" formControlName="phone" required>
+                @if (userForm.controls.phone.invalid) {
+                <mat-error>Introduce un teléfono válido</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Fecha de nacimiento</mat-label>
+                <input matInput type="date" id="birthday" formControlName="birthday" required>
+                @if (userForm.controls.birthday.invalid) {
+                <mat-error>Introduce una fecha de nacimiento válida</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Genero</mat-label>
+                <input matInput type="text" id="gender" formControlName="gender" required>
+                @if (userForm.controls.gender.invalid) {
+                <mat-error>Introduce un genero válido</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Oficia</mat-label>
+                <input matInput type="text" id="office" formControlName="office" required>
+                @if (userForm.controls.office.invalid) {
+                <mat-error>Introduce una oficina válida</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Cargo</mat-label>
+                <input matInput type="text" id="position" formControlName="position" required>
+                @if (userForm.controls.position.invalid) {
+                <mat-error>Introduce un cargo válido</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Rol</mat-label>
+                <input matInput type="text" id="role" formControlName="role" required>
+                @if (userForm.controls.role.invalid) {
+                <mat-error>Introduce un rol válido</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Contraseña</mat-label>
+                <input matInput type="password" id="password" formControlName="password" required>
+                @if (userForm.controls.password.invalid) {
+                <mat-error>Introduce una contraseña válida</mat-error>
+                }
+            </mat-form-field>
+
+            <div class="flex col-span-2 w-full py-2">
+                <button type="button" mat-button (click)="fileInput.click()">Elegir firma</button>
+                <input hidden #fileInput type="file" id="file">
+                <img src="" alt="firma">
+            </div>
         </div>
     </mat-dialog-content>
     <mat-dialog-actions>

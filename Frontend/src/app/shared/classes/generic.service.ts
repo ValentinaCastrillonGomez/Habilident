@@ -26,7 +26,7 @@ export abstract class GenericService<T> {
             Swal.fire({
                 title: "Registro eliminado",
                 icon: "success",
-                timer: 2000,
+                timer: 1000,
                 showConfirmButton: false,
             });
         }

@@ -23,6 +23,21 @@
                 <mat-cell *matCellDef="let element"> {{element.lastNames}} </mat-cell>
             </ng-container>
 
+            <ng-container matColumnDef="typeDocument">
+                <mat-header-cell *matHeaderCellDef> Tipo de documento </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.typeDocument}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="numberDocument">
+                <mat-header-cell *matHeaderCellDef> Número de documento </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.numberDocument}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef> Correo electrónico </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+            </ng-container>
+
             <ng-container matColumnDef="actions">
                 <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
                 <mat-cell *matCellDef="let element" class="justify-end">

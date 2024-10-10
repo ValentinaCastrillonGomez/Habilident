@@ -64,7 +64,7 @@ export class RoleComponent {
         Swal.fire({
           title: "Registro guardado",
           icon: "success",
-          timer: 2000,
+          timer: 1000,
           showConfirmButton: false,
         });
       })

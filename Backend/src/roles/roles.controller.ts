@@ -14,7 +14,7 @@ export class RolesController {
     }
 
     @Get()
-    findAll(@Query() { skip = 0, limit = 10, query = '' }) {
+    findAll(@Query() { skip, limit, query }) {
         return this.rolesService.findAll(skip, limit, query);
     }
 

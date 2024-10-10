@@ -51,7 +51,7 @@ export class UserEntity implements User {
     @Prop()
     signature?: string;
 
-    @Prop({ required: true })
+    @Prop({ required: true, default: true })
     state: boolean;
 }
 

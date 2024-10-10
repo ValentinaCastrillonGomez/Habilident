@@ -29,6 +29,18 @@ export class UserComponent {
     this.userForm = this.formBuilder.group({
       firstNames: ['', [Validators.required]],
       lastNames: ['', [Validators.required]],
+      typeDocument: ['', [Validators.required]],
+      numberDocument: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      address: ['', [Validators.required]],
+      phone: ['', [Validators.required]],
+      gender: ['', [Validators.required]],
+      birthday: ['', [Validators.required]],
+      office: ['', [Validators.required]],
+      position: ['', [Validators.required]],
+      role: ['', [Validators.required]],
+      password: ['', [Validators.required]],
+      signature: [''],
     });
   }
 
@@ -43,7 +55,7 @@ export class UserComponent {
         Swal.fire({
           title: "Registro guardado",
           icon: "success",
-          timer: 2000,
+          timer: 1000,
           showConfirmButton: false,
         });
       })

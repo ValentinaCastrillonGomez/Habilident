@@ -12,7 +12,7 @@ export abstract class GenericService<T extends Document, G> {
         private readonly _poputale: string[]
     ) { }
 
-    async findAll(skip: number, limit: number, query: string): Promise<Page<T>> {
+    async findAll(skip = 0, limit = 0, query = ''): Promise<Page<T>> {
         const orConditions: FilterQuery<Document> = {
             $or: this._searchFields.map((field) => ({
                 [field]: { $regex: `.*${query}.*`, $options: 'i' },
@@ -48,6 +48,6 @@ export abstract class GenericService<T extends Document, G> {
             throw new BadRequestException(ERROR_MESSAGES.REGISTERED);
         }
 
-        throw new InternalServerErrorException();
+        throw new InternalServerErrorException(error);
     }
 }

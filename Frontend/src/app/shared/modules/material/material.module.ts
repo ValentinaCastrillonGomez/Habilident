@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { DEFAULT_DIALOG_CONFIG } from '@angular/cdk/dialog';
+import { AppPaginatorIntl } from './material.paginator';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -13,9 +17,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatRadioModule } from '@angular/material/radio';
 
-import { DEFAULT_DIALOG_CONFIG } from '@angular/cdk/dialog';
-import { AppPaginatorIntl } from './material.paginator';
 
 @NgModule({
   exports: [
@@ -32,10 +35,11 @@ import { AppPaginatorIntl } from './material.paginator';
     MatDialogModule,
     MatCardModule,
     MatGridListModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatRadioModule,
   ],
   providers: [
-    { provide: DEFAULT_DIALOG_CONFIG, useValue: { maxWidth: '80vw' } },
+    { provide: DEFAULT_DIALOG_CONFIG, useValue: { maxWidth: '70vw' } },
     { provide: MAT_PAGINATOR_DEFAULT_OPTIONS, useValue: { hidePageSize: true, showFirstLastButtons: true } },
     { provide: MatPaginatorIntl, useClass: AppPaginatorIntl }
   ]

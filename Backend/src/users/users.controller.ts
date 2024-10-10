@@ -10,13 +10,13 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
     @Post()
-    create(@Body() userDto: User) {
-        return this.usersService.encryiptPassword(userDto)
-            .then(this.usersService.create);
+    async create(@Body() userDto: User) {
+        const dto = await this.usersService.encryiptPassword(userDto);
+        return this.usersService.create(dto);
     }
 
     @Get()
-    findAll(@Query() { skip = 0, limit = 10, query = '' }) {
+    findAll(@Query() { skip, limit, query }) {
         return this.usersService.findAll(skip, limit, query);
     }
 
@@ -26,9 +26,9 @@ export class UsersController {
     }
 
     @Patch(':id')
-    update(@Param('id') id: string, @Body() userDto: User) {
-        return this.usersService.encryiptPassword(userDto)
-            .then(u => this.usersService.update(id, u));
+    async update(@Param('id') id: string, @Body() userDto: User) {
+        const u = await this.usersService.encryiptPassword(userDto);
+        return await this.usersService.update(id, u);
     }
 
     @Delete(':id')
