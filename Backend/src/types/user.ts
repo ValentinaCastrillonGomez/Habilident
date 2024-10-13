@@ -3,16 +3,21 @@ export type User = {
     firstNames: string;
     lastNames: string;
     typeDocument: string;
-    numberDocument: number;
+    numberDocument: string;
     email: string;
     address: string;
-    phone: number;
-    birthday: Date;
+    phone: string;
+    birthday: string;
     gender: string;
     office: string;
     position: string;
     role: any;
     password: string;
-    signature?: string;
+    signature?: Signature;
     state: boolean;
+}
+
+export type Signature = {
+    name: string;
+    image: string;
 }

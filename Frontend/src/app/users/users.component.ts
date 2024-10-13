@@ -1,8 +1,8 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, signal } from '@angular/core';
 import { UsersService } from './services/users.service';
 import { User } from '@tipos/user';
 import { MatPaginator } from '@angular/material/paginator';
-import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject, tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { UserComponent } from './components/user/user.component';
 import { MaterialModule } from '@shared/modules/material/material.module';
@@ -21,9 +21,10 @@ import { MaterialModule } from '@shared/modules/material/material.module';
 export default class UsersComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   dataSource: User[] = [];
+  loading = signal<boolean>(true);
   totalRecords = 0;
   pageSize = 10;
-  displayedColumns: string[] = ['firstNames', 'lastNames', 'typeDocument', 'numberDocument', 'email', 'actions'];
+  displayedColumns: string[] = ['firstNames', 'lastNames', 'typeDocument', 'numberDocument', 'email', 'address', 'phone', 'role', 'state', 'actions'];
   private searchTerms = new BehaviorSubject<string>('');
   private actions = new Subject<void>();
 
@@ -33,12 +34,14 @@ export default class UsersComponent implements AfterViewInit {
     merge(
       this.searchTerms.pipe(debounceTime(300), distinctUntilChanged()),
       this.actions,
-      this.paginator.page
-    ).subscribe(async () => {
-      const { data, totalRecords } = await this.userService.getAll(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
-      this.dataSource = data;
-      this.totalRecords = totalRecords;
-    });
+      this.paginator.page)
+      .pipe(tap(() => this.loading.set(true)))
+      .subscribe(async () => {
+        const { data, totalRecords } = await this.userService.getAll(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
+        this.dataSource = data;
+        this.totalRecords = totalRecords;
+        this.loading.set(false);
+      });
   }
 
   search(term: string): void {

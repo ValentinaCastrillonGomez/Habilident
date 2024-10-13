@@ -1,4 +1,4 @@
-import { Document, FilterQuery, Model } from 'mongoose';
+import { Document, FilterQuery, Model, PopulateOptions } from 'mongoose';
 import { Page } from '../../types/Page';
 import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { ERROR_MESSAGES } from '../constants/messages.const';
@@ -9,7 +9,7 @@ export abstract class GenericService<T extends Document, G> {
     constructor(
         private readonly _model: Model<T>,
         private readonly _searchFields: string[],
-        private readonly _poputale: string[]
+        private readonly _poputale: PopulateOptions[]
     ) { }
 
     async findAll(skip = 0, limit = 0, query = ''): Promise<Page<T>> {
@@ -20,7 +20,7 @@ export abstract class GenericService<T extends Document, G> {
         };
 
         const totalRecords = await this._model.countDocuments(orConditions).exec();
-        const data = await this._model.find(orConditions).limit(limit).skip(skip).exec();
+        const data = await this._model.find(orConditions).limit(limit).skip(skip).populate(this._poputale).exec();
 
         return { data, totalRecords };
     }

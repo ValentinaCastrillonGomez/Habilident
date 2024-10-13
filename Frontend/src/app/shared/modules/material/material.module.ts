@@ -18,7 +18,11 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatRadioModule } from '@angular/material/radio';
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   exports: [
@@ -37,11 +41,17 @@ import { MatRadioModule } from '@angular/material/radio';
     MatGridListModule,
     MatCheckboxModule,
     MatRadioModule,
+    MatDatepickerModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatProgressSpinnerModule
   ],
   providers: [
+    provideNativeDateAdapter(),
     { provide: DEFAULT_DIALOG_CONFIG, useValue: { maxWidth: '70vw' } },
     { provide: MAT_PAGINATOR_DEFAULT_OPTIONS, useValue: { hidePageSize: true, showFirstLastButtons: true } },
-    { provide: MatPaginatorIntl, useClass: AppPaginatorIntl }
+    { provide: MatPaginatorIntl, useClass: AppPaginatorIntl },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-CO' }
   ]
 })
 export class MaterialModule { }

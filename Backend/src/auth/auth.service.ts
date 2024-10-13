@@ -20,7 +20,14 @@ export class AuthService {
       const isValid = await compare(password, user.password);
 
       if (isValid) {
-        return { access_token: await this.jwtService.signAsync({ sub: user._id, name: `${user.firstNames} ${user.lastNames}`, role: user.role }) };
+        return {
+          access_token: await this.jwtService.signAsync({
+            sub: user._id,
+            name: `${user.firstNames} ${user.lastNames}`,
+            role: user.role.name,
+            permissions: user.role.permissions
+          })
+        };
       }
     }
 

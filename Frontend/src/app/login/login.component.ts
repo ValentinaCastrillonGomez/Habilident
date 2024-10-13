@@ -22,8 +22,8 @@ export default class AuthComponent {
     private authService: AuthService
   ) {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(5)]],
+      email: this.formBuilder.control('', [Validators.required, Validators.email]),
+      password: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
     });
   }
 
