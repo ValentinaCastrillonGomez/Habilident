@@ -1,3 +1,3 @@
 import { User } from "./user";
 
-export type Login = Pick<User, 'username' | 'password'>;
+export type Login = Pick<User, 'email' | 'password'>;

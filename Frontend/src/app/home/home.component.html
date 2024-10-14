@@ -1,42 +1,37 @@
-<div class="navbar bg-white border-b-2">
-  <div class="navbar-start">
-    <a class="btn btn-ghost text-xl">Habilident</a>
-  </div>
-  <div class="navbar-center lg:flex">
-    <ul class="menu menu-horizontal px-1">
-      @for (item of menu; track item.id) {
-      <li><a [routerLink]="item.path" routerLinkActive="active">{{item.title}}</a></li>
-      }
-    </ul>
-  </div>
-  <div class="navbar-end">
-    <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-        <div class="indicator">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-          </svg>
-          <span class="badge badge-xs badge-primary indicator-item"></span>
-        </div>
-      </div>
-      <div tabindex="0" class="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow">
-        <div class="card-body">
-          notificaciones
-        </div>
-      </div>
-    </div>
-    <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn btn-ghost">
-        {{ username }}
-      </div>
-      <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-        <li><a>Settings</a></li>
-        <li><a (click)="logout()">Cerrar sesión</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
-<main class="container mx-auto py-5">
-  <router-outlet />
-</main>
+<mat-toolbar class="justify-between">
+  <h3 class="text-sky-600 mb-0">Habilident</h3>
+
+  <section>
+    @for (item of menu; track item.id) {
+    <button mat-button [routerLink]="item.path" routerLinkActive="active">{{item.title}}</button>
+    }
+  </section>
+
+  <section class="flex items-center space-x-1">
+    <button mat-icon-button>
+      <mat-icon>notifications</mat-icon>
+    </button>
+    <span>{{username | titlecase}}</span>
+    <button mat-icon-button [matMenuTriggerFor]="subMenu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </section>
+</mat-toolbar>
+
+<mat-menu #subMenu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>account_circle</mat-icon>
+    <span>Perfil</span>
+  </button>
+  @for (item of administration; track item.id) {
+  <button mat-menu-item [routerLink]="item.path" routerLinkActive="active">
+    <mat-icon>{{item.icon}}</mat-icon>
+    <span>{{item.title}}</span>
+  </button>
+  }
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    <span>Cerrar sesión</span>
+  </button>
+</mat-menu>
+<router-outlet />

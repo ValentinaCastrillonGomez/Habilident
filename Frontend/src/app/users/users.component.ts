@@ -1,40 +1,64 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, signal } from '@angular/core';
 import { UsersService } from './services/users.service';
 import { User } from '@tipos/user';
-import Swal from 'sweetalert2';
+import { MatPaginator } from '@angular/material/paginator';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject, tap } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { UserComponent } from './components/user/user.component';
+import { MaterialModule } from '@shared/modules/material/material.module';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [],
+  imports: [
+    MaterialModule,
+    UserComponent,
+  ],
   providers: [UsersService],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
 })
-export default class UsersComponent implements OnInit {
-  users: User[] = [];
+export default class UsersComponent implements AfterViewInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  dataSource: User[] = [];
+  loading = signal<boolean>(true);
+  totalRecords = 0;
+  pageSize = 10;
+  displayedColumns: string[] = ['firstNames', 'lastNames', 'typeDocument', 'numberDocument', 'email', 'address', 'phone', 'role', 'state', 'actions'];
+  private searchTerms = new BehaviorSubject<string>('');
+  private actions = new Subject<void>();
 
-  constructor(private usersService: UsersService) { }
+  constructor(private userService: UsersService, private dialog: MatDialog) { }
 
-  async ngOnInit() {
-    this.users = await this.usersService.getUsers();
+  ngAfterViewInit() {
+    merge(
+      this.searchTerms.pipe(debounceTime(300), distinctUntilChanged()),
+      this.actions,
+      this.paginator.page)
+      .pipe(tap(() => this.loading.set(true)))
+      .subscribe(async () => {
+        const { data, totalRecords } = await this.userService.getAll(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
+        this.dataSource = data;
+        this.totalRecords = totalRecords;
+        this.loading.set(false);
+      });
+  }
+
+  search(term: string): void {
+    this.searchTerms.next(term);
   }
 
   async remove(id: string) {
-    const { isConfirmed } = await Swal.fire({
-      title: "¿Desea eliminar este registro?",
-      showCancelButton: true,
-      icon: "question",
-    })
-    if (isConfirmed) {
-      await this.usersService.deleteUser(id);
-      Swal.fire({
-        title: "Usuario eliminado",
-        icon: "success",
-        timer: 2000,
-        showConfirmButton: false,
-      });
-    }
+    const result = await this.userService.delete(id);
+    if (result) this.actions.next();
+  }
+
+  open(data?: User) {
+    const dialogRef = this.dialog.open(UserComponent, { data });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) this.actions.next();
+    });
   }
 
 }

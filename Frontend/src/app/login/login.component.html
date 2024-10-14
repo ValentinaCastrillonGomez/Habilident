@@ -1,46 +1,31 @@
-<div class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen">
-  <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900">
-    <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo" />
-    Habilident
-  </a>
-  <div class="w-full bg-white rounded-lg shadow mt-0 max-w-md">
-    <div class="p-8 space-y-6">
-      <h1 class="text-2xl font-bold leading-tight tracking-tight text-gray-900">
-        Inicie sesión en su cuenta
-      </h1>
-      <form class="space-y-4" [formGroup]="loginForm" (ngSubmit)="login()">
-        <div>
-          <label class="form-control w-full">
-            <div class="label">
-              <span class="label-text">Nombre de usuario</span>
-            </div>
-            <input type="text" name="username" id="username" formControlName="username" placeholder="pepito"
-              class="input input-bordered w-full" />
-            @if ( loginForm.controls.username.touched && loginForm.controls.username.errors ) {
-            <div class="label">
-              <span class="label-text-alt text-red-400">Introduce un nombre de usuario válido</span>
-            </div>
-            }
-          </label>
-        </div>
-        <div>
-          <label class="form-control w-full">
-            <div class="label">
-              <span class="label-text">Contraseña</span>
-            </div>
-            <input type="password" name="password" id="password" formControlName="password" placeholder="••••••••"
-              class="input input-bordered w-full" />
-            @if ( loginForm.controls.password.touched && loginForm.controls.password.errors ) {
-            <div class="label">
-              <span class="label-text-alt text-red-400">Introduce una contraseña válida</span>
-            </div>
-            }
-          </label>
-        </div>
-        <button type="submit" class="btn btn-primary w-full">
-          Iniciar sesión
-        </button>
+<div class="flex flex-col justify-center items-center min-h-screen">
+  <h3 class="text-sky-600">Habilident</h3>
+  <mat-card class="max-w-md p-8">
+    <mat-card-header class="justify-center mb-2">
+      <mat-card-title>
+        <h5>Inicie sesión en su cuenta</h5>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-6">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput type="email" id="email" formControlName="email" required>
+          @if (loginForm.controls.email.invalid) {
+          <mat-error>Introduce un correo válido</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" id="password" formControlName="password" required>
+          @if (loginForm.controls.password.invalid) {
+          <mat-error>Introduce una contraseña válida</mat-error>
+          }
+        </mat-form-field>
+
+        <button mat-flat-button type="submit" class="w-full">Iniciar sesión</button>
       </form>
-    </div>
-  </div>
+    </mat-card-content>
+  </mat-card>
 </div>

@@ -7,6 +7,8 @@ import { AlertsModule } from './alerts/alerts.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { RolesModule } from './roles/roles.module';
+import { FormatsModule } from './formats/formats.module';
 
 @Module({
   imports: [
@@ -21,7 +23,9 @@ import { JwtModule } from '@nestjs/jwt';
     }),
     UsersModule,
     AlertsModule,
-    AuthModule
+    AuthModule,
+    RolesModule,
+    FormatsModule
   ],
   controllers: [AppController],
   providers: [AppService],

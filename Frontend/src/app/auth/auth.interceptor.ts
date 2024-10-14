@@ -2,10 +2,10 @@ import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpReq
 import { inject } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
-import { BASE_URL } from '../app.config';
+import { ENV } from '../app.config';
 
 export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
-  const baseUrl = inject(BASE_URL);
+  const baseUrl = inject(ENV).BASE_URL;
   const authService = inject(AuthService);
   const token = authService.getToken();
 

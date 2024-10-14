@@ -1,12 +1,23 @@
-import { Role } from "./roles";
-
 export type User = {
     _id?: any;
-    fullName: string;
-    username: string;
-    password: string;
+    firstNames: string;
+    lastNames: string;
+    typeDocument: string;
+    numberDocument: string;
     email: string;
-    phone?: number;
-    roles: Role[];
-    state?: boolean;
+    address: string;
+    phone: string;
+    birthday: string;
+    gender: string;
+    office: string;
+    position: string;
+    role: any;
+    password: string;
+    signature?: Signature;
+    state: boolean;
+}
+
+export type Signature = {
+    name: string;
+    image: string;
 }

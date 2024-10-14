@@ -5,6 +5,8 @@ export const paths = {
   HOME: '',
   LOGIN: 'login',
   USERS: 'users',
+  ROLES: 'roles',
+  FORMATS: 'formats',
 };
 
 export const routes: Routes = [

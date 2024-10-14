@@ -1,0 +1,35 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav mode="side" opened class="w-64 rounded-tr-none rounded-br-none pt-2">
+        <div class="flex justify-center">
+            <button mat-flat-button (click)="open()"><mat-icon>add</mat-icon>Añadir Formato</button>
+        </div>
+        <mat-nav-list>
+            <mat-list-item *ngFor="let format of formats" [ngClass]="{ 'bg-black/10': selectedItem?._id == format._id}">
+                <div class="flex items-center justify-between">
+                    <div class="truncate w-full" (click)="selectedItem = format">
+                        {{format.name | titlecase}}
+                    </div>
+                    <button mat-icon-button [matMenuTriggerFor]="sidenav" [matMenuTriggerData]="{data: format}">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                </div>
+
+            </mat-list-item>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        listado
+    </mat-sidenav-content>
+</mat-sidenav-container>
+<mat-menu #sidenav="matMenu">
+    <ng-template matMenuContent let-format="data">
+        <button mat-menu-item (click)="open(format)">
+            <mat-icon>edit</mat-icon>
+            <span>Actualizar</span>
+        </button>
+        <button mat-menu-item (click)="remove(format._id)">
+            <mat-icon class="text-red-600">delete</mat-icon>
+            <span class="text-red-600">Eliminar</span>
+        </button>
+    </ng-template>
+</mat-menu>
