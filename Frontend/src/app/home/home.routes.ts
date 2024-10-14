@@ -9,5 +9,9 @@ export default [
   {
     path: paths.ROLES,
     loadComponent: () => import('../roles/roles.component'),
+  },
+  {
+    path: paths.FORMATS,
+    loadComponent: () => import('../formats/formats.component'),
   }
 ] as Routes;

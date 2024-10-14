@@ -1,0 +1,31 @@
+<div class="flex gap-x-4">
+    @for (input of inputs.controls; track input; let columnIndex = $index) {
+    @if(getColumn(columnIndex).controls['type'].value=='text'){
+    <mat-form-field appearance="outline" class="w-full" [formGroup]="input">
+        <input matInput type="text" id="name" formControlName="name" required>
+        <button matSuffix mat-icon-button type="button" matTooltip="Eliminar Campo" matTooltipPosition="left"
+            (click)="removeColumn(columnIndex)">
+            <mat-icon>close</mat-icon>
+        </button>
+        @if (getColumn(columnIndex).controls['name'].invalid) {
+        <mat-error class="truncate">Nombre de campo requerido</mat-error>
+        }
+    </mat-form-field>
+    }
+    }
+    <button mat-icon-button type="button" [matMenuTriggerFor]="rowInputs" class="self-center mb-4">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #rowInputs="matMenu">
+        <ng-template matMenuContent let-rowIndex="data">
+            <button mat-menu-item (click)="addColumn()">
+                <mat-icon>add</mat-icon>
+                <span>Añadir Campo</span>
+            </button>
+            <button mat-menu-item (click)="removeRow()">
+                <mat-icon class="text-red-600">delete</mat-icon>
+                <span class="text-red-600">Eliminar Fila</span>
+            </button>
+        </ng-template>
+    </mat-menu>
+</div>
