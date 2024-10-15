@@ -1,14 +1,16 @@
-<div class="flex gap-x-4">
+<div class="flex gap-x-2 pt-5" [ngClass]="{'bg-black/10' : type === 'table'}">
     @for (input of inputs.controls; track input; let columnIndex = $index) {
-    @if(getColumn(columnIndex).controls['type'].value=='text'){
+    @if(input.controls.type.value=='text'){
     <mat-form-field appearance="outline" class="w-full" [formGroup]="input">
+        <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?" matTooltipPosition="right">
+        </mat-checkbox>
         <input matInput type="text" id="name" formControlName="name" required>
         <button matSuffix mat-icon-button type="button" matTooltip="Eliminar Campo" matTooltipPosition="left"
             (click)="removeColumn(columnIndex)">
             <mat-icon>close</mat-icon>
         </button>
-        @if (getColumn(columnIndex).controls['name'].invalid) {
-        <mat-error class="truncate">Nombre de campo requerido</mat-error>
+        @if (input.controls.name.invalid) {
+        <mat-error class="truncate">Introduce un nombre válido</mat-error>
         }
     </mat-form-field>
     }
@@ -20,11 +22,11 @@
         <ng-template matMenuContent let-rowIndex="data">
             <button mat-menu-item (click)="addColumn()">
                 <mat-icon>add</mat-icon>
-                <span>Añadir Campo</span>
+                <span>Añadir campo</span>
             </button>
             <button mat-menu-item (click)="removeRow()">
                 <mat-icon class="text-red-600">delete</mat-icon>
-                <span class="text-red-600">Eliminar Fila</span>
+                <span class="text-red-600">Eliminar fila</span>
             </button>
         </ng-template>
     </mat-menu>

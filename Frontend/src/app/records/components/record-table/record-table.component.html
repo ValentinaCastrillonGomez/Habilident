@@ -1,0 +1,36 @@
+<mat-table [dataSource]="values.controls" class="mb-3">
+    @for (input of inputs.controls; track input; let columnIndex = $index) {
+    <ng-container [matColumnDef]="input.controls.name.value">
+        <mat-header-cell *matHeaderCellDef> {{input.controls.name.value}} </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            @if(input.controls.type.value=='text'){
+            <mat-form-field appearance="outline" class="w-full" [formGroup]="input">
+                <input matInput [type]="input.controls.type.value" id="name" formControlName="value"
+                    [required]="input.controls.required.value">
+                @if (input.controls.value.invalid) {
+                <mat-error class="truncate">Introduce un valor válido</mat-error>
+                }
+            </mat-form-field>
+            }
+        </mat-cell>
+    </ng-container>
+    }
+
+    <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>
+            <button mat-button type="button" (click)="addRow()">
+                <mat-icon>add</mat-icon>
+                <span>Añadir fila</span>
+            </button>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="justify-end">
+            <button mat-button type="button" (click)="removeRow(element._id)">
+                <mat-icon class="text-red-600">close</mat-icon>
+                <span class="text-red-600">Eliminar fila</span>
+            </button>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

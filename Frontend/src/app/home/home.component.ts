@@ -17,6 +17,8 @@ export default class HomeComponent {
   readonly menu = [
     { id: 'home', path: '/dashboard', title: 'Inicio' },
     { id: 'formats', path: '/formats', title: 'Formatos' },
+    { id: 'reports', path: '/reports', title: 'Reportes' },
+    { id: 'alarms', path: '/alarms', title: 'Alarmas' },
   ];
 
   readonly administration = [

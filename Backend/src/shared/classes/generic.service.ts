@@ -9,13 +9,13 @@ export abstract class GenericService<T extends Document, G> {
     constructor(
         private readonly _model: Model<T>,
         private readonly _searchFields: string[],
-        private readonly _poputale: PopulateOptions[]
+        readonly _poputale: PopulateOptions[]
     ) { }
 
     async findAll(skip = 0, limit = 0, query = ''): Promise<Page<T>> {
         const orConditions: FilterQuery<Document> = {
             $or: this._searchFields.map((field) => ({
-                [field]: { $regex: `.*${query}.*`, $options: 'i' },
+                [field]: { $regex: `.*${query}.*`, $options: 'i' }
             })),
         };
 

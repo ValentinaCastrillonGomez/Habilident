@@ -10,6 +10,7 @@ import { MaterialModule } from '@shared/modules/material/material.module';
   styleUrl: './format-row.component.scss'
 })
 export class FormatRowComponent implements OnInit {
+  @Input() type!: string;
   @Input() inputs!: FormArray<FormGroup<{
     name: FormControl<string>;
     type: FormControl<string>;
@@ -21,10 +22,6 @@ export class FormatRowComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.inputs.length) this.addColumn();
-  }
-
-  getColumn(column: number): FormGroup {
-    return this.inputs.at(column) as FormGroup;
   }
 
   addColumn(): void {

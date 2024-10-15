@@ -1,7 +1,7 @@
 <form [formGroup]="formatForm" (ngSubmit)="save()">
-    <h5 mat-dialog-title>Guardar Formato</h5>
+    <h6 mat-dialog-title>Guardar Formato</h6>
     <mat-dialog-content class="mat-typography">
-        <div class="mt-2 mb-4 space-y-4">
+        <div class="mt-2 mb-4">
             <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Nombre</mat-label>
                 <input matInput type="text" id="name" formControlName="name" required>
@@ -11,18 +11,19 @@
             </mat-form-field>
             <mat-divider></mat-divider>
             <section formArrayName="matrix">
-                <p class="font-bold">Campos</p>
-                @for (rows of formatForm.controls.matrix.controls; track rows; let rowIndex = $index) {
-                <div [ngClass]="{'bg-black/10' : rows.controls.type.value==='table'}">
-                    <app-format-row [inputs]="rows.controls.inputs" (remove)="removeRow(rowIndex)"></app-format-row>
+                <div class="flex items-center gap-x-2 mt-3">
+                    <span class="font-bold">Campos</span>
+                    <button mat-button type="button" (click)="addRow('text')">
+                        <mat-icon>add</mat-icon>Añadir fila de campos
+                    </button>
+                    <button mat-button type="button" (click)="addRow('table')">
+                        <mat-icon>add</mat-icon>Añadir tabla
+                    </button>
                 </div>
+                @for (rows of formatForm.controls.matrix.controls; track rows; let rowIndex = $index) {
+                <app-format-row [inputs]="rows.controls.inputs" [type]="rows.controls.type.value"
+                    (remove)="removeRow(rowIndex)"></app-format-row>
                 }
-                <button mat-button type="button" (click)="addRow('text')">
-                    <mat-icon>add</mat-icon>Añadir fila de campos
-                </button>
-                <button mat-button type="button" (click)="addRow('table')">
-                    <mat-icon>add</mat-icon>Añadir tabla
-                </button>
             </section>
         </div>
     </mat-dialog-content>

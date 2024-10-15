@@ -1,0 +1,19 @@
+<form [formGroup]="recordForm" (ngSubmit)="save()">
+    <h6 mat-dialog-title>Guardar Registro</h6>
+    <mat-dialog-content class="mat-typography">
+        <div class="mt-2 mb-4">
+            @for (rows of recordForm.controls.matrix.controls; track rows; let rowIndex = $index) {
+            @if(rows.controls.type.value === 'text'){
+            <app-record-text [inputs]="rows.controls.inputs"></app-record-text>
+            }
+            @if(rows.controls.type.value === 'table'){
+            <app-record-table [inputs]="rows.controls.inputs" [values]="rows.controls.values"></app-record-table>
+            }
+            }
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-stroked-button mat-dialog-close>Cancelar</button>
+        <button mat-flat-button cdkFocusInitial type="submit">Guardar</button>
+    </mat-dialog-actions>
+</form>

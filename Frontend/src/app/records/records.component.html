@@ -1,19 +1,22 @@
 <main class="container mx-auto py-5">
     <div class="flex items-center justify-between">
         <div class="flex items-center space-x-3">
-            <h6 class="mb-0">Listado de Roles</h6>
-            <button mat-flat-button (click)="open()"><mat-icon>add</mat-icon>Añadir Rol</button>
+            <h6 class="mb-0">Registros de {{format.name | titlecase}}</h6>
+            <button mat-flat-button (click)="open()"><mat-icon>add</mat-icon>Añadir Registro</button>
         </div>
 
-        <mat-form-field appearance="outline" subscriptSizing="dynamic">
-            <mat-label>Filtrar roles</mat-label>
-            <input matInput #filter id="filterRoles" (input)="search(filter.value)">
-            <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
+        <!-- <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Filtrar registros</mat-label>
+            <mat-date-range-input [rangePicker]="picker" [formGroup]="range">
+                <input matStartDate formControlName="start" id="filterRecordsStart" (dateInput)="search()">
+                <input matEndDate formControlName="end" id="filterRecordsEnd" (dateInput)="search()">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]=" picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field> -->
     </div>
     <mat-card class="my-2">
         <mat-card-content>
-
             <div class="relative min-h-56">
                 @if (loading()) {
                 <div
@@ -23,15 +26,29 @@
                 }
 
                 <mat-table [dataSource]="dataSource">
-                    <ng-container matColumnDef="name">
-                        <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                    <ng-container matColumnDef="dateCreate">
+                        <mat-header-cell *matHeaderCellDef> Fecha de registro </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.dateCreate | date: 'dd/MM/yyyy, h:mm a' }}
+                        </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="permissions">
-                        <mat-header-cell *matHeaderCellDef> Permisos </mat-header-cell>
+                    <ng-container matColumnDef="userCreate">
+                        <mat-header-cell *matHeaderCellDef> Usuario que registro </mat-header-cell>
                         <mat-cell *matCellDef="let element">
-                            <div class="truncate">{{element.permissions}}</div>
+                            {{element.userCreate.firstNames}} {{element.userCreate.lastNames}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dateLastUpdate">
+                        <mat-header-cell *matHeaderCellDef> Fecha de ultima actualización </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.dateLastUpdate | date: 'dd/MM/yyyy, h:mm a' }}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="userLastUpdate">
+                        <mat-header-cell *matHeaderCellDef> Usuario de ultima actualización </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            {{element.userLastUpdate?.firstNames}} {{element.userLastUpdate?.lastNames}}
                         </mat-cell>
                     </ng-container>
 
@@ -40,7 +57,7 @@
                         <mat-cell *matCellDef="let element" class="justify-end">
                             <button mat-icon-button [matMenuTriggerFor]="actions"
                                 [matMenuTriggerData]="{data: element}">
-                                <mat-icon>more_horiz</mat-icon>
+                                <mat-icon class="">more_horiz</mat-icon>
                             </button>
                         </mat-cell>
                     </ng-container>
@@ -62,7 +79,7 @@
         <ng-template matMenuContent let-element="data">
             <button mat-menu-item (click)="open(element)">
                 <mat-icon>edit</mat-icon>
-                <span>Actualizar {{element}}</span>
+                <span>Actualizar</span>
             </button>
             <button mat-menu-item (click)="remove(element._id)">
                 <mat-icon class="text-red-600">delete</mat-icon>

@@ -4,7 +4,8 @@
             <button mat-flat-button (click)="open()"><mat-icon>add</mat-icon>Añadir Formato</button>
         </div>
         <mat-nav-list>
-            <mat-list-item *ngFor="let format of formats" [ngClass]="{ 'bg-black/10': selectedItem?._id == format._id}">
+            @for (format of formats; track format) {
+            <mat-list-item [ngClass]="{ 'bg-black/10': selectedItem?._id == format._id}">
                 <div class="flex items-center justify-between">
                     <div class="truncate w-full" (click)="selectedItem = format">
                         {{format.name | titlecase}}
@@ -13,12 +14,14 @@
                         <mat-icon>more_vert</mat-icon>
                     </button>
                 </div>
-
             </mat-list-item>
+            }
         </mat-nav-list>
     </mat-sidenav>
-    <mat-sidenav-content>
-        listado
+    <mat-sidenav-content class="px-5">
+        @if (selectedItem) {
+        <app-records [format]="selectedItem"></app-records>
+        }
     </mat-sidenav-content>
 </mat-sidenav-container>
 <mat-menu #sidenav="matMenu">

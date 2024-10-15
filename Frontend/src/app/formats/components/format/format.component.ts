@@ -59,26 +59,21 @@ export class FormatComponent implements OnInit {
 
   addRow(type: string, inputs = this.formBuilder.array([])): void {
     const row = this.formBuilder.group({
-      type: [type], inputs
+      type: this.formBuilder.control(type), inputs
     });
     this.formatForm.controls.matrix.push(row as any);
   }
 
   removeRow(rowIndex: number): void {
-    this.formatForm.controls.matrix.removeAt(rowIndex);
+    if (this.formatForm.controls.matrix.length > 1) {
+      this.formatForm.controls.matrix.removeAt(rowIndex);
+    }
   }
 
   async save() {
     this.formatForm.markAllAsTouched();
 
     if (this.formatForm.invalid) return;
-    if (!this.formatForm.controls.matrix.length) {
-      Swal.fire({
-        title: "Debe ingresar almenos un campo",
-        icon: "warning",
-      });
-      return;
-    };
 
     const format = this.formatForm.getRawValue();
 

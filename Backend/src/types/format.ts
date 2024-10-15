@@ -9,11 +9,13 @@ export type Input = {
     name: string;
     type: string;
     required: boolean;
+    value?: string;
 };
 
 export type Matrix = {
     type: InputTypes;
     inputs: Input[];
+    values?: any[];
 };
 
 export type Format = {
