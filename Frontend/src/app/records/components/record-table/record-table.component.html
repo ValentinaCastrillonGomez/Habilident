@@ -1,5 +1,5 @@
 <mat-table [dataSource]="values.controls" class="mb-3">
-    @for (input of inputs.controls; track input; let columnIndex = $index) {
+    @for (input of values.controls[0].controls; track input; let columnIndex = $index) {
     <ng-container [matColumnDef]="input.controls.name.value">
         <mat-header-cell *matHeaderCellDef> {{input.controls.name.value}} </mat-header-cell>
         <mat-cell *matCellDef="let element">

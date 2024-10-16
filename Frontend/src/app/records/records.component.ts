@@ -1,4 +1,4 @@
-import { Component, Input, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, signal, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from '@shared/modules/material/material.module';
@@ -10,60 +10,60 @@ import { RecordComponent } from './components/record/record.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-records',
-  standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule],
-  templateUrl: './records.component.html',
-  styleUrl: './records.component.scss'
+    selector: 'app-records',
+    standalone: true,
+    imports: [MaterialModule, ReactiveFormsModule],
+    templateUrl: './records.component.html',
+    styleUrl: './records.component.scss'
 })
-export class RecordsComponent {
-  @Input() format!: Format;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  dataSource: Record[] = [];
-  loading = signal<boolean>(true);
-  totalRecords = 0;
-  pageSize = 10;
-  displayedColumns: string[] = ['dateCreate', 'userCreate', 'dateLastUpdate', 'userLastUpdate', 'actions'];
-  readonly range = new FormGroup({
-    start: new FormControl<Date | null>(null),
-    end: new FormControl<Date | null>(null),
-  });
-  private searchTerms = new BehaviorSubject<any>({});
-  private actions = new Subject<void>();
-
-  constructor(private recordsService: RecordsService, private dialog: MatDialog) { }
-
-  ngAfterViewInit() {
-    merge(
-      this.searchTerms.pipe(debounceTime(900), distinctUntilChanged()),
-      this.actions,
-      this.paginator.page)
-      .pipe(tap(() => this.loading.set(true)))
-      .subscribe(async () => {
-        const { data, totalRecords } = await this.recordsService.getAll(
-          this.paginator.pageIndex, this.paginator.pageSize, this.format._id
-        );
-        this.dataSource = data;
-        this.totalRecords = totalRecords;
-        this.loading.set(false);
-      });
-  }
-
-  search() {
-    this.searchTerms.next(this.range.value);
-  }
-
-  async remove(id: string) {
-    const result = await this.recordsService.delete(id);
-    if (result) this.actions.next();
-  }
-
-  open(record?: Record) {
-    const dialogRef = this.dialog.open(RecordComponent, { data: { record, format: this.format } });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) this.actions.next();
+export class RecordsComponent implements AfterViewInit {
+    @Input() format!: Format;
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+    dataSource: Record[] = [];
+    loading = signal<boolean>(true);
+    totalRecords = 0;
+    pageSize = 10;
+    displayedColumns: string[] = ['dateCreate', 'userCreate', 'dateLastUpdate', 'userLastUpdate', 'actions'];
+    readonly range = new FormGroup({
+        start: new FormControl<Date | null>(null),
+        end: new FormControl<Date | null>(null),
     });
-  }
+    private searchTerms = new BehaviorSubject<any>({});
+    private actions = new Subject<void>();
+
+    constructor(private recordsService: RecordsService, private dialog: MatDialog) { }
+
+    ngAfterViewInit() {
+        merge(
+            this.searchTerms.pipe(debounceTime(900), distinctUntilChanged()),
+            this.actions,
+            this.paginator.page)
+            .pipe(tap(() => this.loading.set(true)))
+            .subscribe(async () => {
+                const { data, totalRecords } = await this.recordsService.getAll(
+                    this.paginator.pageIndex, this.paginator.pageSize, this.format._id
+                );
+                this.dataSource = data;
+                this.totalRecords = totalRecords;
+                this.loading.set(false);
+            });
+    }
+
+    search() {
+        this.searchTerms.next(this.range.value);
+    }
+
+    async remove(id: string) {
+        const result = await this.recordsService.delete(id);
+        if (result) this.actions.next();
+    }
+
+    open(record?: Record) {
+        const dialogRef = this.dialog.open(RecordComponent, { data: { record, format: this.format } });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) this.actions.next();
+        });
+    }
 
 }

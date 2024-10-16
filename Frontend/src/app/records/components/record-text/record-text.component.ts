@@ -10,7 +10,7 @@ import { MaterialModule } from '@shared/modules/material/material.module';
   styleUrl: './record-text.component.scss'
 })
 export class RecordTextComponent {
-  @Input() inputs!: FormArray<FormGroup<{
+  @Input() values!: FormArray<FormGroup<{
     name: FormControl<string>;
     type: FormControl<string>;
     required: FormControl<boolean>;

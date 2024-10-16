@@ -1,5 +1,5 @@
 <div class="flex gap-x-2">
-    @for (input of inputs.controls; track input; let columnIndex = $index) {
+    @for (input of values.controls; track input; let columnIndex = $index) {
     @if(input.controls.type.value=='text'){
     <mat-form-field appearance="outline" class="w-full" [formGroup]="input">
         <mat-label>{{input.controls.name.value}}</mat-label>

@@ -2,10 +2,10 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Role } from '@tipos/role';
 import { RolesService } from '../../services/roles.service';
-import { FormArray, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PERMISSIONS } from '@tipos/permission';
-import Swal from 'sweetalert2';
+import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Permission, PERMISSIONS } from '@tipos/permission';
 import { MaterialModule } from '@shared/modules/material/material.module';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-role',
@@ -19,7 +19,13 @@ import { MaterialModule } from '@shared/modules/material/material.module';
   styleUrl: './role.component.scss'
 })
 export class RoleComponent {
-  roleForm;
+  roleForm: FormGroup<{
+    name: FormControl<string>;
+    permissions: FormArray<FormGroup<{
+      name: FormControl<Permission>;
+      selected: FormControl<boolean>;
+    }>>
+  }>;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public role: Role | null,
@@ -29,24 +35,13 @@ export class RoleComponent {
   ) {
     this.roleForm = this.formBuilder.group({
       name: [this.role?.name || '', [Validators.required]],
-      permissions: this.formBuilder.group(this.buildPermissions()),
-    });
-  }
-
-  get permissionsGroup() {
-    return Object.keys(PERMISSIONS);
-  }
-
-  buildPermissions() {
-    return Object.entries(PERMISSIONS).reduce((acc, [groupKey, permissions]) => {
-      acc[groupKey] = this.formBuilder.array(permissions.map((permission) =>
+      permissions: this.formBuilder.array(Object.values(PERMISSIONS).map((permission) =>
         this.formBuilder.group({
-          name: [permission],
-          selected: [this.role?.permissions.includes(permission) || false]
+          name: this.formBuilder.control(permission),
+          selected: this.formBuilder.control(this.role?.permissions.includes(permission) || false)
         })
-      ));
-      return acc;
-    }, {} as { [key: string]: FormArray });
+      )),
+    });
   }
 
   async save() {
@@ -54,7 +49,7 @@ export class RoleComponent {
 
     const role = this.roleForm.getRawValue();
 
-    const permissions = Object.values(role.permissions).flat()
+    const permissions = Object.values(role.permissions)
       .filter(permission => permission.selected)
       .map(permission => permission.name);
 

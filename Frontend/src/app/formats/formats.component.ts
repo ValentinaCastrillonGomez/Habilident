@@ -15,7 +15,7 @@ import { RecordsComponent } from "../records/records.component";
     RouterModule,
     FormatComponent,
     RecordsComponent,
-],
+  ],
   providers: [FormatsService],
   templateUrl: './formats.component.html',
   styleUrl: './formats.component.scss'
@@ -26,12 +26,9 @@ export default class FormatsComponent implements OnInit {
 
   constructor(private formatsService: FormatsService, private dialog: MatDialog) { }
 
-  ngOnInit(): void {
-    this.loadFormats().then(() => {
-      if (this.formats.length) {
-        this.selectedItem = this.formats[0];
-      }
-    });
+  async ngOnInit() {
+    await this.loadFormats();
+    this.selectedItem = this.formats[0] || null;
   }
 
   async loadFormats() {

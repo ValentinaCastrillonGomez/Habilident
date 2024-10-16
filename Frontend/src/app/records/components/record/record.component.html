@@ -2,12 +2,12 @@
     <h6 mat-dialog-title>Guardar Registro</h6>
     <mat-dialog-content class="mat-typography">
         <div class="mt-2 mb-4">
-            @for (rows of recordForm.controls.matrix.controls; track rows; let rowIndex = $index) {
-            @if(rows.controls.type.value === 'text'){
-            <app-record-text [inputs]="rows.controls.inputs"></app-record-text>
+            @for (rows of recordForm.controls.values.controls; track rows; let rowIndex = $index) {
+            @if(rows.controls.type.value === 'single'){
+            <app-record-text [values]="rows.controls.fields.controls[0]"></app-record-text>
             }
             @if(rows.controls.type.value === 'table'){
-            <app-record-table [inputs]="rows.controls.inputs" [values]="rows.controls.values"></app-record-table>
+            <app-record-table [values]="rows.controls.fields"></app-record-table>
             }
             }
         </div>

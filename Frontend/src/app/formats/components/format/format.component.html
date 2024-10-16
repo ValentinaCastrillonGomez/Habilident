@@ -10,19 +10,18 @@
                 }
             </mat-form-field>
             <mat-divider></mat-divider>
-            <section formArrayName="matrix">
+            <section formArrayName="rows">
                 <div class="flex items-center gap-x-2 mt-3">
                     <span class="font-bold">Campos</span>
-                    <button mat-button type="button" (click)="addRow('text')">
+                    <button mat-button type="button" (click)="addRow('single')">
                         <mat-icon>add</mat-icon>Añadir fila de campos
                     </button>
                     <button mat-button type="button" (click)="addRow('table')">
                         <mat-icon>add</mat-icon>Añadir tabla
                     </button>
                 </div>
-                @for (rows of formatForm.controls.matrix.controls; track rows; let rowIndex = $index) {
-                <app-format-row [inputs]="rows.controls.inputs" [type]="rows.controls.type.value"
-                    (remove)="removeRow(rowIndex)"></app-format-row>
+                @for (row of formatForm.controls.rows.controls; track row; let rowIndex = $index) {
+                <app-format-row [row]="row" (remove)="removeRow(rowIndex)"></app-format-row>
                 }
             </section>
         </div>

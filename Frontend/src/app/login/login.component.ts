@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
-import Swal from 'sweetalert2';
 import { MaterialModule } from '@shared/modules/material/material.module';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +15,10 @@ import { MaterialModule } from '@shared/modules/material/material.module';
   styleUrl: './login.component.scss',
 })
 export default class AuthComponent {
-  loginForm;
+  loginForm: FormGroup<{
+    email: FormControl<string>;
+    password: FormControl<string>;
+  }>;
 
   constructor(
     private formBuilder: NonNullableFormBuilder,

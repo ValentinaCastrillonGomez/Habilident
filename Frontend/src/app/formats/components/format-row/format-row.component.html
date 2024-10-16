@@ -1,5 +1,5 @@
-<div class="flex gap-x-2 pt-5" [ngClass]="{'bg-black/10' : type === 'table'}">
-    @for (input of inputs.controls; track input; let columnIndex = $index) {
+<div class="flex gap-x-2 pt-5" [ngClass]="{'bg-black/10' : row.controls.type.value === 'table'}">
+    @for (input of row.controls.fields.controls; track input; let columnIndex = $index) {
     @if(input.controls.type.value=='text'){
     <mat-form-field appearance="outline" class="w-full" [formGroup]="input">
         <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?" matTooltipPosition="right">

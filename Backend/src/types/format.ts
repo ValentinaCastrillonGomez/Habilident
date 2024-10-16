@@ -1,25 +1,23 @@
-export const INPUT_TYPES = {
-    TEXT: 'text',
+export const ROW_TYPES = {
+    SINGLE: 'single',
     TABLE: 'table',
 } as const;
 
-export type InputTypes = typeof INPUT_TYPES[keyof typeof INPUT_TYPES];
+export type RowTypes = typeof ROW_TYPES[keyof typeof ROW_TYPES];
 
-export type Input = {
+export type FormatField = {
     name: string;
     type: string;
     required: boolean;
-    value?: string;
 };
 
-export type Matrix = {
-    type: InputTypes;
-    inputs: Input[];
-    values?: any[];
+export type FormatRow<T> = {
+    type: RowTypes;
+    fields: T;
 };
 
 export type Format = {
     _id?: any;
     name: string;
-    matrix: Matrix[];
+    rows: FormatRow<FormatField[]>[];
 };

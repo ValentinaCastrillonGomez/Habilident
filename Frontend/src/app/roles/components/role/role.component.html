@@ -13,15 +13,13 @@
             <section formGroupName="permissions">
                 <p class="font-bold">Permisos</p>
 
-                @for (permissions of permissionsGroup; track $index) {
-                <div class="flex space-x-1" [formArrayName]="permissions">
-                    @for (permission of roleForm.controls.permissions.controls[permissions].controls; track $index) {
-                    <p [formGroupName]="$index">
-                        <mat-checkbox formControlName="selected">{{permission.get('name')!.value}}</mat-checkbox>
-                    </p>
+                <div class="grid grid-flow-row auto-rows-max">
+                    @for (permission of roleForm.controls.permissions.controls; track $index) {
+                    <div [formGroup]="permission">
+                        <mat-checkbox formControlName="selected">{{permission.controls.name.value}}</mat-checkbox>
+                    </div>
                     }
                 </div>
-                }
             </section>
         </div>
     </mat-dialog-content>

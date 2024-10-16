@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
+import { RowsFormType } from '../format/format.component';
 
 @Component({
   selector: 'app-format-row',
@@ -10,22 +11,17 @@ import { MaterialModule } from '@shared/modules/material/material.module';
   styleUrl: './format-row.component.scss'
 })
 export class FormatRowComponent implements OnInit {
-  @Input() type!: string;
-  @Input() inputs!: FormArray<FormGroup<{
-    name: FormControl<string>;
-    type: FormControl<string>;
-    required: FormControl<boolean>;
-  }>>;
+  @Input() row!: FormGroup<RowsFormType>;
   @Output() remove = new EventEmitter();
 
   constructor(private formBuilder: NonNullableFormBuilder) { }
 
   ngOnInit(): void {
-    if (!this.inputs.length) this.addColumn();
+    if (!this.row.controls.fields.length) this.addColumn();
   }
 
   addColumn(): void {
-    this.inputs.push(this.formBuilder.group({
+    this.row.controls.fields.push(this.formBuilder.group({
       name: this.formBuilder.control('', Validators.required),
       type: this.formBuilder.control('text'),
       required: this.formBuilder.control(true)
@@ -33,8 +29,8 @@ export class FormatRowComponent implements OnInit {
   }
 
   removeColumn(columnIndex: number): void {
-    if (this.inputs.length > 1) {
-      this.inputs.removeAt(columnIndex);
+    if (this.row.controls.fields.length > 1) {
+      this.row.controls.fields.removeAt(columnIndex);
     } else {
       this.removeRow();
     }

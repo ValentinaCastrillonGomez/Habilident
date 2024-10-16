@@ -19,8 +19,10 @@
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content class="px-5">
-        @if (selectedItem) {
-        <app-records [format]="selectedItem"></app-records>
+        @for (format of formats; track format) {
+        @if (selectedItem?._id == format._id) {
+        <app-records [format]="format"></app-records>
+        }
         }
     </mat-sidenav-content>
 </mat-sidenav-container>
