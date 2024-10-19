@@ -4,10 +4,8 @@
         <div class="mt-2 mb-4">
             @for (rows of recordForm.controls.values.controls; track rows; let rowIndex = $index) {
             @if(rows.controls.type.value === 'single'){
-            <app-record-text [values]="rows.controls.fields.controls[0]"></app-record-text>
             }
             @if(rows.controls.type.value === 'table'){
-            <app-record-table [values]="rows.controls.fields"></app-record-table>
             }
             }
         </div>

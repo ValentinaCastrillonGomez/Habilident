@@ -11,6 +11,10 @@ export abstract class GenericService<T> {
         return firstValueFrom(this._http.get<Page<T>>(this.api, { params: { skip, limit, query } }));
     }
 
+    get(id: string) {
+        return firstValueFrom(this._http.get<T>(`${this.api}/${id}`));
+    }
+
     save(data: T, id?: string): Promise<T> {
         return firstValueFrom(!id ? this._http.post<T>(this.api, data) : this._http.patch<T>(`${this.api}/${id}`, this.removeNullKeys(data)));
     }

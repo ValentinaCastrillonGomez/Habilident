@@ -1,33 +1,31 @@
 <form [formGroup]="formatForm" (ngSubmit)="save()">
-    <h6 mat-dialog-title>Guardar Formato</h6>
-    <mat-dialog-content class="mat-typography">
-        <div class="mt-2 mb-4">
-            <mat-form-field appearance="outline" class="w-full">
-                <mat-label>Nombre</mat-label>
-                <input matInput type="text" id="name" formControlName="name" required>
-                @if (formatForm.controls.name.invalid) {
-                <mat-error>Introduce un nombre válido</mat-error>
-                }
-            </mat-form-field>
-            <mat-divider></mat-divider>
-            <section formArrayName="rows">
-                <div class="flex items-center gap-x-2 mt-3">
-                    <span class="font-bold">Campos</span>
-                    <button mat-button type="button" (click)="addRow('single')">
-                        <mat-icon>add</mat-icon>Añadir fila de campos
-                    </button>
-                    <button mat-button type="button" (click)="addRow('table')">
-                        <mat-icon>add</mat-icon>Añadir tabla
-                    </button>
-                </div>
+    <div class="mt-2 mb-4">
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Nombre del formato</mat-label>
+            <input matInput type="text" id="name" formControlName="name" required>
+            @if (formatForm.controls.name.invalid) {
+            <mat-error>Introduce un nombre válido</mat-error>
+            }
+        </mat-form-field>
+        <mat-divider></mat-divider>
+        <section formArrayName="rows">
+            <div class="flex items-center gap-x-2 mt-3">
+                <span class="font-bold">Campos</span>
+                <button mat-button type="button" (click)="addRow('single')">
+                    <mat-icon>add</mat-icon>Añadir fila de campos
+                </button>
+                <button mat-button type="button" (click)="addRow('table')">
+                    <mat-icon>add</mat-icon>Añadir tabla
+                </button>
+            </div>
+            <div cdkDropList (cdkDropListDropped)="drop($event)">
                 @for (row of formatForm.controls.rows.controls; track row; let rowIndex = $index) {
-                <app-format-row [row]="row" (remove)="removeRow(rowIndex)"></app-format-row>
+                <app-format-row [row]="row" (remove)="removeRow($index)" cdkDrag></app-format-row>
                 }
-            </section>
-        </div>
-    </mat-dialog-content>
-    <mat-dialog-actions>
-        <button mat-stroked-button mat-dialog-close>Cancelar</button>
-        <button mat-flat-button cdkFocusInitial type="submit">Guardar</button>
-    </mat-dialog-actions>
+            </div>
+        </section>
+    </div>
+    <section class="flex items-end space-x-1">
+        <button mat-flat-button type="button" matStepperNext>Siguiente</button>
+    </section>
 </form>

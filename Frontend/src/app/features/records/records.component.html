@@ -1,8 +1,8 @@
 <main class="container mx-auto py-5">
     <div class="flex items-center justify-between">
         <div class="flex items-center space-x-3">
-            <h6 class="mb-0">Registros de {{format.name | titlecase}}</h6>
-            <button mat-flat-button (click)="open()"><mat-icon>add</mat-icon>Añadir Registro</button>
+            <h6 class="mb-0">Registros de {{format?.name | titlecase}}</h6>
+            <button mat-flat-button><mat-icon>add</mat-icon>Añadir Registro</button>
         </div>
     </div>
     <mat-card class="my-2">
@@ -67,7 +67,7 @@
 
     <mat-menu #actions="matMenu">
         <ng-template matMenuContent let-element="data">
-            <button mat-menu-item (click)="open(element)">
+            <button mat-menu-item>
                 <mat-icon>edit</mat-icon>
                 <span>Actualizar</span>
             </button>

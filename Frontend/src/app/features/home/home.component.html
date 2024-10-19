@@ -1,26 +1,56 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav mode="side" opened [fixedInViewport]="true"
     class="w-72 border-r-1 border-r-slate-400 rounded-tr-none rounded-br-none">
-    <div class="flex justify-center w-full py-5">
-      <a mat-button routerLink="/">
-        <h3 class="mb-0">Habilident</h3>
-      </a>
-    </div>
-    <mat-divider class="mx-5"></mat-divider>
     <mat-nav-list>
-      <app-formats></app-formats>
+      <div class="flex justify-center">
+        <h3 class="text-sky-600 mb-0">Habilident</h3>
+      </div>
+
+      <div mat-subheader class="font-semibold flex items-center justify-between">
+        Formatos
+        <button mat-icon-button matTooltip="Añadir" matTooltipPosition="before" (click)="goTo('formats')">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      @for (format of formats; track format) {
+      <mat-list-item>
+        <mat-icon matListItemIcon>folder</mat-icon>
+        <div class="flex items-center justify-between">
+          <div class="truncate w-full" (click)="goTo('records', format._id)">
+            {{format.name | titlecase}}
+          </div>
+          <button mat-icon-button [matMenuTriggerFor]="sidenav" [matMenuTriggerData]="{data: format}">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+      }
 
       <div mat-subheader class="font-semibold">Administración</div>
       @for (item of administration; track item.id) {
-      <mat-list-item [routerLink]="item.path" routerLinkActive="active">
+      <mat-list-item [routerLink]="item.path">
         <mat-icon matListItemIcon>{{item.icon}}</mat-icon>
         <div matListItemTitle>{{item.title}}</div>
       </mat-list-item>
       }
     </mat-nav-list>
+
+    <mat-menu #sidenav="matMenu">
+      <ng-template matMenuContent let-format="data">
+        <button mat-menu-item (click)="goTo('formats', format._id)">
+          <mat-icon>edit</mat-icon>
+          <span>Actualizar</span>
+        </button>
+        <button mat-menu-item (click)="remove(format._id)">
+          <mat-icon class="text-red-600">delete</mat-icon>
+          <span class="text-red-600">Eliminar</span>
+        </button>
+      </ng-template>
+    </mat-menu>
   </mat-sidenav>
   <mat-sidenav-content>
     <app-navbar></app-navbar>
+    <mat-divider></mat-divider>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

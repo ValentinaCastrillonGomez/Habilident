@@ -1,12 +1,10 @@
-import { AfterViewInit, Component, Input, signal, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { AfterViewInit, Component, signal, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Format } from '@tipos/format';
 import { Record } from '@tipos/record';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject, tap } from 'rxjs';
 import { RecordsService } from './services/records.service';
-import { RecordComponent } from './components/record/record.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -16,8 +14,8 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
     templateUrl: './records.component.html',
     styleUrl: './records.component.scss'
 })
-export class RecordsComponent implements AfterViewInit {
-    @Input() format!: Format;
+export default class RecordsComponent implements AfterViewInit {
+    format: Format | null = null;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     dataSource: Record[] = [];
     loading = signal<boolean>(true);
@@ -31,7 +29,7 @@ export class RecordsComponent implements AfterViewInit {
     private searchTerms = new BehaviorSubject<any>({});
     private actions = new Subject<void>();
 
-    constructor(private recordsService: RecordsService, private dialog: MatDialog) { }
+    constructor(private recordsService: RecordsService) { }
 
     ngAfterViewInit() {
         merge(
@@ -41,7 +39,7 @@ export class RecordsComponent implements AfterViewInit {
             .pipe(tap(() => this.loading.set(true)))
             .subscribe(async () => {
                 const { data, totalRecords } = await this.recordsService.getAll(
-                    this.paginator.pageIndex, this.paginator.pageSize, this.format._id
+                    this.paginator.pageIndex, this.paginator.pageSize, this.format?._id
                 );
                 this.dataSource = data;
                 this.totalRecords = totalRecords;
@@ -56,14 +54,6 @@ export class RecordsComponent implements AfterViewInit {
     async remove(id: string) {
         const result = await this.recordsService.delete(id);
         if (result) this.actions.next();
-    }
-
-    open(record?: Record) {
-        const dialogRef = this.dialog.open(RecordComponent, { data: { record, format: this.format } });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) this.actions.next();
-        });
     }
 
 }

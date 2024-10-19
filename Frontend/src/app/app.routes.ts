@@ -31,11 +31,11 @@ export const routes: Routes = [
       },
       {
         path: `${paths.FORMATS}/:id`,
-        loadComponent: () => import('@features/formats/components/format/format.component'),
+        loadComponent: () => import('@features/formats/formats.component'),
       },
       {
-        path: paths.RECORDS,
-        loadComponent: () => import('@features/roles/roles.component'),
+        path: `${paths.RECORDS}/:id`,
+        loadComponent: () => import('@features/records/records.component'),
       }
     ]
   },

@@ -2,11 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { RecordsService } from '../../services/records.service';
 import { Record } from '@tipos/record';
 import { Format, RowTypes } from '@tipos/format';
-import { RecordTextComponent } from '../record-text/record-text.component';
-import { RecordTableComponent } from '../record-table/record-table.component';
+import { RecordsService } from '@features/records/services/records.service';
 import Swal from 'sweetalert2';
 
 type ValuesFormType = {
@@ -25,13 +23,11 @@ type ValuesFormType = {
     imports: [
         MaterialModule,
         ReactiveFormsModule,
-        RecordTextComponent,
-        RecordTableComponent,
     ],
     templateUrl: './record.component.html',
     styleUrl: './record.component.scss'
 })
-export class RecordComponent implements OnInit {
+export default class RecordComponent implements OnInit {
     recordForm: FormGroup<{
         format: FormControl<string>;
         values: FormArray<FormGroup<ValuesFormType>>;

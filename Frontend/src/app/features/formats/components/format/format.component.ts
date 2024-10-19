@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormatsService } from '../../services/formats.service';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Format, ROW_TYPES, RowTypes } from '@tipos/format';
-import { FormatRowComponent } from "../format-row/format-row.component";
+import { FormatsService } from '@features/formats/services/formats.service';
+import { FormatRowComponent } from '../format-row/format-row.component';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import Swal from 'sweetalert2';
 
 export type RowsFormType = {
@@ -25,28 +25,23 @@ type FieldsFormType = {
     ReactiveFormsModule,
     MaterialModule,
     FormatRowComponent,
+    CdkDropList, CdkDrag
   ],
   providers: [FormatsService],
   templateUrl: './format.component.html',
   styleUrl: './format.component.scss'
 })
-export default class FormatComponent implements OnInit {
-  formatForm: FormGroup<{
+export class FormatComponent implements OnInit {
+  @Input() formatForm!: FormGroup<{
     name: FormControl<string>;
     rows: FormArray<FormGroup<RowsFormType>>;
   }>;
+  @Input() format: Format | null = null;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public format: Format | null,
-    private dialog: MatDialogRef<FormatComponent>,
     private formBuilder: NonNullableFormBuilder,
     private formatsService: FormatsService,
-  ) {
-    this.formatForm = this.formBuilder.group({
-      name: this.formBuilder.control(format?.name || '', [Validators.required]),
-      rows: this.formBuilder.array<FormGroup<RowsFormType>>([]),
-    });
-  }
+  ) { }
 
   ngOnInit(): void {
     if (this.format) {
@@ -62,6 +57,10 @@ export default class FormatComponent implements OnInit {
     } else {
       this.addRow(ROW_TYPES.SINGLE);
     }
+  }
+
+  drop(event: CdkDragDrop<any[]>) {
+    moveItemInArray(this.formatForm.controls.rows.controls, event.previousIndex, event.currentIndex);
   }
 
   addRow(type: RowTypes, fields = this.formBuilder.array<FormGroup<FieldsFormType>>([])): void {
@@ -83,7 +82,6 @@ export default class FormatComponent implements OnInit {
 
     this.formatsService.save(format, this.format?._id)
       .then(() => {
-        this.dialog.close(true);
         Swal.fire({
           title: "Registro guardado",
           icon: "success",

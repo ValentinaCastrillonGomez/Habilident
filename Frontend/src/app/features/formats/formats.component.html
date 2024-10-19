@@ -1,31 +1,14 @@
-<div mat-subheader class="font-semibold flex items-center justify-between">Formatos
-    <button mat-icon-button matTooltip="Añadir" matTooltipPosition="before" (click)="goto()">
-        <mat-icon>add</mat-icon>
-    </button>
-</div>
-@for (format of formats; track format) {
-<mat-list-item>
-    <mat-icon matListItemIcon>folder</mat-icon>
-    <div class="flex items-center justify-between">
-        <div class="truncate w-full" (click)="goto(format._id)">
-            {{format.name | titlecase}}
-        </div>
-        <button mat-icon-button [matMenuTriggerFor]="sidenav" [matMenuTriggerData]="{data: format}">
-            <mat-icon>more_vert</mat-icon>
-        </button>
-    </div>
-</mat-list-item>
-}
+<mat-stepper [linear]="true" #stepper>
+    <mat-step [stepControl]="formatForm">
+        <ng-template matStepLabel>Formato</ng-template>
+        <ng-template matStepContent>
+            <app-format [formatForm]="formatForm" [format]="format"></app-format>
+        </ng-template>
+    </mat-step>
+    <mat-step label="Reporte">
 
-<mat-menu #sidenav="matMenu">
-    <ng-template matMenuContent let-format="data">
-        <button mat-menu-item>
-            <mat-icon>edit</mat-icon>
-            <span>Actualizar</span>
-        </button>
-        <button mat-menu-item (click)="remove(format._id)">
-            <mat-icon class="text-red-600">delete</mat-icon>
-            <span class="text-red-600">Eliminar</span>
-        </button>
-    </ng-template>
-</mat-menu>
+    </mat-step>
+    <mat-step label="Alarma">
+
+    </mat-step>
+</mat-stepper>

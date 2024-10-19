@@ -1,4 +1,7 @@
 <div class="flex gap-x-2 pt-5" [ngClass]="{'bg-black/10' : row.controls.type.value === 'table'}">
+    <button mat-icon-button type="button" matTooltip="Arrastrar" matTooltipPosition="before" class="self-center mb-4">
+        <mat-icon>drag_indicator</mat-icon>
+    </button>
     @for (input of row.controls.fields.controls; track input; let columnIndex = $index) {
     @if(input.controls.type.value=='text'){
     <mat-form-field appearance="outline" class="w-full" [formGroup]="input">
