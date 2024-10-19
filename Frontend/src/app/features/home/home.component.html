@@ -1,0 +1,26 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav mode="side" opened [fixedInViewport]="true"
+    class="w-72 border-r-1 border-r-slate-400 rounded-tr-none rounded-br-none">
+    <div class="flex justify-center w-full py-5">
+      <a mat-button routerLink="/">
+        <h3 class="mb-0">Habilident</h3>
+      </a>
+    </div>
+    <mat-divider class="mx-5"></mat-divider>
+    <mat-nav-list>
+      <app-formats></app-formats>
+
+      <div mat-subheader class="font-semibold">Administración</div>
+      @for (item of administration; track item.id) {
+      <mat-list-item [routerLink]="item.path" routerLinkActive="active">
+        <mat-icon matListItemIcon>{{item.icon}}</mat-icon>
+        <div matListItemTitle>{{item.title}}</div>
+      </mat-list-item>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <app-navbar></app-navbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
