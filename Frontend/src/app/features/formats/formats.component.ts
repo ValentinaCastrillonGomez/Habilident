@@ -10,7 +10,8 @@ import { Format } from '@tipos/format';
   selector: 'app-formats',
   standalone: true,
   imports: [
-    MaterialModule, FormatComponent
+    MaterialModule,
+    FormatComponent
   ],
   providers: [FormatsService],
   templateUrl: './formats.component.html',

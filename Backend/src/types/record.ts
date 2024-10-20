@@ -1,6 +1,6 @@
 import { FormatField, FormatRow } from "./format";
 
-export type FieldValue = FormatField & {
+export type FieldValue = {
     value: string;
 };
 
@@ -11,5 +11,5 @@ export type Record = {
     userCreate: any;
     dateLastUpdate: string;
     userLastUpdate: any;
-    values: FormatRow<FieldValue[][]>[];
+    rows: FormatRow[];
 };
