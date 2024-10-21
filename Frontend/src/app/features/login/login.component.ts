@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '@core/auth/auth.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
@@ -19,6 +19,7 @@ export default class AuthComponent {
     email: FormControl<string>;
     password: FormControl<string>;
   }>;
+  hide = signal(true);
 
   constructor(
     private formBuilder: NonNullableFormBuilder,
@@ -28,6 +29,11 @@ export default class AuthComponent {
       email: this.formBuilder.control('', [Validators.required, Validators.email]),
       password: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
     });
+  }
+
+  clickEvent(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
   }
 
   login() {

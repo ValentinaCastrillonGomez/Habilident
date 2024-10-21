@@ -1,4 +1,4 @@
-import { FormatField, FormatRow } from "./format";
+import { FormatRow } from "./format";
 
 export type FieldValue = {
     value: string;

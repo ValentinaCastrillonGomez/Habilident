@@ -18,7 +18,10 @@
 
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Contraseña</mat-label>
-          <input matInput type="password" id="password" formControlName="password" required>
+          <input matInput [type]="hide() ? 'password' : 'text'" id="password" formControlName="password" required>
+          <button mat-icon-button matSuffix (click)="clickEvent($event)">
+            <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
           @if (loginForm.controls.password.invalid) {
           <mat-error>Introduce una contraseña válida</mat-error>
           }

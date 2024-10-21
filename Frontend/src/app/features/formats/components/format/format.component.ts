@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { Format, ROW_TYPES, RowTypes } from '@tipos/format';
+import { Format, InputTypes, ROW_TYPES, RowTypes } from '@tipos/format';
 import { FormatsService } from '@features/formats/services/formats.service';
 import { FormatRowComponent } from '../format-row/format-row.component';
-import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import Swal from 'sweetalert2';
 
 export type RowsFormType = {
@@ -14,7 +14,7 @@ export type RowsFormType = {
 
 type FieldsFormType = {
   name: FormControl<string>;
-  type: FormControl<string>;
+  type: FormControl<InputTypes>;
   required: FormControl<boolean>;
 };
 
@@ -25,7 +25,7 @@ type FieldsFormType = {
     ReactiveFormsModule,
     MaterialModule,
     FormatRowComponent,
-    CdkDropList, CdkDrag
+    CdkDropList,
   ],
   providers: [FormatsService],
   templateUrl: './format.component.html',
@@ -59,7 +59,7 @@ export class FormatComponent implements OnInit {
     }
   }
 
-  drop(event: CdkDragDrop<any[]>) {
+  drop(event: CdkDragDrop<FormArray>) {
     moveItemInArray(this.formatForm.controls.rows.controls, event.previousIndex, event.currentIndex);
   }
 

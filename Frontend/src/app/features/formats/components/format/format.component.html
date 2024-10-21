@@ -9,23 +9,25 @@
         </mat-form-field>
         <mat-divider></mat-divider>
         <section formArrayName="rows">
-            <div class="flex items-center gap-x-2 mt-3">
+            <div class="flex items-center justify-between mt-3">
                 <span class="font-bold">Campos</span>
-                <button mat-button type="button" (click)="addRow('single')">
-                    <mat-icon>add</mat-icon>Añadir fila de campos
-                </button>
-                <button mat-button type="button" (click)="addRow('table')">
-                    <mat-icon>add</mat-icon>Añadir tabla
-                </button>
+                <div>
+                    <button mat-button type="button" (click)="addRow('single')">
+                        <mat-icon>add</mat-icon>Añadir fila de campos
+                    </button>
+                    <button mat-button type="button" (click)="addRow('table')">
+                        <mat-icon>add</mat-icon>Añadir tabla
+                    </button>
+                </div>
             </div>
             <div cdkDropList (cdkDropListDropped)="drop($event)">
                 @for (row of formatForm.controls.rows.controls; track row; let rowIndex = $index) {
-                <app-format-row [row]="row" (remove)="removeRow($index)" cdkDrag></app-format-row>
+                <app-format-row [row]="row" (remove)="removeRow($index)"></app-format-row>
                 }
             </div>
         </section>
     </div>
-    <section class="flex items-end space-x-1">
-        <button mat-flat-button type="button" matStepperNext>Siguiente</button>
+    <section class="flex justify-end space-x-1">
+        <button mat-flat-button type="submit" matStepperNext>Siguiente</button>
     </section>
 </form>

@@ -2,17 +2,27 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { RowsFormType } from '../format/format.component';
+import { INPUT_TYPES, InputTypes, ROW_TYPES } from '@tipos/format';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-format-row',
   standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule],
+  imports: [
+    MaterialModule,
+    ReactiveFormsModule,
+    CdkDrag, CdkDragHandle
+  ],
   templateUrl: './format-row.component.html',
   styleUrl: './format-row.component.scss'
 })
 export class FormatRowComponent implements OnInit {
   @Input() row!: FormGroup<RowsFormType>;
   @Output() remove = new EventEmitter();
+
+  get isTable() {
+    return this.row.controls.type.value === ROW_TYPES.TABLE;
+  }
 
   constructor(private formBuilder: NonNullableFormBuilder) { }
 
@@ -23,7 +33,7 @@ export class FormatRowComponent implements OnInit {
   addColumn(): void {
     this.row.controls.fields.push(this.formBuilder.group({
       name: this.formBuilder.control('', Validators.required),
-      type: this.formBuilder.control('text'),
+      type: this.formBuilder.control<InputTypes>(INPUT_TYPES.TEXT),
       required: this.formBuilder.control(true)
     }));
   }

@@ -18,7 +18,7 @@ export type FormatField = {
     name: string;
     type: InputTypes;
     required: boolean;
-    value: string;
+    value?: string;
     options?: any[];
     position?: {
         x: number;
@@ -29,8 +29,8 @@ export type FormatField = {
 
 export type FormatRow = {
     type: RowTypes;
-    fields: FormatField;
-    values: any[][]
+    fields: FormatField[];
+    values?: any[][]
     position?: {
         x: number;
         y: number;

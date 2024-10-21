@@ -1,5 +1,7 @@
-<div class="flex gap-x-2 pt-5" [ngClass]="{'bg-black/10' : row.controls.type.value === 'table'}">
-    <button mat-icon-button type="button" matTooltip="Arrastrar" matTooltipPosition="before" class="self-center mb-4">
+<div class="flex gap-x-2 pt-5 overflow-x-hidden" [ngClass]="{'bg-black/10' : row.controls.type.value === 'table'}"
+    cdkDrag>
+    <button mat-icon-button type="button" matTooltip="Arrastrar" matTooltipPosition="before" class="self-center mb-4"
+        cdkDragHandle>
         <mat-icon>drag_indicator</mat-icon>
     </button>
     @for (input of row.controls.fields.controls; track input; let columnIndex = $index) {
@@ -8,8 +10,8 @@
         <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?" matTooltipPosition="right">
         </mat-checkbox>
         <input matInput type="text" id="name" formControlName="name" required>
-        <button matSuffix mat-icon-button type="button" matTooltip="Eliminar Campo" matTooltipPosition="left"
-            (click)="removeColumn(columnIndex)">
+        <button matSuffix mat-icon-button type="button" matTooltip="Eliminar {{isTable ? 'columna' : 'campo'}}"
+            matTooltipPosition="left" (click)="removeColumn(columnIndex)">
             <mat-icon>close</mat-icon>
         </button>
         @if (input.controls.name.invalid) {
@@ -25,7 +27,7 @@
         <ng-template matMenuContent let-rowIndex="data">
             <button mat-menu-item (click)="addColumn()">
                 <mat-icon>add</mat-icon>
-                <span>Añadir campo</span>
+                <span>Añadir {{isTable ? 'columna' : 'campo'}}</span>
             </button>
             <button mat-menu-item (click)="removeRow()">
                 <mat-icon class="text-red-600">delete</mat-icon>
