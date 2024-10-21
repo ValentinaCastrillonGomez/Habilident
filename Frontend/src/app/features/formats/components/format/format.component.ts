@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, effect, inject, input } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Format, InputTypes, ROW_TYPES, RowTypes } from '@tipos/format';
@@ -27,25 +27,32 @@ type FieldsFormType = {
     FormatRowComponent,
     CdkDropList,
   ],
-  providers: [FormatsService],
   templateUrl: './format.component.html',
   styleUrl: './format.component.scss'
 })
-export class FormatComponent implements OnInit {
-  @Input() formatForm!: FormGroup<{
+export class FormatComponent {
+  private formBuilder = inject(NonNullableFormBuilder);
+  private formatsService = inject(FormatsService);
+
+  formatForm = input.required<FormGroup<{
     name: FormControl<string>;
     rows: FormArray<FormGroup<RowsFormType>>;
-  }>;
-  @Input() format: Format | null = null;
+  }>>();
+  format = input<Format>();
 
-  constructor(
-    private formBuilder: NonNullableFormBuilder,
-    private formatsService: FormatsService,
-  ) { }
+  constructor() {
+    effect(() => {
+      console.log(this.format(), this.formatForm());
+    });
+  }
 
-  ngOnInit(): void {
-    if (this.format) {
-      this.format.rows.forEach((row) => {
+  changes(changes: any): void {
+    console.log(changes, this.format);
+
+    if (this.format()) {
+      this.formatForm().controls.name.setValue(this.format.name);
+
+      this.format()!.rows.forEach((row) => {
         this.addRow(row.type, this.formBuilder.array<FormGroup<FieldsFormType>>(row.fields.map(field =>
           this.formBuilder.group<FieldsFormType>({
             name: this.formBuilder.control(field.name, Validators.required),
@@ -59,29 +66,30 @@ export class FormatComponent implements OnInit {
     }
   }
 
-  drop(event: CdkDragDrop<FormArray>) {
-    moveItemInArray(this.formatForm.controls.rows.controls, event.previousIndex, event.currentIndex);
-  }
-
   addRow(type: RowTypes, fields = this.formBuilder.array<FormGroup<FieldsFormType>>([])): void {
-    this.formatForm.controls.rows.push(this.formBuilder.group<RowsFormType>({
+    this.formatForm().controls.rows.push(this.formBuilder.group<RowsFormType>({
       type: this.formBuilder.control(type), fields
     }));
   }
 
   removeRow(rowIndex: number): void {
-    if (this.formatForm.controls.rows.length > 1) this.formatForm.controls.rows.removeAt(rowIndex);
+    if (this.formatForm().controls.rows.length > 1) this.formatForm().controls.rows.removeAt(rowIndex);
+  }
+
+  drop(event: CdkDragDrop<FormArray>) {
+    moveItemInArray(this.formatForm().controls.rows.controls, event.previousIndex, event.currentIndex);
   }
 
   async save() {
-    this.formatForm.markAllAsTouched();
+    this.formatForm().markAllAsTouched();
 
-    if (this.formatForm.invalid) return;
+    if (this.formatForm().invalid) return;
 
-    const format = this.formatForm.getRawValue();
+    const format = this.formatForm().getRawValue();
 
-    this.formatsService.save(format, this.format?._id)
+    this.formatsService.save(format, this.format()?._id)
       .then(() => {
+        this.formatsService.loadFormats();
         Swal.fire({
           title: "Registro guardado",
           icon: "success",

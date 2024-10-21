@@ -1,16 +1,30 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { GenericService } from '@shared/classes/generic.service';
 import { Format } from '@tipos/format';
-import { ENV, Environment } from 'src/app/app.config';
+import { ReplaySubject } from 'rxjs';
+import { ENV } from 'src/app/app.config';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class FormatsService extends GenericService<Format> {
+  protected http = inject(HttpClient);
+  protected api = inject(ENV).API_FORMATS;
+  private _formats = new ReplaySubject<Format[]>(1);
 
-  constructor(
-    private http: HttpClient,
-    @Inject(ENV) { API_FORMATS }: Environment
-  ) {
-    super(http, API_FORMATS)
+  get formats() {
+    return this._formats.asObservable();
   }
+
+  constructor() {
+    super();
+    this.loadFormats();
+  }
+
+  async loadFormats() {
+    const { data } = await this.getAll();
+    this._formats.next(data);
+  }
+
 }

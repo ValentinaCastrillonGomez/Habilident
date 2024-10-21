@@ -19,8 +19,8 @@ export class FormatsController {
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.formatsService.findOne({ id });
+    findOne(@Param('id') _id: string) {
+        return this.formatsService.findOne({ _id });
     }
 
     @Patch(':id')

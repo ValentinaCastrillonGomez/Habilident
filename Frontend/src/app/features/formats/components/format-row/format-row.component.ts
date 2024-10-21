@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { RowsFormType } from '../format/format.component';
@@ -17,21 +17,21 @@ import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
   styleUrl: './format-row.component.scss'
 })
 export class FormatRowComponent implements OnInit {
-  @Input() row!: FormGroup<RowsFormType>;
-  @Output() remove = new EventEmitter();
+  private formBuilder = inject(NonNullableFormBuilder);
+
+  row = input.required<FormGroup<RowsFormType>>();
+  remove = output<void>();
 
   get isTable() {
-    return this.row.controls.type.value === ROW_TYPES.TABLE;
+    return this.row().controls.type.value === ROW_TYPES.TABLE;
   }
 
-  constructor(private formBuilder: NonNullableFormBuilder) { }
-
   ngOnInit(): void {
-    if (!this.row.controls.fields.length) this.addColumn();
+    if (!this.row().controls.fields.length) this.addColumn();
   }
 
   addColumn(): void {
-    this.row.controls.fields.push(this.formBuilder.group({
+    this.row().controls.fields.push(this.formBuilder.group({
       name: this.formBuilder.control('', Validators.required),
       type: this.formBuilder.control<InputTypes>(INPUT_TYPES.TEXT),
       required: this.formBuilder.control(true)
@@ -39,8 +39,8 @@ export class FormatRowComponent implements OnInit {
   }
 
   removeColumn(columnIndex: number): void {
-    if (this.row.controls.fields.length > 1) {
-      this.row.controls.fields.removeAt(columnIndex);
+    if (this.row().controls.fields.length > 1) {
+      this.row().controls.fields.removeAt(columnIndex);
     } else {
       this.removeRow();
     }

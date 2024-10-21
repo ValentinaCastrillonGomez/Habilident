@@ -1,9 +1,7 @@
-<mat-stepper [linear]="true" #stepper>
+<mat-stepper linear>
     <mat-step [stepControl]="formatForm">
         <ng-template matStepLabel>Formato</ng-template>
-        <ng-template matStepContent>
-            <app-format [formatForm]="formatForm" [format]="format"></app-format>
-        </ng-template>
+        <app-format [formatForm]="formatForm" [format]="format()"></app-format>
     </mat-step>
     <mat-step label="Reporte">
 

@@ -11,8 +11,9 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
     selector: 'app-records',
     standalone: true,
     imports: [MaterialModule, ReactiveFormsModule],
+    providers: [RecordsService],
     templateUrl: './records.component.html',
-    styleUrl: './records.component.scss'
+    styleUrl: './records.component.scss',
 })
 export default class RecordsComponent implements AfterViewInit {
     format: Format | null = null;

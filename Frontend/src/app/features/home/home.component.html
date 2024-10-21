@@ -8,11 +8,11 @@
 
       <div mat-subheader class="font-semibold flex items-center justify-between">
         Formatos
-        <button mat-icon-button matTooltip="Añadir" matTooltipPosition="before" (click)="goTo('formats')">
+        <button mat-icon-button matTooltip="Añadir" matTooltipPosition="before" (click)="goTo('formats', 'new')">
           <mat-icon>add</mat-icon>
         </button>
       </div>
-      @for (format of formats; track format) {
+      @for (format of formatsService.formats | async; track format._id) {
       <mat-list-item>
         <mat-icon matListItemIcon>folder</mat-icon>
         <div class="flex items-center justify-between">

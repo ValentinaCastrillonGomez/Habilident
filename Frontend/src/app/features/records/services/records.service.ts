@@ -1,19 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { GenericService } from '@shared/classes/generic.service';
 import { Record } from '@tipos/record';
-import { ENV, Environment } from 'src/app/app.config';
+import { ENV } from 'src/app/app.config';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class RecordsService extends GenericService<Record> {
-
-  constructor(
-    private http: HttpClient,
-    @Inject(ENV) { API_RECORDS }: Environment
-  ) {
-    super(http, API_RECORDS)
-  }
-
+  protected http = inject(HttpClient);
+  protected api = inject(ENV).API_RECORDS;
 }

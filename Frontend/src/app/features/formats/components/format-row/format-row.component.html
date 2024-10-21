@@ -1,10 +1,9 @@
-<div class="flex gap-x-2 pt-5 overflow-x-hidden" [ngClass]="{'bg-black/10' : row.controls.type.value === 'table'}"
-    cdkDrag>
+<div class="flex gap-x-2 pt-5 overflow-x-hidden" [ngClass]="{'bg-black/10' : isTable}" cdkDrag>
     <button mat-icon-button type="button" matTooltip="Arrastrar" matTooltipPosition="before" class="self-center mb-4"
         cdkDragHandle>
         <mat-icon>drag_indicator</mat-icon>
     </button>
-    @for (input of row.controls.fields.controls; track input; let columnIndex = $index) {
+    @for (input of row().controls.fields.controls; track input; let columnIndex = $index) {
     @if(input.controls.type.value=='text'){
     <mat-form-field appearance="outline" class="w-full" [formGroup]="input">
         <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?" matTooltipPosition="right">
@@ -31,7 +30,7 @@
             </button>
             <button mat-menu-item (click)="removeRow()">
                 <mat-icon class="text-red-600">delete</mat-icon>
-                <span class="text-red-600">Eliminar fila</span>
+                <span class="text-red-600">Eliminar {{isTable ? 'tabla' : 'fila'}}</span>
             </button>
         </ng-template>
     </mat-menu>
