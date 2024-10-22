@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from '@core/auth/auth.guard';
+import { authGuard } from '@core/guards/auth.guard';
 
 export const paths = {
   HOME: '',
@@ -22,23 +22,23 @@ export const routes: Routes = [
     loadComponent: () => import('@features/home/home.component'),
     children: [
       {
-        path: paths.USERS,
+        path: paths.USERS, data: { title: 'Listado de usuarios' },
         loadComponent: () => import('@features/users/users.component'),
       },
       {
-        path: paths.ROLES,
+        path: paths.ROLES, data: { title: 'Listado de roles' },
         loadComponent: () => import('@features/roles/roles.component'),
       },
       {
-        path: paths.PARAMETERS,
+        path: paths.PARAMETERS, data: { title: 'Parametros del sistema' },
         loadComponent: () => import('@features/parameters/parameters.component'),
       },
       {
-        path: `${paths.FORMATS}/:id`,
+        path: `${paths.FORMATS}/:id`, data: { title: 'Configuración de formato' },
         loadComponent: () => import('@features/formats/formats.component'),
       },
       {
-        path: `${paths.RECORDS}/:id`,
+        path: `${paths.RECORDS}/:id`, data: { title: 'Registros del formato' },
         loadComponent: () => import('@features/records/records.component'),
       }
     ]

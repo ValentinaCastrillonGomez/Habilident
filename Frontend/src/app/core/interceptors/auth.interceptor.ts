@@ -1,10 +1,10 @@
-import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
-import { AuthService } from './auth.service';
+import { AuthService } from '@core/services/auth.service';
+import { catchError, throwError } from 'rxjs';
 import { ENV } from 'src/app/app.config';
 
-export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const baseUrl = inject(ENV).BASE_URL;
   const authService = inject(AuthService);
   const token = authService.getToken();

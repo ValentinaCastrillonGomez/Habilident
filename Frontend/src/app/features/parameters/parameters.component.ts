@@ -1,9 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ParametersService } from './services/parameters.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { merge, Subject, tap } from 'rxjs';
-import { MatPaginator } from '@angular/material/paginator';
+import { FormArray, FormControl, NonNullableFormBuilder } from '@angular/forms';
 import { List } from '@tipos/parameter';
 import { MatDialog } from '@angular/material/dialog';
 import { ListComponent } from './components/list/list.component';
@@ -25,43 +23,32 @@ export type ListFormType = {
   styleUrl: './parameters.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class ParametersComponent {
+export default class ParametersComponent implements OnInit {
   private parametersService = inject(ParametersService);
+  private formBuilder = inject(NonNullableFormBuilder);
   private dialog = inject(MatDialog);
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  dataSource: List[] = [];
-  loading = signal<boolean>(true);
-  totalRecords = 0;
-  pageSize = 10;
+  parameterForm = this.formBuilder.group({
+    office: this.formBuilder.control('01'),
+    list: this.formBuilder.array([]),
+  });
   displayedColumns: string[] = ['name', 'values', 'actions'];
 
-  private actions = new Subject<void>();
+  async ngOnInit() {
+    const { data } = await this.parametersService.getAll(0, 0, '01');
 
-  ngAfterViewInit() {
-    merge(
-      this.actions,
-      this.paginator.page)
-      .pipe(tap(() => this.loading.set(true)))
-      .subscribe(async () => {
-        const { data, totalRecords } = await this.parametersService.getAll(this.paginator.pageIndex, this.paginator.pageSize, '01');
-        this.dataSource = data[0].lists;
-        this.totalRecords = totalRecords;
-        this.loading.set(false);
-      });
-    this.actions.next();
   }
 
   async remove(id: string) {
     const result = await this.parametersService.delete(id);
-    if (result) this.actions.next();
+    // if (result) this.actions.next();
   }
 
   open(data?: List) {
     const dialogRef = this.dialog.open(ListComponent, { data });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) this.actions.next();
+      // if (result) this.actions.next();
     });
   }
 

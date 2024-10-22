@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, View
 import { RolesService } from './services/roles.service';
 import { Role } from '@tipos/role';
 import { MatPaginator } from '@angular/material/paginator';
-import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject, tap } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { RoleComponent } from './components/role/role.component';
 import { MaterialModule } from '@shared/modules/material/material.module';
@@ -12,7 +12,6 @@ import { MaterialModule } from '@shared/modules/material/material.module';
   standalone: true,
   imports: [
     MaterialModule,
-    RoleComponent,
   ],
   providers: [RolesService],
   templateUrl: './roles.component.html',
@@ -24,8 +23,7 @@ export default class RolesComponent implements AfterViewInit {
   private dialog = inject(MatDialog);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  dataSource: Role[] = [];
-  loading = signal<boolean>(true);
+  dataSource = signal<Role[]>([]);
   totalRecords = 0;
   pageSize = 10;
   displayedColumns: string[] = ['name', 'permissions', 'actions'];
@@ -38,12 +36,10 @@ export default class RolesComponent implements AfterViewInit {
       this.searchTerms.pipe(debounceTime(300), distinctUntilChanged()),
       this.actions,
       this.paginator.page)
-      .pipe(tap(() => this.loading.set(true)))
       .subscribe(async () => {
         const { data, totalRecords } = await this.rolesService.getAll(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
-        this.dataSource = data;
+        this.dataSource.set(data);
         this.totalRecords = totalRecords;
-        this.loading.set(false);
       });
   }
 

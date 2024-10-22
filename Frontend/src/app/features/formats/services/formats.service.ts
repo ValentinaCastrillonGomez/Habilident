@@ -11,11 +11,8 @@ import { ENV } from 'src/app/app.config';
 export class FormatsService extends GenericService<Format> {
   protected http = inject(HttpClient);
   protected api = inject(ENV).API_FORMATS;
-  private _formats = new ReplaySubject<Format[]>(1);
-
-  get formats() {
-    return this._formats.asObservable();
-  }
+  private formats = new ReplaySubject<Format[]>(1);
+  formats$ = this.formats.asObservable();
 
   constructor() {
     super();
@@ -24,7 +21,7 @@ export class FormatsService extends GenericService<Format> {
 
   async loadFormats() {
     const { data } = await this.getAll();
-    this._formats.next(data);
+    this.formats.next(data);
   }
 
 }

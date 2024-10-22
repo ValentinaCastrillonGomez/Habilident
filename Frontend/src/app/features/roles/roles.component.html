@@ -1,58 +1,53 @@
-@if (loading()) {
-<mat-progress-bar mode="query"></mat-progress-bar>
-}
-<main class="m-5">
-    <div class="flex items-center justify-between">
-        <mat-form-field appearance="outline" subscriptSizing="dynamic">
-            <mat-label>Filtrar roles</mat-label>
-            <input matInput #filter id="filterRoles" (input)="search(filter.value)">
-            <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
+<div class="flex items-center justify-between">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Filtrar roles</mat-label>
+        <input matInput #filter id="filterRoles" (input)="search(filter.value)">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
 
-        <button mat-flat-button (click)="open()"><mat-icon>add</mat-icon>Añadir Rol</button>
+    <button mat-flat-button (click)="open()"><mat-icon>add</mat-icon>Añadir Rol</button>
+</div>
+<mat-table [dataSource]="dataSource()">
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="permissions">
+        <mat-header-cell *matHeaderCellDef> Permisos </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <div class="truncate">{{element.permissions}}</div>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
+        <mat-cell *matCellDef="let element" class="justify-end">
+            <button mat-icon-button [matMenuTriggerFor]="actions" [matMenuTriggerData]="{data: element}">
+                <mat-icon>more_horiz</mat-icon>
+            </button>
+        </mat-cell>
+    </ng-container>
+
+    <div *matNoDataRow class="text-center">
+        hay datos que coincidan con el filtro.
     </div>
-    <mat-table [dataSource]="dataSource">
-        <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-        </ng-container>
 
-        <ng-container matColumnDef="permissions">
-            <mat-header-cell *matHeaderCellDef> Permisos </mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <div class="truncate">{{element.permissions}}</div>
-            </mat-cell>
-        </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+<mat-divider></mat-divider>
+<mat-paginator [length]="totalRecords" [pageSize]="pageSize"></mat-paginator>
 
-        <ng-container matColumnDef="actions">
-            <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
-            <mat-cell *matCellDef="let element" class="justify-end">
-                <button mat-icon-button [matMenuTriggerFor]="actions" [matMenuTriggerData]="{data: element}">
-                    <mat-icon>more_horiz</mat-icon>
-                </button>
-            </mat-cell>
-        </ng-container>
-
-        <div *matNoDataRow class="text-center">
-            hay datos que coincidan con el filtro.
-        </div>
-
-        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-    <mat-divider></mat-divider>
-    <mat-paginator [length]="totalRecords" [pageSize]="pageSize"></mat-paginator>
-
-    <mat-menu #actions="matMenu">
-        <ng-template matMenuContent let-element="data">
-            <button mat-menu-item (click)="open(element)">
-                <mat-icon>edit</mat-icon>
-                <span>Actualizar</span>
-            </button>
-            <button mat-menu-item (click)="remove(element._id)">
-                <mat-icon class="text-red-600">delete</mat-icon>
-                <span class="text-red-600">Eliminar</span>
-            </button>
-        </ng-template>
-    </mat-menu>
-</main>
+<mat-menu #actions="matMenu">
+    <ng-template matMenuContent let-element="data">
+        <button mat-menu-item (click)="open(element)">
+            <mat-icon>edit</mat-icon>
+            <span>Actualizar</span>
+        </button>
+        <button mat-menu-item (click)="remove(element._id)">
+            <mat-icon class="text-red-600">delete</mat-icon>
+            <span class="text-red-600">Eliminar</span>
+        </button>
+    </ng-template>
+</mat-menu>

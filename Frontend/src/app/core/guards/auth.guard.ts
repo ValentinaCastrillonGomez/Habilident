@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { AuthService } from './auth.service';
+import { AuthService } from '../services/auth.service';
 import { Router, CanMatchFn } from '@angular/router';
 import { paths } from 'src/app/app.routes';
 

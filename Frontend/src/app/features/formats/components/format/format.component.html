@@ -1,33 +1,28 @@
-<form [formGroup]="formatForm()" (ngSubmit)="save()">
-    <div class="mt-2 mb-4">
-        <mat-form-field appearance="outline" class="w-full">
-            <mat-label>Nombre del formato</mat-label>
-            <input matInput type="text" id="name" formControlName="name" required>
-            @if (formatForm().controls.name.invalid) {
-            <mat-error>Introduce un nombre válido</mat-error>
+<div class="mt-2 mb-4" [formGroup]="formatForm">
+    <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Nombre del formato</mat-label>
+        <input matInput type="text" id="name" formControlName="name" required>
+        @if (formatForm.controls.name.invalid) {
+        <mat-error>Introduce un nombre válido</mat-error>
+        }
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <section formArrayName="rows">
+        <div class="flex items-center justify-between mt-3">
+            <span class="font-bold">Campos</span>
+            <div>
+                <button mat-button type="button" (click)="addRow('single')">
+                    <mat-icon>add</mat-icon>Añadir fila de campos
+                </button>
+                <button mat-button type="button" (click)="addRow('table')">
+                    <mat-icon>add</mat-icon>Añadir tabla
+                </button>
+            </div>
+        </div>
+        <div cdkDropList (cdkDropListDropped)="drop($event)">
+            @for (row of formatForm.controls.rows.controls; track row; let rowIndex = $index) {
+            <app-format-row [row]="row" (remove)="removeRow($index)"></app-format-row>
             }
-        </mat-form-field>
-        <mat-divider></mat-divider>
-        <section formArrayName="rows">
-            <div class="flex items-center justify-between mt-3">
-                <span class="font-bold">Campos</span>
-                <div>
-                    <button mat-button type="button" (click)="addRow('single')">
-                        <mat-icon>add</mat-icon>Añadir fila de campos
-                    </button>
-                    <button mat-button type="button" (click)="addRow('table')">
-                        <mat-icon>add</mat-icon>Añadir tabla
-                    </button>
-                </div>
-            </div>
-            <div cdkDropList (cdkDropListDropped)="drop($event)">
-                @for (row of formatForm().controls.rows.controls; track row; let rowIndex = $index) {
-                <app-format-row [row]="row" (remove)="removeRow($index)"></app-format-row>
-                }
-            </div>
-        </section>
-    </div>
-    <section class="flex justify-end space-x-1">
-        <button mat-flat-button type="button" matStepperNext>Siguiente</button>
+        </div>
     </section>
-</form>
+</div>

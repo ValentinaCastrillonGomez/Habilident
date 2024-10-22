@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '@core/auth/auth.service';
+import { AuthService } from '@core/services/auth.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import Swal from 'sweetalert2';
 

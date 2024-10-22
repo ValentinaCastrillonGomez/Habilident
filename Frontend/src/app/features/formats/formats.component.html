@@ -1,12 +1,24 @@
-<mat-stepper linear>
-    <mat-step [stepControl]="formatForm">
+<mat-stepper linear #stepper>
+    <mat-step [stepControl]="formatComponent.formatForm">
         <ng-template matStepLabel>Formato</ng-template>
-        <app-format [formatForm]="formatForm" [format]="format()"></app-format>
+        <app-format [format]="format()"></app-format>
     </mat-step>
-    <mat-step label="Reporte">
-
+    <mat-step>
+        <ng-template matStepLabel>Reporte</ng-template>
     </mat-step>
-    <mat-step label="Alarma">
-
+    <mat-step>
+        <ng-template matStepLabel>Alarma</ng-template>
     </mat-step>
 </mat-stepper>
+<section class="flex justify-end space-x-1">
+    @if(stepper.selectedIndex > 0){
+    <button mat-button type="button" (click)="stepper.previous()">Atras</button>
+    }
+    @if (stepper.selectedIndex < stepper.steps.length-1) { <button mat-stroked-button type="button"
+        (click)="stepper.next()">Siguiente</button>
+        }
+
+        @if(stepper.selectedIndex == stepper.steps.length-1){
+        <button mat-flat-button type="button" (click)="formatComponent.save()">Guardar</button>
+        }
+</section>

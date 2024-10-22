@@ -1,13 +1,16 @@
-<mat-toolbar class="justify-end sticky top-0 z-[101]">
-    <section class="flex items-center space-x-1">
+<mat-toolbar class="justify-between sticky top-0 z-[101]  border-0 border-solid border-b border-b-slate-400 ">
+    <span> {{title()}} </span>
+
+    <div class="flex gap-x-2">
         <button mat-icon-button>
             <mat-icon>notifications</mat-icon>
         </button>
         <button mat-icon-button [matMenuTriggerFor]="subMenu">
             <mat-icon>account_circle</mat-icon>
         </button>
-    </section>
+    </div>
 </mat-toolbar>
+<mat-progress-bar mode="query" [ngClass]="{'opacity-0' : !loadingService.loading()}"></mat-progress-bar>
 
 <mat-menu #subMenu="matMenu">
     <button mat-menu-item (click)="logout()">

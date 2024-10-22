@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Format, InputTypes, ROW_TYPES, RowTypes } from '@tipos/format';
@@ -35,24 +35,17 @@ export class FormatComponent {
   private formBuilder = inject(NonNullableFormBuilder);
   private formatsService = inject(FormatsService);
 
-  formatForm = input.required<FormGroup<{
-    name: FormControl<string>;
-    rows: FormArray<FormGroup<RowsFormType>>;
-  }>>();
+  formatForm = this.formBuilder.group({
+    name: this.formBuilder.control('', [Validators.required]),
+    rows: this.formBuilder.array<FormGroup<RowsFormType>>([]),
+  });
   format = input<Format>();
-
-  constructor() {
-    console.log('hola');
-    effect(() => {
-      console.log(this.format(), this.formatForm());
-    });
-  }
 
   changes(changes: any): void {
     console.log(changes, this.format);
 
     if (this.format()) {
-      this.formatForm().controls.name.setValue(this.format.name);
+      this.formatForm.controls.name.setValue(this.format.name);
 
       this.format()!.rows.forEach((row) => {
         this.addRow(row.type, this.formBuilder.array<FormGroup<FieldsFormType>>(row.fields.map(field =>
@@ -69,25 +62,25 @@ export class FormatComponent {
   }
 
   addRow(type: RowTypes, fields = this.formBuilder.array<FormGroup<FieldsFormType>>([])): void {
-    this.formatForm().controls.rows.push(this.formBuilder.group<RowsFormType>({
+    this.formatForm.controls.rows.push(this.formBuilder.group<RowsFormType>({
       type: this.formBuilder.control(type), fields
     }));
   }
 
   removeRow(rowIndex: number): void {
-    if (this.formatForm().controls.rows.length > 1) this.formatForm().controls.rows.removeAt(rowIndex);
+    if (this.formatForm.controls.rows.length > 1) this.formatForm.controls.rows.removeAt(rowIndex);
   }
 
   drop(event: CdkDragDrop<FormArray>) {
-    moveItemInArray(this.formatForm().controls.rows.controls, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.formatForm.controls.rows.controls, event.previousIndex, event.currentIndex);
   }
 
   async save() {
-    this.formatForm().markAllAsTouched();
+    this.formatForm.markAllAsTouched();
 
-    if (this.formatForm().invalid) return;
+    if (this.formatForm.invalid) return;
 
-    const format = this.formatForm().getRawValue();
+    const format = this.formatForm.getRawValue();
 
     this.formatsService.save(format, this.format()?._id)
       .then(() => {

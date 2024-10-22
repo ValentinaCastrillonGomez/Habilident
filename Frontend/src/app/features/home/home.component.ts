@@ -29,7 +29,7 @@ export default class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.router.url === '/') {
-      this.formatsService.formats.pipe(first()).subscribe((formats) => {
+      this.formatsService.formats$.pipe(first()).subscribe((formats) => {
         formats[0]?._id
           ? this.goTo(paths.RECORDS, formats[0]._id)
           : this.goTo(paths.FORMATS);
