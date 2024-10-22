@@ -1,8 +1,8 @@
 <form [formGroup]="roleForm" (ngSubmit)="save()">
-    <h6 mat-dialog-title>Guardar Rol</h6>
+    <span mat-dialog-title>Guardar rol</span>
     <mat-dialog-content class="mat-typography">
-        <div class="space-y-1 mt-1">
-            <mat-form-field appearance="outline" class="w-full">
+        <div class="my-1">
+            <mat-form-field appearance="outline">
                 <mat-label>Nombre</mat-label>
                 <input matInput type="text" id="name" formControlName="name" required>
                 @if (roleForm.controls.name.invalid) {
@@ -10,17 +10,17 @@
                 }
             </mat-form-field>
 
-            <section formGroupName="permissions">
-                <p class="font-bold">Permisos</p>
+            <div formGroupName="permissions">
+                <span class="font-bold">Permisos</span>
 
-                <div class="grid grid-flow-row auto-rows-max">
+                <div class="flex flex-wrap gap-x-3 max-w-2xl">
                     @for (permission of roleForm.controls.permissions.controls; track $index) {
                     <div [formGroup]="permission">
                         <mat-checkbox formControlName="selected">{{permission.controls.name.value}}</mat-checkbox>
                     </div>
                     }
                 </div>
-            </section>
+            </div>
         </div>
     </mat-dialog-content>
     <mat-dialog-actions>

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
 import { RolesService } from './services/roles.service';
 import { Role } from '@tipos/role';
 import { MatPaginator } from '@angular/material/paginator';
@@ -16,19 +16,22 @@ import { MaterialModule } from '@shared/modules/material/material.module';
   ],
   providers: [RolesService],
   templateUrl: './roles.component.html',
-  styleUrl: './roles.component.scss'
+  styleUrl: './roles.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class RolesComponent implements AfterViewInit {
+  private rolesService = inject(RolesService);
+  private dialog = inject(MatDialog);
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   dataSource: Role[] = [];
   loading = signal<boolean>(true);
   totalRecords = 0;
   pageSize = 10;
   displayedColumns: string[] = ['name', 'permissions', 'actions'];
+
   private searchTerms = new BehaviorSubject<string>('');
   private actions = new Subject<void>();
-
-  constructor(private rolesService: RolesService, private dialog: MatDialog) { }
 
   ngAfterViewInit() {
     merge(

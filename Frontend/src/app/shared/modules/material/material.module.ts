@@ -27,6 +27,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   exports: [
@@ -53,6 +54,7 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatListModule,
     MatTooltipModule,
     MatStepperModule,
+    MatProgressBarModule,
   ],
   providers: [
     provideNativeDateAdapter(),

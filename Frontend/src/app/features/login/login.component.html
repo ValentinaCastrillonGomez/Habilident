@@ -19,7 +19,7 @@
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Contraseña</mat-label>
           <input matInput [type]="hide() ? 'password' : 'text'" id="password" formControlName="password" required>
-          <button mat-icon-button matSuffix (click)="clickEvent($event)">
+          <button mat-icon-button matSuffix (click)="clickEvent($event)" type="button">
             <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
           @if (loginForm.controls.password.invalid) {

@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, signal } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { UsersService } from './services/users.service';
 import { User } from '@tipos/user';
 import { MatPaginator } from '@angular/material/paginator';
@@ -17,18 +17,21 @@ import { MaterialModule } from '@shared/modules/material/material.module';
   providers: [UsersService],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class UsersComponent implements AfterViewInit {
+  private userService = inject(UsersService);
+  private dialog = inject(MatDialog);
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   dataSource: User[] = [];
   loading = signal<boolean>(true);
   totalRecords = 0;
   pageSize = 10;
   displayedColumns: string[] = ['firstNames', 'lastNames', 'typeDocument', 'numberDocument', 'email', 'address', 'phone', 'role', 'state', 'actions'];
+
   private searchTerms = new BehaviorSubject<string>('');
   private actions = new Subject<void>();
-
-  constructor(private userService: UsersService, private dialog: MatDialog) { }
 
   ngAfterViewInit() {
     merge(

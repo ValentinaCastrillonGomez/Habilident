@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Format } from '@tipos/format';
@@ -14,10 +14,12 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
     providers: [RecordsService],
     templateUrl: './records.component.html',
     styleUrl: './records.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class RecordsComponent implements AfterViewInit {
-    format: Format | null = null;
+    private recordsService = inject(RecordsService);
     @ViewChild(MatPaginator) paginator!: MatPaginator;
+    format: Format | null = null;
     dataSource: Record[] = [];
     loading = signal<boolean>(true);
     totalRecords = 0;
@@ -29,8 +31,6 @@ export default class RecordsComponent implements AfterViewInit {
     });
     private searchTerms = new BehaviorSubject<any>({});
     private actions = new Subject<void>();
-
-    constructor(private recordsService: RecordsService) { }
 
     ngAfterViewInit() {
         merge(

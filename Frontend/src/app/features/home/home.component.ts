@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { NavbarComponent } from '@core/components/navbar/navbar.component';
@@ -15,6 +15,7 @@ import { first } from 'rxjs';
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class HomeComponent implements OnInit {
   private router = inject(Router);

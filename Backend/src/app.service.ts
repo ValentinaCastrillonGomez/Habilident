@@ -5,13 +5,18 @@ import { RolesService } from './roles/roles.service';
 import { Role } from './types/role';
 import { PERMISSIONS } from './types/permission';
 import { hashSync } from 'bcrypt';
+import { ParametersService } from './parameters/parameters.service';
+import { Parameter } from './types/parameter';
+import { TYPE_DOCUMENTS } from './shared/constants/type-documents.const';
+import { GENDERS } from './shared/constants/genders.const';
 
 @Injectable()
 export class AppService {
 
   constructor(
+    private rolesService: RolesService,
     private usersService: UsersService,
-    private rolesService: RolesService
+    private parametersService: ParametersService
   ) { }
 
   getHealth() {
@@ -19,19 +24,20 @@ export class AppService {
   }
 
   async getInit() {
-    const rol = await this.rolesService.create(this.getRoleInit());
-    await this.usersService.create(this.getUserInit(rol));
+    const rol = await this.rolesService.create(this.initRole());
+    await this.usersService.create(this.initUser(rol));
+    await this.parametersService.create(this.initParameter());
     return { status: 'INIT' };
   }
 
-  private getRoleInit(): Role {
+  private initRole(): Role {
     return {
       name: 'admin',
       permissions: Object.values(PERMISSIONS),
     }
   }
 
-  private getUserInit(rol: Role): User {
+  private initUser(rol: Role): User {
     return {
       firstNames: 'admin',
       lastNames: 'admin',
@@ -47,6 +53,24 @@ export class AppService {
       role: rol._id,
       password: hashSync('admin', 10),
       state: true,
+    }
+  }
+
+  private initParameter(): Parameter {
+    return {
+      office: '01',
+      lists: [
+        {
+          name: 'Tipo de documentos',
+          protected: true,
+          values: Object.values(TYPE_DOCUMENTS),
+        },
+        {
+          name: 'Generos',
+          protected: true,
+          values: Object.values(GENDERS),
+        }
+      ]
     }
   }
 }

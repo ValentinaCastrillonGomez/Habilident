@@ -6,9 +6,9 @@ export const paths = {
   LOGIN: 'login',
   USERS: 'users',
   ROLES: 'roles',
+  PARAMETERS: 'parameters',
   FORMATS: 'formats',
   RECORDS: 'records',
-  PARAMETERS: 'parameters',
 };
 
 export const routes: Routes = [
@@ -28,6 +28,10 @@ export const routes: Routes = [
       {
         path: paths.ROLES,
         loadComponent: () => import('@features/roles/roles.component'),
+      },
+      {
+        path: paths.PARAMETERS,
+        loadComponent: () => import('@features/parameters/parameters.component'),
       },
       {
         path: `${paths.FORMATS}/:id`,

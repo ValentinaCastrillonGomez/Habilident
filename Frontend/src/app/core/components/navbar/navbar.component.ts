@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthService } from '@core/auth/auth.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
 
@@ -12,11 +12,8 @@ import { MaterialModule } from '@shared/modules/material/material.module';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
-  username: string;
-
-  constructor(private authService: AuthService) {
-    this.username = this.authService.getUser().name;
-  }
+  private authService = inject(AuthService);
+  username = this.authService.getUser().name;
 
   logout() {
     this.authService.logout();

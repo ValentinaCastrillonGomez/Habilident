@@ -3,13 +3,8 @@
 }
 <main class="m-5">
     <div class="flex items-center justify-between">
-        <mat-form-field appearance="outline" subscriptSizing="dynamic">
-            <mat-label>Filtrar roles</mat-label>
-            <input matInput #filter id="filterRoles" (input)="search(filter.value)">
-            <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-
-        <button mat-flat-button (click)="open()"><mat-icon>add</mat-icon>Añadir Rol</button>
+        <span class="font-bold">listas</span>
+        <button mat-flat-button (click)="open()"><mat-icon>add</mat-icon>Añadir lista</button>
     </div>
     <mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="name">
@@ -17,10 +12,10 @@
             <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="permissions">
-            <mat-header-cell *matHeaderCellDef> Permisos </mat-header-cell>
+        <ng-container matColumnDef="values">
+            <mat-header-cell *matHeaderCellDef> Opciones </mat-header-cell>
             <mat-cell *matCellDef="let element">
-                <div class="truncate">{{element.permissions}}</div>
+                <div class="truncate">{{element.values}}</div>
             </mat-cell>
         </ng-container>
 
@@ -32,10 +27,6 @@
                 </button>
             </mat-cell>
         </ng-container>
-
-        <div *matNoDataRow class="text-center">
-            hay datos que coincidan con el filtro.
-        </div>
 
         <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
@@ -49,10 +40,12 @@
                 <mat-icon>edit</mat-icon>
                 <span>Actualizar</span>
             </button>
-            <button mat-menu-item (click)="remove(element._id)">
+            @if(!element.protected){
+            <button mat-menu-item (click)="remove(element)">
                 <mat-icon class="text-red-600">delete</mat-icon>
                 <span class="text-red-600">Eliminar</span>
             </button>
+            }
         </ng-template>
     </mat-menu>
 </main>

@@ -1,10 +1,10 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Role } from '@tipos/role';
 import { RolesService } from '../../services/roles.service';
-import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Permission, PERMISSIONS } from '@tipos/permission';
 import { MaterialModule } from '@shared/modules/material/material.module';
+import { Role } from '@tipos/role';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -16,33 +16,24 @@ import Swal from 'sweetalert2';
   ],
   providers: [RolesService],
   templateUrl: './role.component.html',
-  styleUrl: './role.component.scss'
+  styleUrl: './role.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoleComponent {
-  roleForm: FormGroup<{
-    name: FormControl<string>;
-    permissions: FormArray<FormGroup<{
-      name: FormControl<Permission>;
-      selected: FormControl<boolean>;
-    }>>
-  }>;
+  private dialog = inject(MatDialogRef<RoleComponent>);
+  private formBuilder = inject(NonNullableFormBuilder);
+  private rolesService = inject(RolesService);
+  role = inject<Role | null>(MAT_DIALOG_DATA);
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public role: Role | null,
-    private dialog: MatDialogRef<RoleComponent>,
-    private formBuilder: NonNullableFormBuilder,
-    private rolesService: RolesService
-  ) {
-    this.roleForm = this.formBuilder.group({
-      name: [this.role?.name || '', [Validators.required]],
-      permissions: this.formBuilder.array(Object.values(PERMISSIONS).map((permission) =>
-        this.formBuilder.group({
-          name: this.formBuilder.control(permission),
-          selected: this.formBuilder.control(this.role?.permissions.includes(permission) || false)
-        })
-      )),
-    });
-  }
+  roleForm = this.formBuilder.group({
+    name: this.formBuilder.control<string>(this.role?.name || '', [Validators.required]),
+    permissions: this.formBuilder.array(Object.values(PERMISSIONS).map((permission) =>
+      this.formBuilder.group({
+        name: this.formBuilder.control<Permission>(permission),
+        selected: this.formBuilder.control<boolean>(this.role?.permissions.includes(permission) || false)
+      })
+    )),
+  });
 
   async save() {
     if (this.roleForm.invalid) return;

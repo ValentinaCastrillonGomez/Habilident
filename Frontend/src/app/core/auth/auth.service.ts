@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
 import { Login } from '@tipos/login';
@@ -10,11 +10,8 @@ import { paths } from 'src/app/app.routes';
 })
 export class AuthService {
   private API_LOGIN = '/login';
-
-  constructor(
-    private http: HttpClient,
-    private router: Router
-  ) { }
+  private http = inject(HttpClient);
+  private router = inject(Router);
 
   get isLoggedIn() {
     return !!this.getToken();

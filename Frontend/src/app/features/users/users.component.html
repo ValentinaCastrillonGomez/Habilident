@@ -1,94 +1,80 @@
-<main class="py-5">
+@if (loading()) {
+<mat-progress-bar mode="query"></mat-progress-bar>
+}
+<main class="m-5">
     <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-            <h6 class="mb-0">Listado de Usuarios</h6>
-            <button mat-flat-button (click)="open()"><mat-icon>add</mat-icon>Añadir Usuario</button>
-        </div>
-
         <mat-form-field appearance="outline" subscriptSizing="dynamic">
             <mat-label>Filtrar usuarios</mat-label>
             <input matInput #filter id="filterUsers" (input)="search(filter.value)">
             <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
+
+        <button mat-flat-button (click)="open()"><mat-icon>add</mat-icon>Añadir Usuario</button>
     </div>
-    <mat-card class="my-2">
-        <mat-card-content>
-            <div class="relative min-h-56">
-                @if (loading()) {
-                <div
-                    class="absolute flex justify-center items-center bg-black/30 z-[101] top-14 bottom-0 left-0 right-0">
-                    <mat-spinner></mat-spinner>
-                </div>
-                }
+    <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="firstNames">
+            <mat-header-cell *matHeaderCellDef> Nombres </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.firstNames}} </mat-cell>
+        </ng-container>
 
-                <mat-table [dataSource]="dataSource">
-                    <ng-container matColumnDef="firstNames">
-                        <mat-header-cell *matHeaderCellDef> Nombres </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.firstNames}} </mat-cell>
-                    </ng-container>
+        <ng-container matColumnDef="lastNames">
+            <mat-header-cell *matHeaderCellDef> Apellidos </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.lastNames}} </mat-cell>
+        </ng-container>
 
-                    <ng-container matColumnDef="lastNames">
-                        <mat-header-cell *matHeaderCellDef> Apellidos </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.lastNames}} </mat-cell>
-                    </ng-container>
+        <ng-container matColumnDef="typeDocument">
+            <mat-header-cell *matHeaderCellDef> Tipo de documento </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.typeDocument}} </mat-cell>
+        </ng-container>
 
-                    <ng-container matColumnDef="typeDocument">
-                        <mat-header-cell *matHeaderCellDef> Tipo de documento </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.typeDocument}} </mat-cell>
-                    </ng-container>
+        <ng-container matColumnDef="numberDocument">
+            <mat-header-cell *matHeaderCellDef> Número de documento </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.numberDocument}} </mat-cell>
+        </ng-container>
 
-                    <ng-container matColumnDef="numberDocument">
-                        <mat-header-cell *matHeaderCellDef> Número de documento </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.numberDocument}} </mat-cell>
-                    </ng-container>
+        <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef> Correo electrónico </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+        </ng-container>
 
-                    <ng-container matColumnDef="email">
-                        <mat-header-cell *matHeaderCellDef> Correo electrónico </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
-                    </ng-container>
+        <ng-container matColumnDef="address">
+            <mat-header-cell *matHeaderCellDef> Dirección </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.address}} </mat-cell>
+        </ng-container>
 
-                    <ng-container matColumnDef="address">
-                        <mat-header-cell *matHeaderCellDef> Dirección </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.address}} </mat-cell>
-                    </ng-container>
+        <ng-container matColumnDef="phone">
+            <mat-header-cell *matHeaderCellDef> Teléfono </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.phone}} </mat-cell>
+        </ng-container>
 
-                    <ng-container matColumnDef="phone">
-                        <mat-header-cell *matHeaderCellDef> Teléfono </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.phone}} </mat-cell>
-                    </ng-container>
+        <ng-container matColumnDef="role">
+            <mat-header-cell *matHeaderCellDef> Rol </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.role?.name}} </mat-cell>
+        </ng-container>
 
-                    <ng-container matColumnDef="role">
-                        <mat-header-cell *matHeaderCellDef> Rol </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.role?.name}} </mat-cell>
-                    </ng-container>
+        <ng-container matColumnDef="state">
+            <mat-header-cell *matHeaderCellDef> Estado </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.state ? 'Activo' : 'Inactivo'}} </mat-cell>
+        </ng-container>
 
-                    <ng-container matColumnDef="state">
-                        <mat-header-cell *matHeaderCellDef> Estado </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.state ? 'Activo' : 'Inactivo'}} </mat-cell>
-                    </ng-container>
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="justify-end">
+                <button mat-icon-button [matMenuTriggerFor]="actions" [matMenuTriggerData]="{data: element}">
+                    <mat-icon class="">more_horiz</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
 
-                    <ng-container matColumnDef="actions">
-                        <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
-                        <mat-cell *matCellDef="let element" class="justify-end">
-                            <button mat-icon-button [matMenuTriggerFor]="actions"
-                                [matMenuTriggerData]="{data: element}">
-                                <mat-icon class="">more_horiz</mat-icon>
-                            </button>
-                        </mat-cell>
-                    </ng-container>
+        <div *matNoDataRow class="text-center">
+            hay datos que coincidan con el filtro.
+        </div>
 
-                    <div *matNoDataRow class="text-center">
-                        hay datos que coincidan con el filtro.
-                    </div>
-
-                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                </mat-table>
-            </div>
-            <mat-divider></mat-divider>
-            <mat-paginator [length]="totalRecords" [pageSize]="pageSize"></mat-paginator>
-        </mat-card-content>
-    </mat-card>
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-divider></mat-divider>
+    <mat-paginator [length]="totalRecords" [pageSize]="pageSize"></mat-paginator>
 
     <mat-menu #actions="matMenu">
         <ng-template matMenuContent let-element="data">

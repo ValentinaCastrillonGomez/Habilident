@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { RolesModule } from './roles/roles.module';
 import { FormatsModule } from './formats/formats.module';
 import { RecordsModule } from './records/records.module';
+import { ParametersModule } from './parameters/parameters.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { RecordsModule } from './records/records.module';
     AuthModule,
     RolesModule,
     FormatsModule,
-    RecordsModule
+    RecordsModule,
+    ParametersModule
   ],
   controllers: [AppController],
   providers: [AppService],

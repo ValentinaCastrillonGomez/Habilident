@@ -1,4 +1,4 @@
-import { Component, effect, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Format, InputTypes, ROW_TYPES, RowTypes } from '@tipos/format';
@@ -28,7 +28,8 @@ type FieldsFormType = {
     CdkDropList,
   ],
   templateUrl: './format.component.html',
-  styleUrl: './format.component.scss'
+  styleUrl: './format.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormatComponent {
   private formBuilder = inject(NonNullableFormBuilder);
@@ -41,6 +42,7 @@ export class FormatComponent {
   format = input<Format>();
 
   constructor() {
+    console.log('hola');
     effect(() => {
       console.log(this.format(), this.formatForm());
     });

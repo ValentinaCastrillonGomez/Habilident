@@ -1,5 +1,5 @@
-import { Component, signal } from '@angular/core';
-import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '@core/auth/auth.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import Swal from 'sweetalert2';
@@ -13,23 +13,17 @@ import Swal from 'sweetalert2';
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class AuthComponent {
-  loginForm: FormGroup<{
-    email: FormControl<string>;
-    password: FormControl<string>;
-  }>;
-  hide = signal(true);
+  private formBuilder = inject(NonNullableFormBuilder);
+  private authService = inject(AuthService);
 
-  constructor(
-    private formBuilder: NonNullableFormBuilder,
-    private authService: AuthService
-  ) {
-    this.loginForm = this.formBuilder.group({
-      email: this.formBuilder.control('', [Validators.required, Validators.email]),
-      password: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
-    });
-  }
+  loginForm = this.formBuilder.group({
+    email: this.formBuilder.control('', [Validators.required, Validators.email]),
+    password: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
+  });
+  hide = signal(true);
 
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());

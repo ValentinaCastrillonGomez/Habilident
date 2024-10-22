@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from './services/formats.service';
 import { FormatComponent, RowsFormType } from '@features/formats/components/format/format.component';
@@ -16,7 +16,8 @@ import { switchMap } from 'rxjs';
     FormatComponent,
   ],
   templateUrl: './formats.component.html',
-  styleUrl: './formats.component.scss'
+  styleUrl: './formats.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class FormatsComponent {
   private formBuilder = inject(NonNullableFormBuilder);
