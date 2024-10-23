@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Format, InputTypes, ROW_TYPES, RowTypes } from '@tipos/format';
@@ -35,52 +35,48 @@ export class FormatComponent {
   private formBuilder = inject(NonNullableFormBuilder);
   private formatsService = inject(FormatsService);
 
-  formatForm = this.formBuilder.group({
-    name: this.formBuilder.control('', [Validators.required]),
-    rows: this.formBuilder.array<FormGroup<RowsFormType>>([]),
-  });
   format = input<Format>();
-
-  changes(changes: any): void {
-    console.log(changes, this.format);
-
-    if (this.format()) {
-      this.formatForm.controls.name.setValue(this.format.name);
-
-      this.format()!.rows.forEach((row) => {
-        this.addRow(row.type, this.formBuilder.array<FormGroup<FieldsFormType>>(row.fields.map(field =>
+  formatForm = computed(() => this.formBuilder.group({
+    name: this.formBuilder.control(this.format()?.name || '', [Validators.required]),
+    rows: this.formBuilder.array(this.format()?.rows.map((row) =>
+      this.formBuilder.group<RowsFormType>({
+        type: this.formBuilder.control(row.type),
+        fields: this.formBuilder.array(row.fields.map(field =>
           this.formBuilder.group<FieldsFormType>({
             name: this.formBuilder.control(field.name, Validators.required),
             type: this.formBuilder.control(field.type),
-            required: this.formBuilder.control(field.required)
+            required: this.formBuilder.control(field.required),
           })
-        )));
-      });
-    } else {
-      this.addRow(ROW_TYPES.SINGLE);
-    }
+        )),
+      })
+    ) || [this.initRow(ROW_TYPES.SINGLE), this.initRow(ROW_TYPES.SINGLE)]),
+  }));
+
+  private initRow(type: RowTypes) {
+    return this.formBuilder.group<RowsFormType>({
+      type: this.formBuilder.control(type),
+      fields: this.formBuilder.array<FormGroup<FieldsFormType>>([]),
+    });
   }
 
-  addRow(type: RowTypes, fields = this.formBuilder.array<FormGroup<FieldsFormType>>([])): void {
-    this.formatForm.controls.rows.push(this.formBuilder.group<RowsFormType>({
-      type: this.formBuilder.control(type), fields
-    }));
+  addRow(type: RowTypes): void {
+    this.initRow(type);
   }
 
   removeRow(rowIndex: number): void {
-    if (this.formatForm.controls.rows.length > 1) this.formatForm.controls.rows.removeAt(rowIndex);
+    if (this.formatForm().controls.rows.length > 1) this.formatForm().controls.rows.removeAt(rowIndex);
   }
 
   drop(event: CdkDragDrop<FormArray>) {
-    moveItemInArray(this.formatForm.controls.rows.controls, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.formatForm().controls.rows.controls, event.previousIndex, event.currentIndex);
   }
 
   async save() {
-    this.formatForm.markAllAsTouched();
+    this.formatForm().markAllAsTouched();
 
-    if (this.formatForm.invalid) return;
+    if (this.formatForm().invalid) return;
 
-    const format = this.formatForm.getRawValue();
+    const format = this.formatForm().getRawValue();
 
     this.formatsService.save(format, this.format()?._id)
       .then(() => {

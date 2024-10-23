@@ -5,6 +5,7 @@ import { FormatComponent } from '@features/formats/components/format/format.comp
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs';
+import { ReportComponent } from './components/report/report.component';
 
 @Component({
   selector: 'app-formats',
@@ -12,14 +13,15 @@ import { switchMap } from 'rxjs';
   imports: [
     MaterialModule,
     FormatComponent,
+    ReportComponent,
   ],
   templateUrl: './formats.component.html',
   styleUrl: './formats.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class FormatsComponent {
-  private formatsService = inject(FormatsService);
   private route = inject(ActivatedRoute);
+  private formatsService = inject(FormatsService);
 
   @ViewChild(FormatComponent, { static: true }) formatComponent!: FormatComponent;
 

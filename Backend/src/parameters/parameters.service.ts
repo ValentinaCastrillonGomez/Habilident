@@ -10,8 +10,7 @@ export class ParametersService extends GenericService<ParameterDocument, Paramet
   constructor(
     @InjectModel(ParameterEntity.name) private readonly parameterModel: Model<ParameterDocument>,
   ) {
-    super(parameterModel, ['office'], []);
+    super(parameterModel, ['name'], []);
   }
-
 
 }

@@ -26,7 +26,7 @@ export class AppService {
   async getInit() {
     const rol = await this.rolesService.create(this.initRole());
     await this.usersService.create(this.initUser(rol));
-    await this.parametersService.create(this.initParameter());
+    this.initParameters().forEach(async (parameter) => await this.parametersService.create(parameter));
     return { status: 'INIT' };
   }
 
@@ -56,21 +56,18 @@ export class AppService {
     }
   }
 
-  private initParameter(): Parameter {
-    return {
-      office: '01',
-      lists: [
-        {
-          name: 'Tipo de documentos',
-          protected: true,
-          values: Object.values(TYPE_DOCUMENTS),
-        },
-        {
-          name: 'Generos',
-          protected: true,
-          values: Object.values(GENDERS),
-        }
-      ]
-    }
+  private initParameters(): Parameter[] {
+    return [
+      {
+        name: 'Tipo de documentos',
+        protected: true,
+        options: Object.values(TYPE_DOCUMENTS),
+      },
+      {
+        name: 'Generos',
+        protected: true,
+        options: Object.values(GENDERS),
+      }
+    ]
   }
 }

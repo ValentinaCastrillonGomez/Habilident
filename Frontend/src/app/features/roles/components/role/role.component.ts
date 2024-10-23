@@ -26,7 +26,7 @@ export class RoleComponent {
   role = inject<Role | null>(MAT_DIALOG_DATA);
 
   roleForm = this.formBuilder.group({
-    name: this.formBuilder.control<string>(this.role?.name || '', [Validators.required]),
+    name: this.formBuilder.control(this.role?.name || '', [Validators.required]),
     permissions: this.formBuilder.array(Object.values(PERMISSIONS).map((permission) =>
       this.formBuilder.group({
         name: this.formBuilder.control<Permission>(permission),

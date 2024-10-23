@@ -1,16 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { ParametersService } from './services/parameters.service';
-import { MaterialModule } from '@shared/modules/material/material.module';
-import { FormArray, FormControl, NonNullableFormBuilder } from '@angular/forms';
-import { List } from '@tipos/parameter';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ListComponent } from './components/list/list.component';
-
-export type ListFormType = {
-  name: FormControl<string>;
-  protected: FormControl<boolean>;
-  values: FormArray<FormControl<string>>;
-};
+import { MatPaginator } from '@angular/material/paginator';
+import { ParametersService } from '@features/parameters/services/parameters.service';
+import { MaterialModule } from '@shared/modules/material/material.module';
+import { Parameter } from '@tipos/parameter';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
+import { ParameterComponent } from './components/parameter/parameter.component';
 
 @Component({
   selector: 'app-parameters',
@@ -23,32 +18,45 @@ export type ListFormType = {
   styleUrl: './parameters.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class ParametersComponent implements OnInit {
+export default class ParametersComponent implements AfterViewInit {
   private parametersService = inject(ParametersService);
-  private formBuilder = inject(NonNullableFormBuilder);
   private dialog = inject(MatDialog);
 
-  parameterForm = this.formBuilder.group({
-    office: this.formBuilder.control('01'),
-    list: this.formBuilder.array([]),
-  });
-  displayedColumns: string[] = ['name', 'values', 'actions'];
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  dataSource = signal<Parameter[]>([]);
+  totalRecords = 0;
+  pageSize = 10;
+  displayedColumns: string[] = ['name', 'options', 'actions'];
 
-  async ngOnInit() {
-    const { data } = await this.parametersService.getAll(0, 0, '01');
+  private searchTerms = new BehaviorSubject<string>('');
+  private actions = new Subject<void>();
 
+  ngAfterViewInit() {
+    merge(
+      this.searchTerms.pipe(debounceTime(300), distinctUntilChanged()),
+      this.actions,
+      this.paginator.page)
+      .subscribe(async () => {
+        const { data, totalRecords } = await this.parametersService.getAll(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
+        this.dataSource.set(data);
+        this.totalRecords = totalRecords;
+      });
+  }
+
+  search(term: string): void {
+    this.searchTerms.next(term);
   }
 
   async remove(id: string) {
     const result = await this.parametersService.delete(id);
-    // if (result) this.actions.next();
+    if (result) this.actions.next();
   }
 
-  open(data?: List) {
-    const dialogRef = this.dialog.open(ListComponent, { data });
+  open(data?: Parameter) {
+    const dialogRef = this.dialog.open(ParameterComponent, { data });
 
     dialogRef.afterClosed().subscribe(result => {
-      // if (result) this.actions.next();
+      if (result) this.actions.next();
     });
   }
 
