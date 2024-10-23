@@ -1,72 +1,67 @@
-@if (loading()) {
-<mat-progress-bar mode="query"></mat-progress-bar>
-}
-<main class="m-5">
-    <div class="flex items-center justify-between">
-        <mat-form-field appearance="outline" subscriptSizing="dynamic">
-            <mat-label>Filtrar registros</mat-label>
-            <input matInput #filter id="filterRoles">
-            <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
+<div class="flex items-center justify-between">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Filtrar registros</mat-label>
+        <input matInput #filter id="filterRoles">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
 
-        <button mat-flat-button><mat-icon>add</mat-icon>Añadir Registro</button>
+    <button mat-flat-button (click)="open()"><mat-icon>add</mat-icon>Añadir Registro</button>
+</div>
+<mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="dateCreate">
+        <mat-header-cell *matHeaderCellDef> Fecha de registro </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.dateCreate | date: 'dd/MM/yyyy, h:mm a' }}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="userCreate">
+        <mat-header-cell *matHeaderCellDef> Usuario que registro </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            {{element.userCreate.firstNames}} {{element.userCreate.lastNames}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="dateLastUpdate">
+        <mat-header-cell *matHeaderCellDef> Fecha de ultima actualización </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.dateLastUpdate | date: 'dd/MM/yyyy, h:mm a' }}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="userLastUpdate">
+        <mat-header-cell *matHeaderCellDef> Usuario de ultima actualización </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            {{element.userLastUpdate?.firstNames}} {{element.userLastUpdate?.lastNames}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
+        <mat-cell *matCellDef="let element" class="justify-end">
+            <button mat-icon-button [matMenuTriggerFor]="actions" [matMenuTriggerData]="{data: element}">
+                <mat-icon class="">more_horiz</mat-icon>
+            </button>
+        </mat-cell>
+    </ng-container>
+
+    <div *matNoDataRow class="text-center">
+        hay datos que coincidan con el filtro.
     </div>
-    <mat-table [dataSource]="dataSource">
-        <ng-container matColumnDef="dateCreate">
-            <mat-header-cell *matHeaderCellDef> Fecha de registro </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.dateCreate | date: 'dd/MM/yyyy, h:mm a' }}
-            </mat-cell>
-        </ng-container>
 
-        <ng-container matColumnDef="userCreate">
-            <mat-header-cell *matHeaderCellDef> Usuario que registro </mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                {{element.userCreate.firstNames}} {{element.userCreate.lastNames}}
-            </mat-cell>
-        </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+<mat-divider></mat-divider>
+<mat-paginator [length]="totalRecords" [pageSize]="pageSize"></mat-paginator>
 
-        <ng-container matColumnDef="dateLastUpdate">
-            <mat-header-cell *matHeaderCellDef> Fecha de ultima actualización </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.dateLastUpdate | date: 'dd/MM/yyyy, h:mm a' }}
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="userLastUpdate">
-            <mat-header-cell *matHeaderCellDef> Usuario de ultima actualización </mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                {{element.userLastUpdate?.firstNames}} {{element.userLastUpdate?.lastNames}}
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="actions">
-            <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
-            <mat-cell *matCellDef="let element" class="justify-end">
-                <button mat-icon-button [matMenuTriggerFor]="actions" [matMenuTriggerData]="{data: element}">
-                    <mat-icon class="">more_horiz</mat-icon>
-                </button>
-            </mat-cell>
-        </ng-container>
-
-        <div *matNoDataRow class="text-center">
-            hay datos que coincidan con el filtro.
-        </div>
-
-        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-    <mat-divider></mat-divider>
-    <mat-paginator [length]="totalRecords" [pageSize]="pageSize"></mat-paginator>
-
-    <mat-menu #actions="matMenu">
-        <ng-template matMenuContent let-element="data">
-            <button mat-menu-item>
-                <mat-icon>edit</mat-icon>
-                <span>Actualizar</span>
-            </button>
-            <button mat-menu-item (click)="remove(element._id)">
-                <mat-icon class="text-red-600">delete</mat-icon>
-                <span class="text-red-600">Eliminar</span>
-            </button>
-        </ng-template>
-    </mat-menu>
-</main>
+<mat-menu #actions="matMenu">
+    <ng-template matMenuContent let-element="data">
+        <button mat-menu-item>
+            <mat-icon>edit</mat-icon>
+            <span>Actualizar</span>
+        </button>
+        <button mat-menu-item (click)="remove(element._id)">
+            <mat-icon class="text-red-600">delete</mat-icon>
+            <span class="text-red-600">Eliminar</span>
+        </button>
+    </ng-template>
+</mat-menu>

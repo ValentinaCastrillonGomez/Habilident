@@ -3,7 +3,7 @@
         cdkDragHandle>
         <mat-icon>drag_indicator</mat-icon>
     </button>
-    @for (input of row().controls.fields.controls; track input; let columnIndex = $index) {
+    @for (input of row.controls.fields.controls; track input; let columnIndex = $index) {
     @if(input.controls.type.value=='text'){
     <mat-form-field appearance="outline" class="w-full" [formGroup]="input">
         <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?" matTooltipPosition="right">

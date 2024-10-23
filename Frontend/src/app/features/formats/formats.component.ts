@@ -3,8 +3,7 @@ import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from './services/formats.service';
 import { FormatComponent } from '@features/formats/components/format/format.component';
 import { ActivatedRoute } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { switchMap } from 'rxjs';
+import { from, of, switchMap } from 'rxjs';
 import { ReportComponent } from './components/report/report.component';
 
 @Component({
@@ -25,11 +24,8 @@ export default class FormatsComponent {
 
   @ViewChild(FormatComponent, { static: true }) formatComponent!: FormatComponent;
 
-  format = toSignal(this.route.params.pipe(
-    switchMap(async ({ id }) => id !== 'new'
-      ? await this.formatsService.get(id)
-      : undefined
-    )
-  ));
+  format$ = this.route.params.pipe(
+    switchMap(({ id }) => id !== 'new' ? from(this.formatsService.get(id)) : of(null))
+  );
 
 }

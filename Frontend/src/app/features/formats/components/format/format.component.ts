@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Format, InputTypes, ROW_TYPES, RowTypes } from '@tipos/format';
@@ -31,54 +31,65 @@ type FieldsFormType = {
   styleUrl: './format.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormatComponent {
+export class FormatComponent implements OnChanges {
   private formBuilder = inject(NonNullableFormBuilder);
   private formatsService = inject(FormatsService);
 
-  format = input<Format>();
-  formatForm = computed(() => this.formBuilder.group({
-    name: this.formBuilder.control(this.format()?.name || '', [Validators.required]),
-    rows: this.formBuilder.array(this.format()?.rows.map((row) =>
-      this.formBuilder.group<RowsFormType>({
-        type: this.formBuilder.control(row.type),
-        fields: this.formBuilder.array(row.fields.map(field =>
-          this.formBuilder.group<FieldsFormType>({
-            name: this.formBuilder.control(field.name, Validators.required),
-            type: this.formBuilder.control(field.type),
-            required: this.formBuilder.control(field.required),
-          })
-        )),
-      })
-    ) || [this.initRow(ROW_TYPES.SINGLE), this.initRow(ROW_TYPES.SINGLE)]),
-  }));
+  @Input() format!: Format | null;
 
-  private initRow(type: RowTypes) {
-    return this.formBuilder.group<RowsFormType>({
-      type: this.formBuilder.control(type),
-      fields: this.formBuilder.array<FormGroup<FieldsFormType>>([]),
-    });
+  formatForm = this.formBuilder.group({
+    name: this.formBuilder.control('', [Validators.required]),
+    rows: this.formBuilder.array<FormGroup<RowsFormType>>([]),
+  });
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const format = changes['format'].currentValue as Format;
+
+    this.formatForm.reset();
+    this.formatForm.controls.rows.clear();
+
+    if (format) {
+      this.formatForm.controls.name.setValue(format.name)
+      format.rows.forEach((row) => this.formatForm.controls.rows.push(
+        this.formBuilder.group<RowsFormType>({
+          type: this.formBuilder.control(row.type),
+          fields: this.formBuilder.array(row.fields.map(field =>
+            this.formBuilder.group<FieldsFormType>({
+              name: this.formBuilder.control(field.name, Validators.required),
+              type: this.formBuilder.control(field.type),
+              required: this.formBuilder.control(field.required),
+            })
+          )),
+        })
+      ));
+    } else {
+      this.addRow(ROW_TYPES.SINGLE);
+    }
   }
 
   addRow(type: RowTypes): void {
-    this.initRow(type);
+    this.formatForm.controls.rows.push(this.formBuilder.group<RowsFormType>({
+      type: this.formBuilder.control(type),
+      fields: this.formBuilder.array<FormGroup<FieldsFormType>>([]),
+    }));
   }
 
   removeRow(rowIndex: number): void {
-    if (this.formatForm().controls.rows.length > 1) this.formatForm().controls.rows.removeAt(rowIndex);
+    if (this.formatForm.controls.rows.length > 1) this.formatForm.controls.rows.removeAt(rowIndex);
   }
 
   drop(event: CdkDragDrop<FormArray>) {
-    moveItemInArray(this.formatForm().controls.rows.controls, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.formatForm.controls.rows.controls, event.previousIndex, event.currentIndex);
   }
 
   async save() {
-    this.formatForm().markAllAsTouched();
+    this.formatForm.markAllAsTouched();
 
-    if (this.formatForm().invalid) return;
+    if (this.formatForm.invalid) return;
 
-    const format = this.formatForm().getRawValue();
+    const format = this.formatForm.getRawValue();
 
-    this.formatsService.save(format, this.format()?._id)
+    this.formatsService.save(format, this.format?._id)
       .then(() => {
         this.formatsService.loadFormats();
         Swal.fire({

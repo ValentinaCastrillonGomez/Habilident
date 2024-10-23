@@ -1,11 +1,7 @@
 <mat-stepper linear #stepper>
-    <mat-step [stepControl]="formatComponent.formatForm()">
+    <mat-step [stepControl]="formatComponent.formatForm">
         <ng-template matStepLabel>Formato</ng-template>
-        <app-format [format]="format()"></app-format>
-        <section class="flex justify-end space-x-1">
-            <button mat-stroked-button type="button" matStepperNext
-                (click)="formatComponent.formatForm().markAllAsTouched()">Siguiente</button>
-        </section>
+        <app-format [format]="format$ | async"></app-format>
     </mat-step>
     <mat-step>
         <ng-template matStepLabel>Reporte</ng-template>

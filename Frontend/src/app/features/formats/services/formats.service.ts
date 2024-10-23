@@ -14,11 +14,6 @@ export class FormatsService extends GenericService<Format> {
   private formats = new ReplaySubject<Format[]>(1);
   formats$ = this.formats.asObservable();
 
-  constructor() {
-    super();
-    this.loadFormats();
-  }
-
   async loadFormats() {
     const { data } = await this.getAll();
     this.formats.next(data);

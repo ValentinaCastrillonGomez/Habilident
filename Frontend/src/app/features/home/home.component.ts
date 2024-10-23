@@ -4,7 +4,6 @@ import { MaterialModule } from '@shared/modules/material/material.module';
 import { NavbarComponent } from '@core/components/navbar/navbar.component';
 import { paths } from 'src/app/app.routes';
 import { FormatsService } from '@features/formats/services/formats.service';
-import { first } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -28,13 +27,7 @@ export default class HomeComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    if (this.router.url === '/') {
-      this.formatsService.formats$.pipe(first()).subscribe((formats) => {
-        formats[0]?._id
-          ? this.goTo(paths.RECORDS, formats[0]._id)
-          : this.goTo(paths.FORMATS);
-      });
-    }
+    this.formatsService.loadFormats();
   }
 
   async remove(id: string) {
