@@ -34,10 +34,14 @@ export const routes: Routes = [
         path: paths.PARAMETERS, data: { title: 'Parametros del sistema' },
         loadComponent: () => import('@features/parameters/parameters.component'),
       },
-      // {
-      //   path: `${paths.REPORTS}`, data: { title: 'Reportes del sistema' },
-      //   loadComponent: () => import('@features/reports/reports.component'),
-      // },
+      {
+        path: `${paths.REPORTS}`, data: { title: 'Generación de reportes' },
+        loadComponent: () => import('@features/reports/reports.component'),
+      },
+      {
+        path: `${paths.ALARMS}`, data: { title: 'Generación de alarmas' },
+        loadComponent: () => import('@features/alarms/alarms.component'),
+      },
       {
         path: `${paths.RECORDS}/:id`, data: { title: 'Registros del formato' },
         loadComponent: () => import('@features/records/records.component'),

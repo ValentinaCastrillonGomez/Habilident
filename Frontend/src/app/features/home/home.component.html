@@ -8,6 +8,14 @@
 
       <app-formats></app-formats>
 
+      <div mat-subheader class="font-semibold">Gestión</div>
+      @for (item of management; track item.id) {
+      <mat-list-item [routerLink]="item.path">
+        <mat-icon matListItemIcon>{{item.icon}}</mat-icon>
+        <div matListItemTitle>{{item.title}}</div>
+      </mat-list-item>
+      }
+
       <div mat-subheader class="font-semibold">Administración</div>
       @for (item of administration; track item.id) {
       <mat-list-item [routerLink]="item.path">

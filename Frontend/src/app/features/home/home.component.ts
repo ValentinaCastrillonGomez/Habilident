@@ -25,4 +25,9 @@ export default class HomeComponent {
     { id: 'users', path: paths.USERS, title: 'Usuarios', icon: 'group' },
     { id: 'parameters', path: paths.PARAMETERS, title: 'Parametros', icon: 'fact_check' },
   ];
+  readonly management = [
+    { id: 'reports', path: paths.REPORTS, title: 'Reportes', icon: 'description' },
+    { id: 'alarms', path: paths.ALARMS, title: 'Alarmas', icon: 'alarm' },
+  ];
+
 }

@@ -7,11 +7,13 @@
 @for (format of formats(); track format._id) {
 <mat-list-item>
     <mat-icon matListItemIcon>folder</mat-icon>
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between group">
         <div class="truncate w-full" [routerLink]="'records/' + format._id">
             {{format.name | titlecase}}
         </div>
-        <button mat-icon-button [matMenuTriggerFor]="formatsMenu" [matMenuTriggerData]="{data: format}">
+        <button mat-icon-button [matMenuTriggerFor]="formatsMenu" #menu="matMenuTrigger"
+            [matMenuTriggerData]="{data: format}"
+            [ngClass]="{'invisible group-hover:visible': !menu.menuOpen, 'visible': menu.menuOpen}">
             <mat-icon>more_vert</mat-icon>
         </button>
     </div>
