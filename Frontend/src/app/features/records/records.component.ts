@@ -7,15 +7,15 @@ import { RecordsService } from './services/records.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { FormatsService } from '@features/formats/services/formats.service';
 import { RecordComponent } from './components/record/record.component';
 import { Format } from '@tipos/format';
+import { FormatsService } from '@shared/services/formats.service';
 
 @Component({
     selector: 'app-records',
     standalone: true,
     imports: [MaterialModule, ReactiveFormsModule],
-    providers: [RecordsService],
+    providers: [RecordsService, FormatsService],
     templateUrl: './records.component.html',
     styleUrl: './records.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,

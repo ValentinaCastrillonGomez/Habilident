@@ -7,8 +7,9 @@ export const paths = {
   USERS: 'users',
   ROLES: 'roles',
   PARAMETERS: 'parameters',
-  FORMATS: 'formats',
   RECORDS: 'records',
+  REPORTS: 'reports',
+  ALARMS: 'alarms',
 };
 
 export const routes: Routes = [
@@ -33,10 +34,10 @@ export const routes: Routes = [
         path: paths.PARAMETERS, data: { title: 'Parametros del sistema' },
         loadComponent: () => import('@features/parameters/parameters.component'),
       },
-      {
-        path: `${paths.FORMATS}/:id`, data: { title: 'Configuración de formato' },
-        loadComponent: () => import('@features/formats/formats.component'),
-      },
+      // {
+      //   path: `${paths.REPORTS}`, data: { title: 'Reportes del sistema' },
+      //   loadComponent: () => import('@features/reports/reports.component'),
+      // },
       {
         path: `${paths.RECORDS}/:id`, data: { title: 'Registros del formato' },
         loadComponent: () => import('@features/records/records.component'),

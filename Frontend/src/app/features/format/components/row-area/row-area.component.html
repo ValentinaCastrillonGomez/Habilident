@@ -1,0 +1,23 @@
+<div class="flex gap-x-3 overflow-x-hidden" cdkDrag>
+    <button mat-icon-button type="button" matTooltip="Arrastrar" matTooltipPosition="before" class="self-center"
+        cdkDragHandle>
+        <mat-icon>drag_indicator</mat-icon>
+    </button>
+    @if(input){
+        <app-input-text class="w-full overflow-x-hidden pt-5" [field]="input" [isArea]="true"
+            [isUnique]="true"></app-input-text>
+    }
+    @if(!isUnique()){
+    <button mat-icon-button type="button" [matMenuTriggerFor]="rowInputs" class="self-center">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+    }
+    <mat-menu #rowInputs="matMenu">
+        <ng-template matMenuContent let-rowIndex="data">
+            <button mat-menu-item (click)="removeRow()">
+                <mat-icon class="text-red-600">delete</mat-icon>
+                <span class="text-red-600">Eliminar fila</span>
+            </button>
+        </ng-template>
+    </mat-menu>
+</div>

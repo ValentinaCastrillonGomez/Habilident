@@ -1,5 +1,6 @@
 export const ROW_TYPES = {
     SINGLE: 'single',
+    AREA: 'area',
     TABLE: 'table',
 } as const;
 
@@ -12,6 +13,13 @@ export const INPUT_TYPES = {
     DATE: 'date',
 } as const;
 
+export const TYPES_NAMES = {
+    [INPUT_TYPES.TEXT]: 'Texto',
+    [INPUT_TYPES.NUMBER]: 'Numero',
+    [INPUT_TYPES.SELECT]: 'Selección',
+    [INPUT_TYPES.DATE]: 'Fecha',
+} as const;
+
 export type InputTypes = typeof INPUT_TYPES[keyof typeof INPUT_TYPES];
 
 export type FormatField = {
@@ -19,23 +27,13 @@ export type FormatField = {
     type: InputTypes;
     required: boolean;
     value?: string;
-    options?: any[];
-    position?: {
-        x: number;
-        y: number;
-        state: boolean;
-    };
+    options?: any;
 };
 
 export type FormatRow = {
     type: RowTypes;
     fields: FormatField[];
     values?: any[][]
-    position?: {
-        x: number;
-        y: number;
-        state: boolean;
-    };
 };
 
 export type Format = {

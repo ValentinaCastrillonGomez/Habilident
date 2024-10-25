@@ -1,18 +1,21 @@
-import { ChangeDetectionStrategy, Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Format, InputTypes, ROW_TYPES, RowTypes } from '@tipos/format';
-import { FormatsService } from '@features/formats/services/formats.service';
-import { FormatRowComponent } from '../format-row/format-row.component';
 import { CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { RowSingleComponent } from './components/row-single/row-single.component';
+import { FormatsService } from '@shared/services/formats.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { RowAreaComponent } from './components/row-area/row-area.component';
+import { RowTableComponent } from './components/row-table/row-table.component';
 
 export type RowsFormType = {
   type: FormControl<RowTypes>;
   fields: FormArray<FormGroup<FieldsFormType>>;
 };
 
-type FieldsFormType = {
+export type FieldsFormType = {
   name: FormControl<string>;
   type: FormControl<InputTypes>;
   required: FormControl<boolean>;
@@ -24,48 +27,48 @@ type FieldsFormType = {
   imports: [
     ReactiveFormsModule,
     MaterialModule,
-    FormatRowComponent,
+    RowSingleComponent,
+    RowAreaComponent,
+    RowTableComponent,
     CdkDropList,
   ],
+  providers: [FormatsService],
   templateUrl: './format.component.html',
   styleUrl: './format.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormatComponent implements OnChanges {
+export class FormatComponent {
+  private dialog = inject(MatDialogRef<FormatComponent>);
   private formBuilder = inject(NonNullableFormBuilder);
   private formatsService = inject(FormatsService);
-
-  @Input() format!: Format | null;
+  format = inject<Format | null>(MAT_DIALOG_DATA);
 
   formatForm = this.formBuilder.group({
-    name: this.formBuilder.control('', [Validators.required]),
-    rows: this.formBuilder.array<FormGroup<RowsFormType>>([]),
+    name: this.formBuilder.control(this.format?.name || '', [Validators.required]),
+    rows: this.formBuilder.array<FormGroup<RowsFormType>>(
+      this.format?.rows.map((row) => this.formBuilder.group<RowsFormType>({
+        type: this.formBuilder.control(row.type),
+        fields: this.formBuilder.array(row.fields.map(field =>
+          this.formBuilder.group<FieldsFormType>({
+            name: this.formBuilder.control(field.name, Validators.required),
+            type: this.formBuilder.control(field.type),
+            required: this.formBuilder.control(field.required),
+          })
+        )),
+      })) || [
+        this.formBuilder.group<RowsFormType>({
+          type: this.formBuilder.control(ROW_TYPES.SINGLE),
+          fields: this.formBuilder.array<FormGroup<FieldsFormType>>([]),
+        })
+      ]
+    ),
   });
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const format = changes['format'].currentValue as Format;
-
-    this.formatForm.reset();
-    this.formatForm.controls.rows.clear();
-
-    if (format) {
-      this.formatForm.controls.name.setValue(format.name)
-      format.rows.forEach((row) => this.formatForm.controls.rows.push(
-        this.formBuilder.group<RowsFormType>({
-          type: this.formBuilder.control(row.type),
-          fields: this.formBuilder.array(row.fields.map(field =>
-            this.formBuilder.group<FieldsFormType>({
-              name: this.formBuilder.control(field.name, Validators.required),
-              type: this.formBuilder.control(field.type),
-              required: this.formBuilder.control(field.required),
-            })
-          )),
-        })
-      ));
-    } else {
-      this.addRow(ROW_TYPES.SINGLE);
-    }
-  }
+  typeRows = [
+    { type: ROW_TYPES.SINGLE, name: 'De campos' },
+    { type: ROW_TYPES.AREA, name: 'Texto en area' },
+    { type: ROW_TYPES.TABLE, name: 'Tabla' },
+  ];
 
   addRow(type: RowTypes): void {
     this.formatForm.controls.rows.push(this.formBuilder.group<RowsFormType>({
@@ -91,7 +94,7 @@ export class FormatComponent implements OnChanges {
 
     this.formatsService.save(format, this.format?._id)
       .then(() => {
-        this.formatsService.loadFormats();
+        this.dialog.close(true);
         Swal.fire({
           title: "Registro guardado",
           icon: "success",

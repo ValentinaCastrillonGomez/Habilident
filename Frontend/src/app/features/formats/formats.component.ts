@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { FormatsService } from './services/formats.service';
-import { FormatComponent } from '@features/formats/components/format/format.component';
-import { ActivatedRoute } from '@angular/router';
-import { from, of, switchMap } from 'rxjs';
-import { ReportComponent } from './components/report/report.component';
+import { FormatComponent } from '@features/format/format.component';
+import { FormatsService } from '@shared/services/formats.service';
+import { RouterLink } from '@angular/router';
+import { Format } from '@tipos/format';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-formats',
@@ -12,20 +12,38 @@ import { ReportComponent } from './components/report/report.component';
   imports: [
     MaterialModule,
     FormatComponent,
-    ReportComponent,
+    RouterLink,
   ],
+  providers: [FormatsService],
   templateUrl: './formats.component.html',
   styleUrl: './formats.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class FormatsComponent {
-  private route = inject(ActivatedRoute);
+export class FormatsComponent {
   private formatsService = inject(FormatsService);
+  private dialog = inject(MatDialog);
 
-  @ViewChild(FormatComponent, { static: true }) formatComponent!: FormatComponent;
+  formats = signal<Format[]>([]);
 
-  format$ = this.route.params.pipe(
-    switchMap(({ id }) => id !== 'new' ? from(this.formatsService.get(id)) : of(null))
-  );
+  ngOnInit(): void {
+    this.loadFormats();
+  }
 
+  async loadFormats() {
+    const { data } = await this.formatsService.getAll();
+    this.formats.set(data);
+  }
+
+  async remove(id: string) {
+    const result = await this.formatsService.delete(id);
+    if (result) this.loadFormats();
+  }
+
+  open(data?: Format) {
+    const dialogRef = this.dialog.open(FormatComponent, { data });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) this.loadFormats();
+    });
+  }
 }

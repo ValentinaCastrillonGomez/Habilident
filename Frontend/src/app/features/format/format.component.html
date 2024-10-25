@@ -1,0 +1,54 @@
+<form [formGroup]="formatForm" (ngSubmit)="save()">
+    <span mat-dialog-title>Guardar formato</span>
+    <mat-dialog-content class="mat-typography">
+        <div class="my-2">
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Nombre del formato</mat-label>
+                <input matInput type="text" id="name" formControlName="name" required>
+                @if (formatForm.controls.name.invalid) {
+                <mat-error>Introduce un nombre válido</mat-error>
+                }
+            </mat-form-field>
+
+            <section formArrayName="rows">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold">Campos</span>
+
+                    <button mat-button type="button" [matMenuTriggerFor]="formInputs">
+                        <mat-icon>add</mat-icon>Añadir fila
+                    </button>
+                </div>
+                <div cdkDropList (cdkDropListDropped)="drop($event)">
+                    @for (row of formatForm.controls.rows.controls; track row) {
+                    @if (row.controls.type.value === 'single') {
+                    <app-row-single [row]="row" (remove)="removeRow($index)"
+                        [isUnique]="formatForm.controls.rows.controls.length===1"></app-row-single>
+                    }
+                    @if (row.controls.type.value === 'area') {
+                    <app-row-area [row]="row" (remove)="removeRow($index)"
+                        [isUnique]="formatForm.controls.rows.controls.length===1"></app-row-area>
+                    }
+                    @if (row.controls.type.value === 'table') {
+                    <app-row-table [row]="row" (remove)="removeRow($index)"
+                        [isUnique]="formatForm.controls.rows.controls.length===1"></app-row-table>
+                    }
+                    }
+                </div>
+            </section>
+        </div>
+
+        <mat-menu #formInputs="matMenu">
+            <ng-template matMenuContent>
+                @for (item of typeRows; track $index) {
+                <button mat-menu-item (click)="addRow(item.type)">
+                    <span>{{item.name}}</span>
+                </button>
+                }
+            </ng-template>
+        </mat-menu>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-stroked-button mat-dialog-close>Cancelar</button>
+        <button mat-flat-button cdkFocusInitial type="submit">Guardar</button>
+    </mat-dialog-actions>
+</form>

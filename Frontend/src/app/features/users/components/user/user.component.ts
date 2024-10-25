@@ -6,6 +6,8 @@ import { UsersService } from '../../services/users.service';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { RolesService } from '@features/roles/services/roles.service';
+import { Parameter } from '@tipos/parameter';
+import { ParametersService } from '@features/parameters/services/parameters.service';
 import Swal from 'sweetalert2';
 import moment from 'moment';
 
@@ -18,7 +20,7 @@ const ADULT = 18;
     ReactiveFormsModule,
     MaterialModule,
   ],
-  providers: [UsersService, RolesService],
+  providers: [UsersService, RolesService, ParametersService],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,8 +30,10 @@ export class UserComponent implements OnInit {
   private formBuilder = inject(NonNullableFormBuilder);
   private usersService = inject(UsersService);
   private rolesService = inject(RolesService);
+  private parametersService = inject(ParametersService);
   user = inject<User | null>(MAT_DIALOG_DATA);
 
+  options: Parameter[] = [];
   roles: Role[] = [];
   maxDate = moment().subtract(ADULT, 'years').toDate();
   nameFile = this.user?.signature?.name || null;
@@ -55,8 +59,18 @@ export class UserComponent implements OnInit {
     return !this.user?._id;
   }
 
-  ngOnInit(): void {
+  get typesDocuments() {
+    return this.options.find(option => option.name === 'Tipo de documentos')?.options || [];
+  }
+
+  get genders() {
+    return this.options.find(option => option.name === 'Generos')?.options || [];
+  }
+
+  async ngOnInit() {
     this.loadRoles();
+    const { data } = await this.parametersService.getAll();
+    this.options = data;
   }
 
   private async loadRoles() {

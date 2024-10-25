@@ -12,7 +12,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MAT_PAGINATOR_DEFAULT_OPTIONS, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -60,7 +60,7 @@ import { MatChipsModule } from '@angular/material/chips';
   ],
   providers: [
     provideNativeDateAdapter(),
-    { provide: DEFAULT_DIALOG_CONFIG, useValue: { maxWidth: '70vw' } },
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { maxWidth: '70vw', disableClose: true, hasBackdrop: true, } },
     { provide: MAT_PAGINATOR_DEFAULT_OPTIONS, useValue: { hidePageSize: true, showFirstLastButtons: true } },
     { provide: MatPaginatorIntl, useClass: AppPaginatorIntl },
     { provide: MAT_DATE_LOCALE, useValue: 'es-CO' }

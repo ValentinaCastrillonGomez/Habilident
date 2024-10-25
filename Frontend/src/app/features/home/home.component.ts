@@ -1,41 +1,28 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { NavbarComponent } from '@core/components/navbar/navbar.component';
 import { paths } from 'src/app/app.routes';
-import { FormatsService } from '@features/formats/services/formats.service';
+import { FormatsComponent } from '@features/formats/formats.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    RouterOutlet, RouterLink, MaterialModule,
+    RouterOutlet,
+    RouterLink,
+    MaterialModule,
     NavbarComponent,
+    FormatsComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class HomeComponent implements OnInit {
-  private router = inject(Router);
-  formatsService = inject(FormatsService);
-
+export default class HomeComponent {
   readonly administration = [
     { id: 'roles', path: paths.ROLES, title: 'Roles', icon: 'admin_panel_settings' },
     { id: 'users', path: paths.USERS, title: 'Usuarios', icon: 'group' },
     { id: 'parameters', path: paths.PARAMETERS, title: 'Parametros', icon: 'fact_check' },
   ];
-
-  ngOnInit(): void {
-    this.formatsService.loadFormats();
-  }
-
-  async remove(id: string) {
-    const result = await this.formatsService.delete(id);
-    if (result) this.formatsService.loadFormats();
-  }
-
-  goTo(path: string, id = '') {
-    this.router.navigate([path, id]);
-  }
 }

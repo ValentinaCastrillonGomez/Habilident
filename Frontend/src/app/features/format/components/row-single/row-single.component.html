@@ -1,0 +1,43 @@
+<div class="flex gap-x-3 overflow-x-hidden" cdkDrag>
+    <button mat-icon-button type="button" matTooltip="Arrastrar" matTooltipPosition="before" class="self-center"
+        cdkDragHandle>
+        <mat-icon>drag_indicator</mat-icon>
+    </button>
+    @for (input of row.controls.fields.controls; track input; let columnIndex = $index) {
+    @switch(input.controls.type.value){
+    @case ('select') {
+    <app-input-select class="w-full overflow-x-hidden pt-5" [field]="input" (remove)="removeColumn($index)"
+        [isUnique]="row.controls.fields.controls.length === 1"></app-input-select>
+    }
+    @default {
+    <app-input-text class="w-full overflow-x-hidden pt-5" [field]="input" (remove)="removeColumn($index)"
+        [isUnique]="row.controls.fields.controls.length === 1"></app-input-text>
+    }
+    }
+    }
+    <button mat-icon-button type="button" [matMenuTriggerFor]="rowInputs" class="self-center">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #rowInputs="matMenu">
+        <ng-template matMenuContent let-rowIndex="data">
+            <button mat-menu-item [matMenuTriggerFor]="inputsMenu">
+                <mat-icon>add</mat-icon>
+                <span>Añadir campo</span>
+            </button>
+            @if(!isUnique()){
+            <button mat-menu-item (click)="removeRow()">
+                <mat-icon class="text-red-600">delete</mat-icon>
+                <span class="text-red-600">Eliminar fila</span>
+            </button>
+            }
+        </ng-template>
+    </mat-menu>
+
+    <mat-menu #inputsMenu="matMenu">
+        @for (item of typeInputs; track $index) {
+        <button mat-menu-item (click)="addColumn(item.type)">
+            <span>{{item.name}}</span>
+        </button>
+        }
+    </mat-menu>
+</div>
