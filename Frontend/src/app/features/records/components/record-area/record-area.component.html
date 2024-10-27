@@ -1,0 +1,9 @@
+@if(input.controls.type.value=='text'){
+<mat-form-field appearance="outline" class="w-full" [formGroup]="input">
+    <mat-label>{{input.controls.name.value}}</mat-label>
+    <textarea matInput formControlName="value" [required]="input.controls.required.value"></textarea>
+    @if (input.controls.value.invalid) {
+        <mat-error class="truncate">Introduce un valor válido</mat-error>
+    }
+  </mat-form-field>
+}

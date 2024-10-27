@@ -1,42 +1,43 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
+import { InputTypes } from '@tipos/format';
+import { ValueFormType } from '../record/record.component';
 
 @Component({
   selector: 'app-record-table',
   standalone: true,
   imports: [MaterialModule, ReactiveFormsModule],
   templateUrl: './record-table.component.html',
-  styleUrl: './record-table.component.scss'
+  styleUrl: './record-table.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecordTableComponent {
-  @Input() values!: FormArray<FormArray<FormGroup<{
+  private formBuilder = inject(NonNullableFormBuilder);
+  @Input() fields!: FormArray<FormGroup<{
     name: FormControl<string>;
-    type: FormControl<string>;
+    type: FormControl<InputTypes>;
     required: FormControl<boolean>;
     value: FormControl<string>;
-  }>>>;
+  }>>;
+  @Input() values!: FormArray<FormArray<FormGroup<ValueFormType>>>;
+  dataSource = signal<FormArray[]>(this.values?.controls);
 
   get displayedColumns() {
-    return [...this.reference.controls.map(control => control.controls.name.value), 'actions'];
+    return [...this.fields.controls.map(control => control.controls.name.value), 'actions'];
   }
-
-  get reference() {
-    return this.values.controls[0];
-  }
-
-  constructor(private formBuilder: NonNullableFormBuilder) { }
 
   addRow(): void {
-    this.values.push(this.formBuilder.array(this.reference.controls.map(input => this.formBuilder.group({
-      name: this.formBuilder.control(input.controls.name.value),
-      type: this.formBuilder.control(input.controls.type.value),
-      required: this.formBuilder.control(input.controls.required.value),
-      value: this.formBuilder.control('', input.controls.required.value ? [Validators.required] : []),
+    this.values.push(this.formBuilder.array(this.fields.controls.map(field => this.formBuilder.group({
+      name: this.formBuilder.control(field.controls.name.value),
+      type: this.formBuilder.control(field.controls.type.value),
+      required: this.formBuilder.control(field.controls.required.value),
+      value: this.formBuilder.control('', field.controls.required.value ? [Validators.required] : []),
     }))));
+    this.dataSource.set(this.values.controls);
   }
 
   removeRow(columnIndex: number): void {
-    if (this.values.length > 1) this.values.removeAt(columnIndex);
+    if (this.fields.length > 1) this.fields.removeAt(columnIndex);
   }
 }

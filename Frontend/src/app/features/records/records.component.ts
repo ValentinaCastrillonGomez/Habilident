@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Record } from '@tipos/record';
@@ -28,7 +28,7 @@ export default class RecordsComponent implements AfterViewInit {
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     format: Format | null = null;
-    dataSource: Record[] = [];
+    dataSource = signal<Record[]>([]);
     totalRecords = 0;
     pageSize = 10;
     displayedColumns: string[] = ['dateCreate', 'userCreate', 'dateLastUpdate', 'userLastUpdate', 'actions'];
@@ -52,7 +52,7 @@ export default class RecordsComponent implements AfterViewInit {
             const { data, totalRecords } = await this.recordsService.getAll(
                 this.paginator.pageIndex, this.paginator.pageSize, this.format?._id
             );
-            this.dataSource = data;
+            this.dataSource.set(data);
             this.totalRecords = totalRecords;
         });
     }

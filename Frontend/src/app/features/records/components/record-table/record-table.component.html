@@ -1,17 +1,9 @@
-<mat-table [dataSource]="values.controls" class="mb-3">
-    @for (input of values.controls[0].controls; track input; let columnIndex = $index) {
+<mat-table [dataSource]="dataSource()" class="mb-3">
+    @for (input of fields.controls; track input; let columnIndex = $index) {
     <ng-container [matColumnDef]="input.controls.name.value">
         <mat-header-cell *matHeaderCellDef> {{input.controls.name.value}} </mat-header-cell>
         <mat-cell *matCellDef="let element">
-            @if(input.controls.type.value=='text'){
-            <mat-form-field appearance="outline" class="w-full" [formGroup]="input">
-                <input matInput [type]="input.controls.type.value" id="name" formControlName="value"
-                    [required]="input.controls.required.value">
-                @if (input.controls.value.invalid) {
-                <mat-error class="truncate">Introduce un valor válido</mat-error>
-                }
-            </mat-form-field>
-            }
+            {{element.value | json}}
         </mat-cell>
     </ng-container>
     }

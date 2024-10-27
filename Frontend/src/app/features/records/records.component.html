@@ -7,7 +7,7 @@
 
     <button mat-flat-button (click)="open()"><mat-icon>add</mat-icon>Añadir Registro</button>
 </div>
-<mat-table [dataSource]="dataSource">
+<mat-table [dataSource]="dataSource()">
     <ng-container matColumnDef="dateCreate">
         <mat-header-cell *matHeaderCellDef> Fecha de registro </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.dateCreate | date: 'dd/MM/yyyy, h:mm a' }}
@@ -57,7 +57,7 @@
 
 <mat-menu #actions="matMenu">
     <ng-template matMenuContent let-element="data">
-        <button mat-menu-item>
+        <button mat-menu-item (click)="open(element)">
             <mat-icon>edit</mat-icon>
             <span>Actualizar</span>
         </button>
