@@ -7,7 +7,7 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { RolesService } from '@features/roles/services/roles.service';
 import { Parameter } from '@tipos/parameter';
-import { ParametersService } from '@features/parameters/services/parameters.service';
+import { ParametersService } from '@shared/services/parameters.service';
 import Swal from 'sweetalert2';
 import moment from 'moment';
 

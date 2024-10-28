@@ -1,28 +1,29 @@
-<mat-table [dataSource]="dataSource()" class="mb-3">
-    @for (input of fields.controls; track input; let columnIndex = $index) {
-    <ng-container [matColumnDef]="input.controls.name.value">
-        <mat-header-cell *matHeaderCellDef> {{input.controls.name.value}} </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-            {{element.value | json}}
-        </mat-cell>
-    </ng-container>
-    }
-
-    <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef>
-            <button mat-button type="button" (click)="addRow()">
-                <mat-icon>add</mat-icon>
-                <span>Añadir fila</span>
-            </button>
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element" class="justify-end">
-            <button mat-button type="button" (click)="removeRow(element._id)">
-                <mat-icon class="text-red-600">close</mat-icon>
-                <span class="text-red-600">Eliminar fila</span>
-            </button>
-        </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
+<table class="mb-3 border-collapse">
+    <thead>
+        <tr>
+            @for (header of displayedColumns; track $index) {
+            <th>{{header}}</th>
+            }
+            <th>
+                <button mat-icon-button type="button" matTooltip="Añadir fila" matTooltipPosition="above"
+                    (click)="addRow()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (row of fields.controls; track $index) {
+        <tr>
+            @for (column of row.controls; track $index) {
+            <td><app-record-input [input]="column" [isTable]="true"></app-record-input></td>
+            }
+            <td>
+                <button mat-icon-button type="button" class="mb-4" matTooltip="Eliminar fila" matTooltipPosition="above"
+                    (click)="removeRow($index)">
+                    <mat-icon class="text-red-600">delete</mat-icon>
+                </button>
+            </td>
+        </tr>
+        }
+</table>

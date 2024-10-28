@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { ParametersService } from '@features/parameters/services/parameters.service';
+import { ParametersService } from '@shared/services/parameters.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Parameter } from '@tipos/parameter';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
@@ -13,7 +13,6 @@ import { ParameterComponent } from './components/parameter/parameter.component';
   imports: [
     MaterialModule,
   ],
-  providers: [ParametersService],
   templateUrl: './parameters.component.html',
   styleUrl: './parameters.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -5,9 +5,8 @@ import { MaterialModule } from '@shared/modules/material/material.module';
 import { Record } from '@tipos/record';
 import { Format, InputTypes, RowTypes } from '@tipos/format';
 import { RecordsService } from '@features/records/services/records.service';
-import { RecordTextComponent } from '../record-text/record-text.component';
 import { RecordTableComponent } from '../record-table/record-table.component';
-import { RecordAreaComponent } from '../record-area/record-area.component';
+import { RecordInputComponent } from '../record-input/record-input.component';
 import Swal from 'sweetalert2';
 
 export type ValueFormType = {
@@ -19,8 +18,7 @@ export type ValueFormType = {
 
 type ValuesFormType = {
     type: FormControl<RowTypes>;
-    fields: FormArray<FormGroup<ValueFormType>>;
-    values: FormArray<FormArray<FormGroup<ValueFormType>>>
+    fields: FormArray<FormArray<FormGroup<ValueFormType>>>;
 };
 
 @Component({
@@ -29,9 +27,8 @@ type ValuesFormType = {
     imports: [
         MaterialModule,
         ReactiveFormsModule,
-        RecordTextComponent,
         RecordTableComponent,
-        RecordAreaComponent,
+        RecordInputComponent,
     ],
     providers: [RecordsService],
     templateUrl: './record.component.html',
@@ -63,13 +60,12 @@ export class RecordComponent implements OnInit {
         this.data.format.rows.forEach((row) =>
             this.recordForm.controls.rows.push(this.formBuilder.group<ValuesFormType>({
                 type: this.formBuilder.control(row.type),
-                fields: this.formBuilder.array(row.fields.map(input => this.formBuilder.group({
+                fields: this.formBuilder.array([this.formBuilder.array(row.fields.map(input => this.formBuilder.group({
                     name: this.formBuilder.control(input.name),
                     type: this.formBuilder.control(input.type),
                     required: this.formBuilder.control(input.required),
                     value: this.formBuilder.control('', input.required ? [Validators.required] : []),
-                }))),
-                values: this.formBuilder.array<FormArray>([]),
+                })))]),
             }))
         );
     }
@@ -78,27 +74,17 @@ export class RecordComponent implements OnInit {
         this.data.record!.rows.forEach((row) =>
             this.recordForm.controls.rows.push(this.formBuilder.group<ValuesFormType>({
                 type: this.formBuilder.control(row.type),
-                fields: this.formBuilder.array(row.fields.map(input => this.formBuilder.group({
+                fields: this.formBuilder.array(row.fields.map(fields => this.formBuilder.array(fields.map(input => this.formBuilder.group({
                     name: this.formBuilder.control(input.name),
                     type: this.formBuilder.control(input.type),
                     required: this.formBuilder.control(input.required),
                     value: this.formBuilder.control(input.value || '', input.required ? [Validators.required] : []),
-                }))),
-                values: this.formBuilder.array(row.values?.map(list =>
-                    this.formBuilder.array(list.map(value => this.formBuilder.group({
-                        name: this.formBuilder.control(value.name),
-                        type: this.formBuilder.control(value.type),
-                        required: this.formBuilder.control(value.required),
-                        value: this.formBuilder.control(value.value || '', value.required ? [Validators.required] : []),
-                    })))
-                ) || []),
+                }))))),
             }))
         );
     }
 
     async save() {
-        console.log(this.recordForm);
-
         if (this.recordForm.invalid) return;
 
         const record = this.recordForm.getRawValue();

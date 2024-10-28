@@ -32,7 +32,6 @@ export type FormatField = {
 export type FormatRow = {
     type: RowTypes;
     fields: FormatField[];
-    values?: FormatField[][]
 };
 
 export type Format = {

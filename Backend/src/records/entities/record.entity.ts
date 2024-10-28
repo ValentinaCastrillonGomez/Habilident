@@ -1,8 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument, Types } from "mongoose";
 import { FormatEntity } from "src/formats/entities/format.entity";
-import { FormatRow } from "src/types/format";
-import { Record } from "src/types/record";
+import { Record, RecordRow } from "src/types/record";
 import { UserEntity } from "src/users/entities/user.entity";
 
 export type RecordDocument = HydratedDocument<RecordEntity>;
@@ -27,7 +26,7 @@ export class RecordEntity implements Record {
     format: FormatEntity;
 
     @Prop({ type: [Object] })
-    rows: FormatRow[];
+    rows: RecordRow[];
 }
 
 export const RecordSchema = SchemaFactory.createForClass(RecordEntity);

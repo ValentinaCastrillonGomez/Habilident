@@ -1,11 +1,24 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { GenericService } from '@shared/classes/generic.service';
 import { Parameter } from '@tipos/parameter';
 import { ENV } from 'src/app/app.config';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ParametersService extends GenericService<Parameter> {
   protected http = inject(HttpClient);
   protected api = inject(ENV).API_PARAMETERS;
+  parameters = signal<Parameter[]>([]);
+
+  async loadParameters() {
+    const { data } = await this.getAll();
+    this.parameters.set(data);
+  }
+
+  getOptions(id: string) {
+    return this.parameters().find(parameter => parameter._id === id);
+  }
+
 }

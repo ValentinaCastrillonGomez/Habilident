@@ -6,6 +6,7 @@ import { Format } from '@tipos/format';
 import { MatDialog } from '@angular/material/dialog';
 import { RecordsComponent } from '@features/records/records.component';
 import { FormatComponent } from './components/format/format.component';
+import { ParametersService } from '@shared/services/parameters.service';
 
 @Component({
   selector: 'app-formats',
@@ -23,12 +24,14 @@ import { FormatComponent } from './components/format/format.component';
 export default class FormatsComponent {
   private formatsService = inject(FormatsService);
   private dialog = inject(MatDialog);
+  private parametersService = inject(ParametersService);
 
   formats = signal<Format[]>([]);
   formatSelected: Format | null = null;
 
   async ngOnInit() {
     await this.loadFormats();
+    await this.parametersService.loadParameters();
     this.formatSelected = this.formats()[0] || null;
   }
 

@@ -1,4 +1,9 @@
-import { FormatRow } from "./format";
+import { FormatField, RowTypes } from "./format";
+
+export type RecordRow = {
+    type: RowTypes;
+    fields: FormatField[][];
+};
 
 export type Record = {
     _id?: any;
@@ -7,5 +12,5 @@ export type Record = {
     userCreate: any;
     dateLastUpdate: string;
     userLastUpdate: any;
-    rows: FormatRow[];
+    rows: RecordRow[];
 };

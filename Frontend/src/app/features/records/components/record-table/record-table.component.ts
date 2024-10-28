@@ -1,40 +1,48 @@
-import { ChangeDetectionStrategy, Component, inject, Input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { InputTypes } from '@tipos/format';
-import { ValueFormType } from '../record/record.component';
+import { INPUT_TYPES, InputTypes } from '@tipos/format';
+import { RecordInputComponent } from '../record-input/record-input.component';
+import { ParametersService } from '@shared/services/parameters.service';
 
 @Component({
   selector: 'app-record-table',
   standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule],
+  imports: [
+    MaterialModule,
+    ReactiveFormsModule,
+    RecordInputComponent,
+  ],
   templateUrl: './record-table.component.html',
   styleUrl: './record-table.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecordTableComponent {
   private formBuilder = inject(NonNullableFormBuilder);
-  @Input() fields!: FormArray<FormGroup<{
+  private parametersService = inject(ParametersService);
+  @Input() fields!: FormArray<FormArray<FormGroup<{
     name: FormControl<string>;
     type: FormControl<InputTypes>;
     required: FormControl<boolean>;
     value: FormControl<string>;
-  }>>;
-  @Input() values!: FormArray<FormArray<FormGroup<ValueFormType>>>;
-  dataSource = signal<FormArray[]>(this.values?.controls);
+  }>>>;
 
   get displayedColumns() {
-    return [...this.fields.controls.map(control => control.controls.name.value), 'actions'];
+    return this.fields.controls[0].controls.map(control => {
+      if (control.controls.type.value === INPUT_TYPES.SELECT) {
+        return this.parametersService.getOptions(control.controls.name.value)?.name;
+      }
+      return control.controls.name.value;
+    });
   }
 
   addRow(): void {
-    this.values.push(this.formBuilder.array(this.fields.controls.map(field => this.formBuilder.group({
+    this.fields.push(this.formBuilder.array(this.fields.controls[0].controls.map(field => this.formBuilder.group({
       name: this.formBuilder.control(field.controls.name.value),
       type: this.formBuilder.control(field.controls.type.value),
       required: this.formBuilder.control(field.controls.required.value),
       value: this.formBuilder.control('', field.controls.required.value ? [Validators.required] : []),
     }))));
-    this.dataSource.set(this.values.controls);
   }
 
   removeRow(columnIndex: number): void {
