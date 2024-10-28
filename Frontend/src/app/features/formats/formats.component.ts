@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { FormatComponent } from '@features/format/format.component';
 import { FormatsService } from '@shared/services/formats.service';
 import { RouterLink } from '@angular/router';
 import { Format } from '@tipos/format';
 import { MatDialog } from '@angular/material/dialog';
 import { RecordsComponent } from '@features/records/records.component';
+import { FormatComponent } from './components/format/format.component';
 
 @Component({
   selector: 'app-formats',

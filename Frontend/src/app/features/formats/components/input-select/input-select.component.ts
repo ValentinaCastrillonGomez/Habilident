@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, Input, input, OnInit, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FieldsFormType } from '@features/format/format.component';
 import { ParametersService } from '@features/parameters/services/parameters.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { TYPES_NAMES } from '@tipos/format';
 import { Parameter } from '@tipos/parameter';
+import { FieldsFormType } from '../format/format.component';
 
 @Component({
   selector: 'app-input-select',

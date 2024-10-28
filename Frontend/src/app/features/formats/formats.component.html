@@ -2,13 +2,13 @@
     <mat-sidenav mode="side" opened class="w-80 border-r-slate-400 rounded-tr-none rounded-br-none">
         <mat-nav-list>
             <div class="flex justify-center my-2">
-                <button mat-stroked-button (click)="open()"> Añadir formato </button>
+                <button mat-stroked-button (click)="open()">Añadir formato</button>
             </div>
             @for (format of formats(); track format._id) {
-            <mat-list-item>
+            <mat-list-item [activated]="format._id === formatSelected?._id" class="group">
                 <mat-icon matListItemIcon>folder</mat-icon>
-                <div class="flex items-center justify-between group">
-                    <div class="truncate w-full" (click)="formatSelected = format">
+                <div class="flex items-center justify-between">
+                    <div class="truncate w-full" (click)="formatSelected = format" [title]="format.name | titlecase">
                         {{format.name | titlecase}}
                     </div>
                     <button mat-icon-button [matMenuTriggerFor]="formatsMenu" #menu="matMenuTrigger"

@@ -3,12 +3,12 @@ import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveForm
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Format, InputTypes, ROW_TYPES, RowTypes } from '@tipos/format';
 import { CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { RowSingleComponent } from './components/row-single/row-single.component';
+import { RowSingleComponent } from '../row-single/row-single.component';
 import { FormatsService } from '@shared/services/formats.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { RowAreaComponent } from '../row-area/row-area.component';
+import { RowTableComponent } from '../row-table/row-table.component';
 import Swal from 'sweetalert2';
-import { RowAreaComponent } from './components/row-area/row-area.component';
-import { RowTableComponent } from './components/row-table/row-table.component';
 
 export type RowsFormType = {
   type: FormControl<RowTypes>;
