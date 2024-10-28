@@ -1,33 +1,43 @@
-<div mat-subheader class="font-semibold flex items-center justify-between">
-    Formatos
-    <button mat-icon-button matTooltip="Añadir" matTooltipPosition="before" (click)="open()">
-        <mat-icon>add</mat-icon>
-    </button>
-</div>
-@for (format of formats(); track format._id) {
-<mat-list-item>
-    <mat-icon matListItemIcon>folder</mat-icon>
-    <div class="flex items-center justify-between group">
-        <div class="truncate w-full" [routerLink]="'records/' + format._id">
-            {{format.name | titlecase}}
-        </div>
-        <button mat-icon-button [matMenuTriggerFor]="formatsMenu" #menu="matMenuTrigger"
-            [matMenuTriggerData]="{data: format}"
-            [ngClass]="{'invisible group-hover:visible': !menu.menuOpen, 'visible': menu.menuOpen}">
-            <mat-icon>more_vert</mat-icon>
-        </button>
-    </div>
-</mat-list-item>
-}
-<mat-menu #formatsMenu="matMenu">
-    <ng-template matMenuContent let-format="data">
-        <button mat-menu-item (click)="open(format)">
-            <mat-icon>edit</mat-icon>
-            <span>Actualizar</span>
-        </button>
-        <button mat-menu-item (click)="remove(format._id)">
-            <mat-icon class="text-red-600">delete</mat-icon>
-            <span class="text-red-600">Eliminar</span>
-        </button>
-    </ng-template>
-</mat-menu>
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav mode="side" opened class="w-80 border-r-slate-400 rounded-tr-none rounded-br-none">
+        <mat-nav-list>
+            <div class="flex justify-center my-2">
+                <button mat-stroked-button (click)="open()"> Añadir formato </button>
+            </div>
+            @for (format of formats(); track format._id) {
+            <mat-list-item>
+                <mat-icon matListItemIcon>folder</mat-icon>
+                <div class="flex items-center justify-between group">
+                    <div class="truncate w-full" (click)="formatSelected = format">
+                        {{format.name | titlecase}}
+                    </div>
+                    <button mat-icon-button [matMenuTriggerFor]="formatsMenu" #menu="matMenuTrigger"
+                        [matMenuTriggerData]="{data: format}"
+                        [ngClass]="{'invisible group-hover:visible': !menu.menuOpen, 'visible': menu.menuOpen}">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                </div>
+            </mat-list-item>
+            }
+        </mat-nav-list>
+        <mat-menu #formatsMenu="matMenu">
+            <ng-template matMenuContent let-format="data">
+                <button mat-menu-item (click)="open(format)">
+                    <mat-icon>edit</mat-icon>
+                    <span>Actualizar</span>
+                </button>
+                <button mat-menu-item (click)="remove(format._id)">
+                    <mat-icon class="text-red-600">delete</mat-icon>
+                    <span class="text-red-600">Eliminar</span>
+                </button>
+            </ng-template>
+        </mat-menu>
+    </mat-sidenav>
+    <mat-sidenav-content class="bg-white">
+        <main class="m-5">
+            @if(formatSelected){
+            <app-records [format]="formatSelected"></app-records>
+            }
+        </main>
+    </mat-sidenav-content>
+</mat-sidenav-container>

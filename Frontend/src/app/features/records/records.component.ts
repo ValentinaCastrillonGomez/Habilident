@@ -1,33 +1,31 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, Injector, input, signal, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Record } from '@tipos/record';
-import { debounceTime, distinctUntilChanged, from, merge, Subject, switchMap, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
 import { RecordsService } from './services/records.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { RecordComponent } from './components/record/record.component';
 import { Format } from '@tipos/format';
-import { FormatsService } from '@shared/services/formats.service';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-records',
     standalone: true,
     imports: [MaterialModule, ReactiveFormsModule],
-    providers: [RecordsService, FormatsService],
+    providers: [RecordsService],
     templateUrl: './records.component.html',
     styleUrl: './records.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class RecordsComponent implements AfterViewInit {
-    private route = inject(ActivatedRoute);
+export class RecordsComponent implements AfterViewInit {
     private recordsService = inject(RecordsService);
-    private formatsService = inject(FormatsService);
     private dialog = inject(MatDialog);
+    private injector = inject(Injector);
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;
-    format: Format | null = null;
+    format = input.required<Format>();
     dataSource = signal<Record[]>([]);
     totalRecords = 0;
     pageSize = 10;
@@ -41,16 +39,13 @@ export default class RecordsComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         merge(
-            this.route.params.pipe(
-                switchMap(({ id }) => from(this.formatsService.get(id))),
-                tap(format => { this.format = format })
-            ),
+            toObservable(this.format, { injector: this.injector }),
             this.searchTerms.pipe(debounceTime(900), distinctUntilChanged()),
             this.actions,
             this.paginator.page
         ).subscribe(async () => {
             const { data, totalRecords } = await this.recordsService.getAll(
-                this.paginator.pageIndex, this.paginator.pageSize, this.format?._id
+                this.paginator.pageIndex, this.paginator.pageSize, this.format()._id
             );
             this.dataSource.set(data);
             this.totalRecords = totalRecords;
@@ -67,7 +62,7 @@ export default class RecordsComponent implements AfterViewInit {
     }
 
     open(record?: Record) {
-        const dialogRef = this.dialog.open(RecordComponent, { data: { record, format: this.format } });
+        const dialogRef = this.dialog.open(RecordComponent, { data: { record, format: this.format() } });
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) this.actions.next();

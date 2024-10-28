@@ -5,28 +5,31 @@ import { FormatsService } from '@shared/services/formats.service';
 import { RouterLink } from '@angular/router';
 import { Format } from '@tipos/format';
 import { MatDialog } from '@angular/material/dialog';
+import { RecordsComponent } from '@features/records/records.component';
 
 @Component({
   selector: 'app-formats',
   standalone: true,
   imports: [
     MaterialModule,
-    FormatComponent,
     RouterLink,
+    RecordsComponent,
   ],
   providers: [FormatsService],
   templateUrl: './formats.component.html',
   styleUrl: './formats.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormatsComponent {
+export default class FormatsComponent {
   private formatsService = inject(FormatsService);
   private dialog = inject(MatDialog);
 
   formats = signal<Format[]>([]);
+  formatSelected: Format | null = null;
 
-  ngOnInit(): void {
-    this.loadFormats();
+  async ngOnInit() {
+    await this.loadFormats();
+    this.formatSelected = this.formats()[0] || null;
   }
 
   async loadFormats() {

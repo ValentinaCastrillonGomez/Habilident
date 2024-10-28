@@ -1,34 +1,4 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav mode="side" opened [fixedInViewport]="true"
-    class="w-80 border-r-slate-400 rounded-tr-none rounded-br-none">
-    <mat-nav-list>
-      <div class="flex justify-center">
-        <h3 class="text-sky-600 mb-0">Habilident</h3>
-      </div>
-
-      <app-formats></app-formats>
-
-      <div mat-subheader class="font-semibold">Gestión</div>
-      @for (item of management; track item.id) {
-      <mat-list-item [routerLink]="item.path">
-        <mat-icon matListItemIcon>{{item.icon}}</mat-icon>
-        <div matListItemTitle>{{item.title}}</div>
-      </mat-list-item>
-      }
-
-      <div mat-subheader class="font-semibold">Administración</div>
-      @for (item of administration; track item.id) {
-      <mat-list-item [routerLink]="item.path">
-        <mat-icon matListItemIcon>{{item.icon}}</mat-icon>
-        <div matListItemTitle>{{item.title}}</div>
-      </mat-list-item>
-      }
-    </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <app-navbar></app-navbar>
-    <main class="m-5">
-      <router-outlet></router-outlet>
-    </main>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+<app-navbar></app-navbar>
+<main class="container mx-auto mt-5">
+  <router-outlet></router-outlet>
+</main>

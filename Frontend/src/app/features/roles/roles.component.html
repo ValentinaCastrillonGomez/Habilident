@@ -1,45 +1,52 @@
-<div class="flex items-center justify-between">
+<div class="flex items-center justify-between mb-3">
+    <div class="flex items-center gap-x-2">
+        <h6 class="mb-0">Listado de roles</h6>
+        <button mat-stroked-button (click)="open()"><mat-icon>add</mat-icon>Añadir rol</button>
+    </div>
+
     <mat-form-field appearance="outline" subscriptSizing="dynamic">
         <mat-label>Filtrar roles</mat-label>
         <input matInput #filter id="filterRoles" (input)="search(filter.value)">
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
-
-    <button mat-flat-button (click)="open()"><mat-icon>add</mat-icon>Añadir rol</button>
 </div>
-<mat-table [dataSource]="dataSource()">
-    <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-    </ng-container>
+<mat-card appearance="outlined">
+    <mat-card-content>
+        <mat-table [dataSource]="dataSource()">
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="permissions">
-        <mat-header-cell *matHeaderCellDef> Permisos </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-            <div class="truncate">{{element.permissions}}</div>
-        </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="permissions">
+                <mat-header-cell *matHeaderCellDef> Permisos </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <div class="truncate">{{element.permissions}}</div>
+                </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
-        <mat-cell *matCellDef="let element" class="justify-end">
-            <button mat-icon-button [matMenuTriggerFor]="actions" [matMenuTriggerData]="{data: element}"
-                #menu="matMenuTrigger"
-                [ngClass]="{'invisible group-hover:visible': !menu.menuOpen, 'visible': menu.menuOpen}">
-                <mat-icon>more_horiz</mat-icon>
-            </button>
-        </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="justify-end">
+                    <button mat-icon-button [matMenuTriggerFor]="actions" [matMenuTriggerData]="{data: element}"
+                        #menu="matMenuTrigger"
+                        [ngClass]="{'invisible group-hover:visible': !menu.menuOpen, 'visible': menu.menuOpen}">
+                        <mat-icon>more_horiz</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
 
-    <div *matNoDataRow class="text-center">
-        hay datos que coincidan con el filtro.
-    </div>
+            <div *matNoDataRow class="text-center">
+                hay datos que coincidan con el filtro.
+            </div>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;" class="group"></mat-row>
-</mat-table>
-<mat-divider></mat-divider>
-<mat-paginator [length]="totalRecords" [pageSize]="pageSize"></mat-paginator>
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" class="group"></mat-row>
+        </mat-table>
+        <mat-divider></mat-divider>
+        <mat-paginator [length]="totalRecords" [pageSize]="pageSize"></mat-paginator>
+    </mat-card-content>
+</mat-card>
 
 <mat-menu #actions="matMenu">
     <ng-template matMenuContent let-element="data">
