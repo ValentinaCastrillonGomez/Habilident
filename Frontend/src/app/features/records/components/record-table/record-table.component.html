@@ -1,0 +1,29 @@
+<table class="mb-3 border-collapse">
+    <thead>
+        <tr>
+            @for (header of displayedColumns; track $index) {
+            <th>{{header}}</th>
+            }
+            <th>
+                <button mat-icon-button type="button" matTooltip="Añadir fila" matTooltipPosition="above"
+                    (click)="addRow()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (row of fields.controls; track $index) {
+        <tr>
+            @for (column of row.controls; track $index) {
+            <td><app-record-input [input]="column" [isTable]="true"></app-record-input></td>
+            }
+            <td>
+                <button mat-icon-button type="button" class="mb-4" matTooltip="Eliminar fila" matTooltipPosition="above"
+                    (click)="removeRow($index)">
+                    <mat-icon class="text-red-600">delete</mat-icon>
+                </button>
+            </td>
+        </tr>
+        }
+</table>

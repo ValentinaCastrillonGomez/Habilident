@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { FormatsService } from './formats.service';
 import { Format } from 'src/types/format';
 import { AuthGuard } from '@nestjs/passport';
@@ -14,13 +14,13 @@ export class FormatsController {
     }
 
     @Get()
-    findAll() {
-        return this.formatsService.findAll();
+    findAll(@Query() { skip, limit, query }) {
+        return this.formatsService.findAll(skip, limit, query);
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.formatsService.findOne({ id });
+    findOne(@Param('id') _id: string) {
+        return this.formatsService.findOne({ _id });
     }
 
     @Patch(':id')

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { Format, Matrix } from 'src/types/format';
+import { Format, FormatRow } from 'src/types/format';
 
 export type FormatDocument = HydratedDocument<FormatEntity>;
 
@@ -12,7 +12,7 @@ export class FormatEntity implements Format {
     name: string;
 
     @Prop({ type: [Object] })
-    matrix: Matrix[];
+    rows: FormatRow[];
 }
 
 export const FormatSchema = SchemaFactory.createForClass(FormatEntity);

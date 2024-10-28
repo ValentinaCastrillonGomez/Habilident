@@ -1,0 +1,9 @@
+thead {
+    background-color: var(--mat-list-active-indicator-color, var(--mat-app-secondary-container));
+}
+
+table,
+th,
+td {
+    @apply border border-solid border-black/50
+}
