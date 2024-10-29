@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, inject, input, Input, OnInit, outpu
 import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { INPUT_TYPES, InputTypes } from '@tipos/format';
-import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
-import { RowsFormType } from '@features/format/format.component';
 import { InputTextComponent } from '../input-text/input-text.component';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { InputSelectComponent } from '../input-select/input-select.component';
+import { RowsFormType } from '../format/format.component';
 
 @Component({
-  selector: 'app-row-single',
+  selector: 'app-row-table',
   standalone: true,
   imports: [
     MaterialModule,
@@ -16,11 +16,11 @@ import { InputSelectComponent } from '../input-select/input-select.component';
     InputTextComponent,
     InputSelectComponent,
   ],
-  templateUrl: './row-single.component.html',
-  styleUrl: './row-single.component.scss',
+  templateUrl: './row-table.component.html',
+  styleUrl: './row-table.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RowSingleComponent implements OnInit {
+export class RowTableComponent implements OnInit {
   private formBuilder = inject(NonNullableFormBuilder);
 
   @Input({ required: true }) row!: FormGroup<RowsFormType>;
@@ -34,7 +34,7 @@ export class RowSingleComponent implements OnInit {
     { type: INPUT_TYPES.DATE, name: 'Fecha' },
   ];
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (!this.row.controls.fields.length) this.addColumn(INPUT_TYPES.TEXT);
   }
 
@@ -53,5 +53,4 @@ export class RowSingleComponent implements OnInit {
   removeRow(): void {
     this.remove.emit();
   }
-
 }

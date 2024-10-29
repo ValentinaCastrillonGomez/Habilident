@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, input, Input, OnInit, output } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
-import { FieldsFormType, RowsFormType } from '@features/format/format.component';
+import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms'; 
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { INPUT_TYPES, InputTypes } from '@tipos/format';
 import { InputTextComponent } from '../input-text/input-text.component';
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { FieldsFormType, RowsFormType } from '../format/format.component';
 
 @Component({
   selector: 'app-row-area',

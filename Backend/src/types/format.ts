@@ -27,13 +27,11 @@ export type FormatField = {
     type: InputTypes;
     required: boolean;
     value?: string;
-    options?: any;
 };
 
 export type FormatRow = {
     type: RowTypes;
     fields: FormatField[];
-    values?: any[][]
 };
 
 export type Format = {

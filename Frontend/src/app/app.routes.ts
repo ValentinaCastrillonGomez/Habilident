@@ -7,7 +7,7 @@ export const paths = {
   USERS: 'users',
   ROLES: 'roles',
   PARAMETERS: 'parameters',
-  RECORDS: 'records',
+  FORMATS: 'formats',
   REPORTS: 'reports',
   ALERTS: 'alerts',
 };
@@ -23,29 +23,30 @@ export const routes: Routes = [
     loadComponent: () => import('@features/home/home.component'),
     children: [
       {
-        path: paths.USERS, data: { title: 'Listado de usuarios' },
+        path: paths.USERS,
         loadComponent: () => import('@features/users/users.component'),
       },
       {
-        path: paths.ROLES, data: { title: 'Listado de roles' },
+        path: paths.ROLES,
         loadComponent: () => import('@features/roles/roles.component'),
       },
       {
-        path: paths.PARAMETERS, data: { title: 'Parametros del sistema' },
+        path: paths.PARAMETERS,
         loadComponent: () => import('@features/parameters/parameters.component'),
       },
       {
-        path: `${paths.REPORTS}`, data: { title: 'Generación de reportes' },
+        path: `${paths.FORMATS}`,
+        loadComponent: () => import('@features/formats/formats.component'),
+      },
+      {
+        path: `${paths.REPORTS}`,
         loadComponent: () => import('@features/reports/reports.component'),
       },
       {
-        path: `${paths.ALERTS}`, data: { title: 'Generación de alertas' },
-        loadComponent: () => import('@features/alerts/alerts.component'),
+        path: `${paths.ALARMS}`, data: { title: 'Generación de alarmas' },
+        loadComponent: () => import('@features/alarms/alarms.component'),
       },
-      {
-        path: `${paths.RECORDS}/:id`, data: { title: 'Registros del formato' },
-        loadComponent: () => import('@features/records/records.component'),
-      }
+      { path: '**', redirectTo: paths.FORMATS },
     ]
   },
   { path: '', redirectTo: paths.HOME, pathMatch: 'full' },

@@ -1,15 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { LoadingService } from '@core/services/loading.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { filter, map, mergeMap, tap } from 'rxjs';
+import { paths } from 'src/app/app.routes';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [
+    RouterLink,
     MaterialModule
   ],
   templateUrl: './navbar.component.html',
@@ -17,23 +17,20 @@ import { filter, map, mergeMap, tap } from 'rxjs';
 })
 export class NavbarComponent {
   private authService = inject(AuthService);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
   loadingService = inject(LoadingService);
 
+  readonly administration = [
+    { id: 'roles', path: paths.ROLES, title: 'Roles', icon: 'admin_panel_settings' },
+    { id: 'users', path: paths.USERS, title: 'Usuarios', icon: 'group' },
+    { id: 'parameters', path: paths.PARAMETERS, title: 'Parametros', icon: 'fact_check' },
+  ];
+  readonly management = [
+    { id: 'formats', path: paths.FORMATS, title: 'Formatos' },
+    { id: 'reports', path: paths.REPORTS, title: 'Reportes' },
+    { id: 'alarms', path: paths.ALERTS, title: 'Alarmas' },
+  ];
+
   username = this.authService.getUser().name;
-  title = toSignal(this.router.events.pipe(
-    filter(event => event instanceof NavigationEnd),
-    map(_ => this.route),
-    map(route => {
-      while (route.firstChild) {
-        route = route.firstChild;
-      }
-      return route;
-    }),
-    mergeMap(route => route.data),
-    map(data => data['title'])
-  ));
 
   logout() {
     this.authService.logout();

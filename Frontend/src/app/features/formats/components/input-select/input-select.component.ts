@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, Input, input, OnInit, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FieldsFormType } from '@features/format/format.component';
-import { ParametersService } from '@features/parameters/services/parameters.service';
+import { ParametersService } from '@shared/services/parameters.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { TYPES_NAMES } from '@tipos/format';
 import { Parameter } from '@tipos/parameter';
+import { FieldsFormType } from '../format/format.component';
 
 @Component({
   selector: 'app-input-select',
@@ -13,7 +13,6 @@ import { Parameter } from '@tipos/parameter';
     MaterialModule,
     ReactiveFormsModule,
   ],
-  providers: [ParametersService],
   templateUrl: './input-select.component.html',
   styleUrl: './input-select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,8 +28,7 @@ export class InputSelectComponent implements OnInit {
   options: Parameter[] = [];
 
   async ngOnInit() {
-    const { data } = await this.parametersService.getAll();
-    this.options = data;
+    this.options = this.parametersService.parameters();
   }
 
   removeColumn(): void {

@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, input, Input, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FieldsFormType } from '@features/format/format.component';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { TYPES_NAMES } from '@tipos/format';
+import { FieldsFormType } from '../format/format.component';
 
 @Component({
   selector: 'app-input-text',

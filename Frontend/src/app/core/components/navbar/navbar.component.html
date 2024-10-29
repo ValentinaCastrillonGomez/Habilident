@@ -1,18 +1,32 @@
 <mat-toolbar class="justify-between sticky top-0 z-[101] border-0 border-solid border-b border-b-slate-400">
-    <span> {{title()}} </span>
+    <h3 class="text-sky-600 mb-0">Habilident</h3>
 
-    <div class="flex gap-x-2">
+    <div>
+        @for (item of management; track item.id) {
+        <button mat-button [routerLink]="item.path">{{item.title}}</button>
+        }
+    </div>
+
+    <div class="flex items-center gap-x-2">
         <button mat-icon-button>
             <mat-icon>notifications</mat-icon>
         </button>
+        {{username | titlecase}}
         <button mat-icon-button [matMenuTriggerFor]="subMenu">
             <mat-icon>account_circle</mat-icon>
         </button>
     </div>
 </mat-toolbar>
-<mat-progress-bar mode="query" [ngClass]="{'opacity-0' : !loadingService.loading()}"></mat-progress-bar>
+
+<mat-progress-bar mode="query" class="z-[101]" [ngClass]="{'opacity-0' : !loadingService.loading()}"></mat-progress-bar>
 
 <mat-menu #subMenu="matMenu">
+    @for (item of administration; track item.id) {
+    <button mat-menu-item [routerLink]="item.path">
+        <mat-icon>{{item.icon}}</mat-icon>
+        <span>{{item.title}}</span>
+    </button>
+    }
     <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
         <span>Cerrar sesión</span>

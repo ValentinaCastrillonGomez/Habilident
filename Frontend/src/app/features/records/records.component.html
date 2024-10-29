@@ -1,63 +1,70 @@
-<div class="flex items-center justify-between">
+<div class="flex items-center justify-between mb-3">
+    <div class="flex items-center gap-x-2">
+        <h6 class="mb-0">Listado de registros</h6>
+        <button mat-stroked-button (click)="open()"><mat-icon>add</mat-icon>Añadir registro</button>
+    </div>
+
     <mat-form-field appearance="outline" subscriptSizing="dynamic">
         <mat-label>Filtrar registros</mat-label>
         <input matInput #filter id="filterRoles">
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
-
-    <button mat-flat-button (click)="open()"><mat-icon>add</mat-icon>Añadir Registro</button>
 </div>
-<mat-table [dataSource]="dataSource">
-    <ng-container matColumnDef="dateCreate">
-        <mat-header-cell *matHeaderCellDef> Fecha de registro </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.dateCreate | date: 'dd/MM/yyyy, h:mm a' }}
-        </mat-cell>
-    </ng-container>
+<mat-card appearance="outlined">
+    <mat-card-content>
+        <mat-table [dataSource]="dataSource()">
+            <ng-container matColumnDef="dateCreate">
+                <mat-header-cell *matHeaderCellDef> Fecha de registro </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.dateCreate | date: 'dd/MM/yyyy, h:mm a' }}
+                </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="userCreate">
-        <mat-header-cell *matHeaderCellDef> Usuario que registro </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-            {{element.userCreate.firstNames}} {{element.userCreate.lastNames}}
-        </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="userCreate">
+                <mat-header-cell *matHeaderCellDef> Usuario que registro </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    {{element.userCreate.firstNames}} {{element.userCreate.lastNames}}
+                </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="dateLastUpdate">
-        <mat-header-cell *matHeaderCellDef> Fecha de ultima actualización </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.dateLastUpdate | date: 'dd/MM/yyyy, h:mm a' }}
-        </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="dateLastUpdate">
+                <mat-header-cell *matHeaderCellDef> Fecha de ultima actualización </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.dateLastUpdate | date: 'dd/MM/yyyy, h:mm a' }}
+                </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="userLastUpdate">
-        <mat-header-cell *matHeaderCellDef> Usuario de ultima actualización </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-            {{element.userLastUpdate?.firstNames}} {{element.userLastUpdate?.lastNames}}
-        </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="userLastUpdate">
+                <mat-header-cell *matHeaderCellDef> Usuario de ultima actualización </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    {{element.userLastUpdate?.firstNames}} {{element.userLastUpdate?.lastNames}}
+                </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
-        <mat-cell *matCellDef="let element" class="justify-end">
-            <button mat-icon-button [matMenuTriggerFor]="actions" [matMenuTriggerData]="{data: element}"
-                #menu="matMenuTrigger"
-                [ngClass]="{'invisible group-hover:visible': !menu.menuOpen, 'visible': menu.menuOpen}">
-                <mat-icon class="">more_horiz</mat-icon>
-            </button>
-        </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="justify-end">
+                    <button mat-icon-button [matMenuTriggerFor]="actions" [matMenuTriggerData]="{data: element}"
+                        #menu="matMenuTrigger"
+                        [ngClass]="{'invisible group-hover:visible': !menu.menuOpen, 'visible': menu.menuOpen}">
+                        <mat-icon class="">more_horiz</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
 
-    <div *matNoDataRow class="text-center">
-        hay datos que coincidan con el filtro.
-    </div>
+            <div *matNoDataRow class="text-center">
+                hay datos que coincidan con el filtro.
+            </div>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;" class="group"></mat-row>
-</mat-table>
-<mat-divider></mat-divider>
-<mat-paginator [length]="totalRecords" [pageSize]="pageSize"></mat-paginator>
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" class="group"></mat-row>
+        </mat-table>
+        <mat-divider></mat-divider>
+        <mat-paginator [length]="totalRecords" [pageSize]="pageSize"></mat-paginator>
+    </mat-card-content>
+</mat-card>
 
 <mat-menu #actions="matMenu">
     <ng-template matMenuContent let-element="data">
-        <button mat-menu-item>
+        <button mat-menu-item (click)="open(element)">
             <mat-icon>edit</mat-icon>
             <span>Actualizar</span>
         </button>

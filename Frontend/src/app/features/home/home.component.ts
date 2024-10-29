@@ -1,19 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
-import { MaterialModule } from '@shared/modules/material/material.module';
+import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '@core/components/navbar/navbar.component';
-import { paths } from 'src/app/app.routes';
-import { FormatsComponent } from '@features/formats/formats.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     RouterOutlet,
-    RouterLink,
-    MaterialModule,
     NavbarComponent,
-    FormatsComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -27,7 +21,7 @@ export default class HomeComponent {
   ];
   readonly management = [
     { id: 'reports', path: paths.REPORTS, title: 'Reportes', icon: 'description' },
-    { id: 'alerts', path: paths.ALERTS, title: 'Alertas', icon: 'alert' },
+    { id: 'alarms', path: paths.ALARMS, title: 'Alarmas', icon: 'alarm' },
   ];
 
 }
