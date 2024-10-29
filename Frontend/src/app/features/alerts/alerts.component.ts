@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-alarms',
+  selector: 'app-alerts',
   standalone: true,
   imports: [],
-  templateUrl: './alarms.component.html',
-  styleUrl: './alarms.component.scss',
+  templateUrl: './alerts.component.html',
+  styleUrl: './alerts.component.scss', 
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class AlarmsComponent {
+export default class AlertsComponent {
 
 }

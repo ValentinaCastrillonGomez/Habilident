@@ -27,7 +27,7 @@ export default class HomeComponent {
   ];
   readonly management = [
     { id: 'reports', path: paths.REPORTS, title: 'Reportes', icon: 'description' },
-    { id: 'alarms', path: paths.ALARMS, title: 'Alarmas', icon: 'alarm' },
+    { id: 'alerts', path: paths.ALERTS, title: 'Alertas', icon: 'alert' },
   ];
 
 }

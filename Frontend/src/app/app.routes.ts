@@ -9,7 +9,7 @@ export const paths = {
   PARAMETERS: 'parameters',
   RECORDS: 'records',
   REPORTS: 'reports',
-  ALARMS: 'alarms',
+  ALERTS: 'alerts',
 };
 
 export const routes: Routes = [
@@ -39,8 +39,8 @@ export const routes: Routes = [
         loadComponent: () => import('@features/reports/reports.component'),
       },
       {
-        path: `${paths.ALARMS}`, data: { title: 'Generación de alarmas' },
-        loadComponent: () => import('@features/alarms/alarms.component'),
+        path: `${paths.ALERTS}`, data: { title: 'Generación de alertas' },
+        loadComponent: () => import('@features/alerts/alerts.component'),
       },
       {
         path: `${paths.RECORDS}/:id`, data: { title: 'Registros del formato' },
