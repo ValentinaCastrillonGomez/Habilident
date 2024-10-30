@@ -10,5 +10,6 @@ import { RecordEntity, RecordSchema } from './entities/record.entity';
   ])],
   controllers: [RecordsController],
   providers: [RecordsService],
+  exports: [RecordsService],
 })
 export class RecordsModule { }
