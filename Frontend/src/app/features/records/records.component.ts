@@ -9,18 +9,20 @@ import { MatDialog } from '@angular/material/dialog';
 import { RecordComponent } from './components/record/record.component';
 import { Format } from '@tipos/format';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { ReportsService } from '@shared/services/reports.service';
 
 @Component({
     selector: 'app-records',
     standalone: true,
     imports: [MaterialModule, ReactiveFormsModule],
-    providers: [RecordsService],
+    providers: [RecordsService, ReportsService],
     templateUrl: './records.component.html',
     styleUrl: './records.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecordsComponent implements AfterViewInit {
     private recordsService = inject(RecordsService);
+    private reportsService = inject(ReportsService);
     private dialog = inject(MatDialog);
     private injector = inject(Injector);
 
@@ -67,6 +69,10 @@ export class RecordsComponent implements AfterViewInit {
         dialogRef.afterClosed().subscribe(result => {
             if (result) this.actions.next();
         });
+    }
+
+    print(id: string) {
+        this.reportsService.get(id);
     }
 
 }
