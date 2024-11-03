@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { DEFAULT_DIALOG_CONFIG } from '@angular/cdk/dialog';
 import { AppPaginatorIntl } from './material.paginator';
 
 import { MatFormFieldModule } from '@angular/material/form-field';

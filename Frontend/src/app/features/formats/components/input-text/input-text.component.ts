@@ -3,6 +3,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { TYPES_NAMES } from '@tipos/format';
 import { FieldsFormType } from '../format/format.component';
+import { CdkDrag } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-input-text',
@@ -10,6 +11,7 @@ import { FieldsFormType } from '../format/format.component';
   imports: [
     MaterialModule,
     ReactiveFormsModule,
+    CdkDrag,
   ],
   templateUrl: './input-text.component.html',
   styleUrl: './input-text.component.scss',

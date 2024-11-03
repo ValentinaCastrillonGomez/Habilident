@@ -10,12 +10,13 @@ import { RecordComponent } from './components/record/record.component';
 import { Format } from '@tipos/format';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ReportsService } from '@shared/services/reports.service';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
     selector: 'app-records',
     standalone: true,
     imports: [MaterialModule, ReactiveFormsModule],
-    providers: [RecordsService, ReportsService],
+    providers: [RecordsService],
     templateUrl: './records.component.html',
     styleUrl: './records.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,7 +33,7 @@ export class RecordsComponent implements AfterViewInit {
     totalRecords = 0;
     pageSize = 10;
     displayedColumns: string[] = ['dateCreate', 'userCreate', 'dateLastUpdate', 'userLastUpdate', 'actions'];
-    readonly range = new FormGroup({
+    range = new FormGroup({
         start: new FormControl<Date | null>(null),
         end: new FormControl<Date | null>(null),
     });
@@ -55,6 +56,8 @@ export class RecordsComponent implements AfterViewInit {
     }
 
     search() {
+        console.log(this.range.value);
+        
         this.searchTerms.next(this.range.value);
     }
 
@@ -72,7 +75,7 @@ export class RecordsComponent implements AfterViewInit {
     }
 
     print(id: string) {
-        this.reportsService.get(id);
+        this.reportsService.print(`records/${id}`);
     }
 
 }

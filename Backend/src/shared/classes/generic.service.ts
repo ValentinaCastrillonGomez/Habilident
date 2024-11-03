@@ -25,6 +25,10 @@ export abstract class GenericService<T extends Document, G> {
         return { data, totalRecords };
     }
 
+    async find(filter: Partial<FilterQuery<T>>): Promise<T[]> {
+        return this._model.find(filter).populate(this._poputale).exec();
+    }
+
     async findOne(filter: Partial<FilterQuery<T>>): Promise<T> {
         return this._model.findOne(filter).populate(this._poputale).exec();
     }

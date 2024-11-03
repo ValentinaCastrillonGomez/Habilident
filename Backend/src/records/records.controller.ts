@@ -10,7 +10,7 @@ export class RecordsController {
 
     @Post()
     create(@Body() recordDto: Record, @Request() { user }) {
-        return this.recordsService.create({ ...recordDto, userCreate: user._id, dateCreate: new Date().toISOString() });
+        return this.recordsService.create({ ...recordDto, userCreate: user._id, dateCreate: new Date() });
     }
 
     @Get()
@@ -25,7 +25,7 @@ export class RecordsController {
 
     @Patch(':id')
     update(@Param('id') id: string, @Body() recordDto: Record, @Request() { user }) {
-        return this.recordsService.update(id, { ...recordDto, userLastUpdate: user._id, dateLastUpdate: new Date().toISOString() });
+        return this.recordsService.update(id, { ...recordDto, userLastUpdate: user._id, dateLastUpdate: new Date() });
     }
 
     @Delete(':id')

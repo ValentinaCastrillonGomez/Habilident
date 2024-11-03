@@ -11,13 +11,13 @@ export class RecordEntity implements Record {
     _id?: Types.ObjectId;
 
     @Prop({ required: true })
-    dateCreate: string;
+    dateCreate: Date;
 
     @Prop({ type: Types.ObjectId, ref: 'UserEntity', required: true })
     userCreate: UserEntity;
 
     @Prop()
-    dateLastUpdate: string;
+    dateLastUpdate: Date;
 
     @Prop({ type: Types.ObjectId, ref: 'UserEntity' })
     userLastUpdate: UserEntity;

@@ -19,7 +19,7 @@ import { MaterialModule } from '@shared/modules/material/material.module';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class UsersComponent implements AfterViewInit {
-  private userService = inject(UsersService);
+  private usersService = inject(UsersService);
   private dialog = inject(MatDialog);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -37,7 +37,7 @@ export default class UsersComponent implements AfterViewInit {
       this.actions,
       this.paginator.page)
       .subscribe(async () => {
-        const { data, totalRecords } = await this.userService.getAll(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
+        const { data, totalRecords } = await this.usersService.getAll(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
         this.dataSource.set(data);
         this.totalRecords = totalRecords;
       });
@@ -48,7 +48,7 @@ export default class UsersComponent implements AfterViewInit {
   }
 
   async remove(id: string) {
-    const result = await this.userService.delete(id);
+    const result = await this.usersService.delete(id);
     if (result) this.actions.next();
   }
 

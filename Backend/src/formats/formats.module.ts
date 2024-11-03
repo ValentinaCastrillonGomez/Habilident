@@ -10,5 +10,6 @@ import { FormatEntity, FormatSchema } from './entities/format.entity';
     ])],
     controllers: [FormatsController],
     providers: [FormatsService],
+    exports: [FormatsService]
 })
 export class FormatsModule { }

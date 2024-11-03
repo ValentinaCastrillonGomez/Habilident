@@ -1,1 +1,33 @@
-<p>reports works!</p>
+<div class="flex items-center justify-between mb-3">
+    <div class="flex items-center gap-x-2">
+        <h6 class="mb-0">Listado de reportes</h6>
+    </div>
+</div>
+<mat-card appearance="outlined">
+    <mat-card-content>
+        <mat-table [dataSource]="dataSource()">
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="justify-end">
+                    <button mat-button class="invisible group-hover:visible" (click)="print(element.id)">
+                        <mat-icon class="">print</mat-icon>
+                        Imprimir
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <div *matNoDataRow class="text-center">
+                hay datos para el listado de reportes.
+            </div>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" class="group"></mat-row>
+        </mat-table>
+        <mat-divider></mat-divider>
+    </mat-card-content>
+</mat-card>
