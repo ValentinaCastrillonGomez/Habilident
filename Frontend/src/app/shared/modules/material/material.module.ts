@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { DEFAULT_DIALOG_CONFIG } from '@angular/cdk/dialog';
 import { AppPaginatorIntl } from './material.paginator';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,7 +18,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -29,6 +28,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatChipsModule } from '@angular/material/chips';
+import { APP_FORMATS, AppDateAdapter } from './material-date.adapter';
 
 @NgModule({
   exports: [
@@ -59,11 +59,11 @@ import { MatChipsModule } from '@angular/material/chips';
     MatChipsModule
   ],
   providers: [
-    provideNativeDateAdapter(),
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { maxWidth: '70vw', disableClose: true, hasBackdrop: true, } },
-    { provide: MAT_PAGINATOR_DEFAULT_OPTIONS, useValue: { hidePageSize: true, showFirstLastButtons: true } },
+    { provide: MAT_DATE_FORMATS, useValue: APP_FORMATS },
+    { provide: DateAdapter, useClass: AppDateAdapter },
     { provide: MatPaginatorIntl, useClass: AppPaginatorIntl },
-    { provide: MAT_DATE_LOCALE, useValue: 'es-CO' }
+    { provide: MAT_PAGINATOR_DEFAULT_OPTIONS, useValue: { hidePageSize: true, showFirstLastButtons: true } },
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { maxWidth: '70vw', disableClose: true, hasBackdrop: true, } },
   ]
 })
 export class MaterialModule { }

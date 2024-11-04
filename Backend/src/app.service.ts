@@ -42,7 +42,7 @@ export class AppService {
     return {
       firstNames: 'admin',
       lastNames: 'admin',
-      birthday: new Date().toISOString(),
+      birthday: new Date(),
       typeDocument: '1',
       numberDocument: '1',
       email: 'admin@admin.com',

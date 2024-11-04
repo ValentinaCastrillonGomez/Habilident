@@ -10,22 +10,22 @@ export class RecordsController {
 
     @Post()
     create(@Body() recordDto: Record, @Request() { user }) {
-        return this.recordsService.create({ ...recordDto, userCreate: user._id, dateCreate: new Date().toISOString() });
+        return this.recordsService.create({ ...recordDto, userCreate: user._id, dateCreate: new Date() });
     }
 
     @Get()
-    findAll(@Query() { skip, limit, query }) {
-        return this.recordsService.findAll(skip, limit, query);
+    findAll(@Query() { skip, limit, query, start, end }) {
+        return this.recordsService.findAll(skip, limit, query, start, end);
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.recordsService.findOne({ id });
+    findOne(@Param('id') _id: string) {
+        return this.recordsService.findOne({ _id });
     }
 
     @Patch(':id')
     update(@Param('id') id: string, @Body() recordDto: Record, @Request() { user }) {
-        return this.recordsService.update(id, { ...recordDto, userLastUpdate: user._id, dateLastUpdate: new Date().toISOString() });
+        return this.recordsService.update(id, { ...recordDto, userLastUpdate: user._id, dateLastUpdate: new Date() });
     }
 
     @Delete(':id')

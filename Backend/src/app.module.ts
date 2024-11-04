@@ -11,6 +11,7 @@ import { RolesModule } from './roles/roles.module';
 import { FormatsModule } from './formats/formats.module';
 import { RecordsModule } from './records/records.module';
 import { ParametersModule } from './parameters/parameters.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { ParametersModule } from './parameters/parameters.module';
     RolesModule,
     FormatsModule,
     RecordsModule,
-    ParametersModule
+    ParametersModule,
+    ReportsModule
   ],
   controllers: [AppController],
   providers: [AppService],

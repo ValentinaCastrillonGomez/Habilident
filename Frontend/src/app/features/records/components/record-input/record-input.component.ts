@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ParametersService } from '@shared/services/parameters.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { INPUT_TYPES, InputTypes } from '@tipos/format';
+import { Parameter } from '@tipos/parameter';
 
 @Component({
   selector: 'app-record-input',
@@ -25,11 +26,11 @@ export class RecordInputComponent {
     value: FormControl<string>;
   }>;
   isTable = input<boolean>(false);
-  options: string[] = [];
+  select: Parameter | undefined = undefined;
 
   async ngOnInit() {
     if (this.input.controls.type.value === INPUT_TYPES.SELECT) {
-      this.options = this.parametersService.getOptions(this.input.controls.name.value)?.options || [];
+      this.select = this.parametersService.getOptions(this.input.controls.name.value);
     }
   }
 }

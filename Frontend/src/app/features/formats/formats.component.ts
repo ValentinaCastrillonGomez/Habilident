@@ -27,12 +27,12 @@ export default class FormatsComponent {
   private parametersService = inject(ParametersService);
 
   formats = signal<Format[]>([]);
-  formatSelected: Format | null = null;
+  formatSelected = signal<Format | null>(null);
 
   async ngOnInit() {
     await this.loadFormats();
     await this.parametersService.loadParameters();
-    this.formatSelected = this.formats()[0] || null;
+    this.formatSelected.set(this.formats()[0] || null);
   }
 
   async loadFormats() {

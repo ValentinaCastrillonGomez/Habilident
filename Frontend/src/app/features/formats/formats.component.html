@@ -5,10 +5,10 @@
                 <button mat-stroked-button (click)="open()">Añadir formato</button>
             </div>
             @for (format of formats(); track format._id) {
-            <mat-list-item [activated]="format._id === formatSelected?._id" class="group">
+            <mat-list-item [activated]="format._id === formatSelected()?._id" class="group">
                 <mat-icon matListItemIcon>folder</mat-icon>
                 <div class="flex items-center justify-between">
-                    <div class="truncate w-full" (click)="formatSelected = format" [title]="format.name | titlecase">
+                    <div class="truncate w-full" (click)="formatSelected.set(format)" [title]="format.name | titlecase">
                         {{format.name | titlecase}}
                     </div>
                     <button mat-icon-button [matMenuTriggerFor]="formatsMenu" #menu="matMenuTrigger"
@@ -35,8 +35,8 @@
     </mat-sidenav>
     <mat-sidenav-content class="bg-white">
         <main class="m-5">
-            @if(formatSelected){
-            <app-records [format]="formatSelected"></app-records>
+            @if(formatSelected()){
+            <app-records [format]="formatSelected()!"></app-records>
             }
         </main>
     </mat-sidenav-content>

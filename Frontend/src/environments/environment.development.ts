@@ -6,4 +6,5 @@ export const environment = {
   API_FORMATS: '/formats',
   API_ALERTS: '/alerts',
   API_RECORDS: '/records',
+  API_REPORTS: '/reports',
 };
