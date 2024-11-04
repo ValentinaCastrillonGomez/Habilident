@@ -36,20 +36,20 @@ export class UserComponent implements OnInit {
   options: Parameter[] = [];
   roles: Role[] = [];
   maxDate = moment().subtract(ADULT, 'years').toDate();
-  nameFile = this.user?.signature?.name || null;
+  nameFile = this.user?.signature?.name ?? null;
   userForm = this.formBuilder.group({
-    firstNames: this.formBuilder.control(this.user?.firstNames || '', [Validators.required]),
-    lastNames: this.formBuilder.control(this.user?.lastNames || '', [Validators.required]),
-    typeDocument: this.formBuilder.control(this.user?.typeDocument || '', [Validators.required]),
-    numberDocument: this.formBuilder.control(this.user?.numberDocument || '', [Validators.required]),
-    email: this.formBuilder.control(this.user?.email || '', [Validators.required, Validators.email]),
-    address: this.formBuilder.control(this.user?.address || '', [Validators.required]),
-    phone: this.formBuilder.control(this.user?.phone || '', [Validators.required]),
-    gender: this.formBuilder.control(this.user?.gender || '', [Validators.required]),
-    birthday: this.formBuilder.control(this.user?.birthday || '', [Validators.required]),
-    office: this.formBuilder.control(this.user?.office || '', [Validators.required]),
-    position: this.formBuilder.control(this.user?.position || '', [Validators.required]),
-    role: this.formBuilder.control<string>(this.user?.role?._id || '', [Validators.required]),
+    firstNames: this.formBuilder.control(this.user?.firstNames ?? '', [Validators.required]),
+    lastNames: this.formBuilder.control(this.user?.lastNames ?? '', [Validators.required]),
+    typeDocument: this.formBuilder.control(this.user?.typeDocument ?? '', [Validators.required]),
+    numberDocument: this.formBuilder.control(this.user?.numberDocument ?? '', [Validators.required]),
+    email: this.formBuilder.control(this.user?.email ?? '', [Validators.required, Validators.email]),
+    address: this.formBuilder.control(this.user?.address ?? '', [Validators.required]),
+    phone: this.formBuilder.control(this.user?.phone ?? '', [Validators.required]),
+    gender: this.formBuilder.control(this.user?.gender ?? '', [Validators.required]),
+    birthday: this.formBuilder.control<any>(this.user?.birthday ?? null, [Validators.required]),
+    office: this.formBuilder.control(this.user?.office ?? '', [Validators.required]),
+    position: this.formBuilder.control(this.user?.position ?? '', [Validators.required]),
+    role: this.formBuilder.control<string>(this.user?.role?._id ?? '', [Validators.required]),
     password: this.formBuilder.control<any>(null, this.isNew ? [Validators.required, Validators.minLength(5)] : []),
     signature: this.formBuilder.control<any>(null),
     state: this.formBuilder.control(true),

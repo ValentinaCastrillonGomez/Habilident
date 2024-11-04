@@ -8,9 +8,9 @@ export type RecordRow = {
 export type Record = {
     _id?: any;
     format: any;
-    dateCreate: string;
+    dateCreate: Date;
     userCreate: any;
-    dateLastUpdate: string;
+    dateLastUpdate: Date;
     userLastUpdate: any;
     rows: RecordRow[];
 };

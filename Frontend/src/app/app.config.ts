@@ -1,4 +1,4 @@
-import { ApplicationConfig, InjectionToken, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, InjectionToken, LOCALE_ID, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 
@@ -22,5 +22,6 @@ export const appConfig: ApplicationConfig = {
     ),
     provideAnimationsAsync(),
     { provide: ENV, useValue: environment },
+    { provide: LOCALE_ID, useValue: 'es-CO' }
   ],
 };

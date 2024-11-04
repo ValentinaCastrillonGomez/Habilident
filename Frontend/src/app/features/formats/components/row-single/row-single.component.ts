@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, input, Input, OnInit, output } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { INPUT_TYPES, InputTypes } from '@tipos/format';
-import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { InputTextComponent } from '../input-text/input-text.component';
 import { InputSelectComponent } from '../input-select/input-select.component';
 import { RowsFormType } from '../format/format.component';
@@ -15,6 +15,7 @@ import { RowsFormType } from '../format/format.component';
     CdkDrag, CdkDragHandle,
     InputTextComponent,
     InputSelectComponent,
+    CdkDropList,
   ],
   templateUrl: './row-single.component.html',
   styleUrl: './row-single.component.scss',
@@ -52,6 +53,10 @@ export class RowSingleComponent implements OnInit {
 
   removeRow(): void {
     this.remove.emit();
+  }
+
+  drop(event: CdkDragDrop<FormArray>) {
+    moveItemInArray(this.row.controls.fields.controls, event.previousIndex, event.currentIndex);
   }
 
 }

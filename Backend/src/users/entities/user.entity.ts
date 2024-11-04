@@ -16,7 +16,7 @@ export class UserEntity implements User {
     lastNames: string;
 
     @Prop({ required: true })
-    birthday: string;
+    birthday: Date;
 
     @Prop({ required: true })
     typeDocument: string;
