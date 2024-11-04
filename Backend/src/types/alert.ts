@@ -2,10 +2,9 @@
 
 export type Alert = {
     _id?: any;
-    id_format: string;
+    id_format: any;
     frequency: string;
-    hour_alert:Date;
     date_alert:Date;
-    last_date:Date;
+    last_date?:Date;
 }
 

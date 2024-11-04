@@ -10,6 +10,8 @@ export class AlertsService extends GenericService<AlertDocument, AlertEntity> {
   constructor(
     @InjectModel(AlertEntity.name) private readonly alertModel: Model<AlertDocument>,
   ) {
-    super(alertModel, ['name'], []);
+    super(alertModel, [], [
+      { path: 'id_format', select: 'name' },
+    ]);
   }
 }

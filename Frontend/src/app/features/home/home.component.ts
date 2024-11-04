@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '@core/components/navbar/navbar.component';
+import { paths } from 'src/app/app.routes';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,7 @@ export default class HomeComponent {
   ];
   readonly management = [
     { id: 'reports', path: paths.REPORTS, title: 'Reportes', icon: 'description' },
-    { id: 'alarms', path: paths.ALARMS, title: 'Alarmas', icon: 'alarm' },
+    { id: 'alarms', path: paths.ALERTS, title: 'Alarmas', icon: 'alarm' },
   ];
 
 }

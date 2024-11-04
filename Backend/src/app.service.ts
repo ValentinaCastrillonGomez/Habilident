@@ -9,6 +9,7 @@ import { ParametersService } from './parameters/parameters.service';
 import { Parameter } from './types/parameter';
 import { TYPE_DOCUMENTS } from './shared/constants/type-documents.const';
 import { GENDERS } from './shared/constants/genders.const';
+import { PERIODICITY } from './shared/constants/periodicity.const';
 
 @Injectable()
 export class AppService {
@@ -67,7 +68,12 @@ export class AppService {
         name: 'Generos',
         protected: true,
         options: Object.values(GENDERS),
-      }
+      },
+      {
+        name: 'Periocidad',
+        protected: true,
+        options: Object.values(PERIODICITY),
+      },
     ]
   }
 }

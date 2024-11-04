@@ -4,5 +4,6 @@ export const environment = {
   API_ROLES: '/roles',
   API_PARAMETERS: '/parameters',
   API_FORMATS: '/formats',
+  API_ALERTS: '/alerts',
   API_RECORDS: '/records',
 };
