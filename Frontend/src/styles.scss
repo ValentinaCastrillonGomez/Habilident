@@ -42,3 +42,7 @@ body {
 .mat-mdc-row:hover {
     @apply hover:bg-black/5;
 }
+
+.mat-column-actions {
+    @apply max-w-20;
+}

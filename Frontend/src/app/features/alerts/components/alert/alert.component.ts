@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MaterialModule } from "@shared/modules/material/material.module";
@@ -8,6 +8,7 @@ import { ParametersService } from "@shared/services/parameters.service";
 import { Alert } from "@tipos/alert";
 import { Format } from "@tipos/format";
 import { Parameter } from "@tipos/parameter";
+import moment from "moment";
 import Swal from "sweetalert2";
 
 @Component({
@@ -23,41 +24,40 @@ import Swal from "sweetalert2";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlertComponent {
+  private readonly dialog = inject(MatDialogRef<AlertComponent>);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly alertsService = inject(AlertsService);
+  private readonly formatsService = inject(FormatsService);
+  private readonly parametersService = inject(ParametersService);
 
-  private dialog = inject(MatDialogRef<AlertComponent>);
-  private formBuilder = inject(NonNullableFormBuilder);
-  private alertsService = inject(AlertsService);
-  options: Parameter[] = [];
   alert = inject<Alert | null>(MAT_DIALOG_DATA);
-  private formatsService = inject(FormatsService);
-  private parametersService = inject(ParametersService);
+  options: Parameter[] = [];
   formats: Format[] = [];
+  minDate = new Date();
 
   alertForm = this.formBuilder.group({
-    id_format: this.formBuilder.control(this.alert?.id_format ?? '', [Validators.required]),
+    format: this.formBuilder.control(this.alert?.format._id ?? '', [Validators.required]),
     frequency: this.formBuilder.control(this.alert?.frequency ?? '', [Validators.required]),
-    hour_alert: this.formBuilder.control<any>(this.alert?.date_alert ?? '', [Validators.required]),
-    date_alert: this.formBuilder.control<any>(this.alert?.date_alert ?? '', [Validators.required]),
+    date: this.formBuilder.control<any>(this.alert?.date ? moment(this.alert?.date).format('YYYY-MM-DDTHH:mm') : '', [Validators.required]),
   });
 
   async ngOnInit() {
-    const { data } = await this.formatsService.getAll();
-    this.formats = data;
-    const parameters  = await this.parametersService.getAll();
-    this.options = parameters.data;
+    console.log(this.alert);
+
+    this.formats = (await this.formatsService.getAll()).data;
+    this.options = (await this.parametersService.getAll()).data;
   }
 
   get periodicity() {
     return this.options.find(option => option.name === 'Periocidad')?.options || [];
   }
 
-
   async save() {
     if (this.alertForm.invalid) return;
 
-    const alert = this.alertForm.getRawValue();
+    const { date, ...alert } = this.alertForm.getRawValue();
 
-    this.alertsService.save(alert, this.alert?._id)
+    this.alertsService.save({ ...alert, date: new Date(date) }, this.alert?._id)
       .then(() => {
         this.dialog.close(true);
         Swal.fire({

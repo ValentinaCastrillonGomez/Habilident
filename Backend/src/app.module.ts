@@ -12,6 +12,7 @@ import { FormatsModule } from './formats/formats.module';
 import { RecordsModule } from './records/records.module';
 import { ParametersModule } from './parameters/parameters.module';
 import { ReportsModule } from './reports/reports.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ReportsModule } from './reports/reports.module';
       secret: process.env.SECRET_KEY,
       signOptions: { expiresIn: '1h' },
     }),
+    ScheduleModule.forRoot(),
     UsersModule,
     AlertsModule,
     AuthModule,

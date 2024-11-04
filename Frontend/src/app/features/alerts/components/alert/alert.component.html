@@ -1,38 +1,40 @@
 <form [formGroup]="alertForm" (ngSubmit)="save()">
     <span mat-dialog-title>Guardar alerta</span>
     <mat-dialog-content class="mat-typography">
-        <div class="my-1">
-            <mat-form-field appearance="outline">
-                <mat-label>Formato</mat-label>
-                <mat-select formControlName="id_format" required>
-                    @for (formart of formats; track formart._id) {
-                    <mat-option [value]="formart._id">{{formart.name}}</mat-option>
+        <div class="mt-2 mb-4 space-y-4">
+            <div class="flex gap-x-4">
+                <mat-form-field appearance="outline">
+                    <mat-label>Formato</mat-label>
+                    <mat-select formControlName="format" required>
+                        @for (formart of formats; track formart._id) {
+                        <mat-option [value]="formart._id">{{formart.name}}</mat-option>
+                        }
+                    </mat-select>
+                    @if (alertForm.controls.format.invalid) {
+                    <mat-error>Introduce un formato válido</mat-error>
                     }
-                </mat-select>
-            </mat-form-field>
+                </mat-form-field>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Peridiocidad</mat-label>
-                <mat-select id="frequency" formControlName="frequency" required>
-                    @for (option of periodicity; track option) {
-                    <mat-option [value]="option">{{option}}</mat-option>
+                <mat-form-field appearance="outline">
+                    <mat-label>Peridiocidad</mat-label>
+                    <mat-select id="frequency" formControlName="frequency" required>
+                        @for (option of periodicity; track option) {
+                        <mat-option [value]="option">{{option}}</mat-option>
+                        }
+                    </mat-select>
+                    @if (alertForm.controls.frequency.invalid) {
+                    <mat-error>Introduce una peridiocidad válida</mat-error>
                     }
-                </mat-select>
-            </mat-form-field>
+                </mat-form-field>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Fecha</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="date_alert">
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-                <mat-label>Hora</mat-label>
-                <input matInput type="time" formControlName="hour_alert">
-
-            </mat-form-field>
-
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha de inicio</mat-label>
+                    <input matInput type="datetime-local" formControlName="date" [min]="minDate">
+                    @if (alertForm.controls.date.invalid) {
+                    <mat-error>Introduce una fecha de inicio válida</mat-error>
+                    }
+                </mat-form-field>
+            </div>
         </div>
     </mat-dialog-content>
     <mat-dialog-actions>

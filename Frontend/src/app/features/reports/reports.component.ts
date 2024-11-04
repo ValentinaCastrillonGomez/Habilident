@@ -27,7 +27,7 @@ export default class ReportsComponent implements OnInit {
   private formatsService = inject(FormatsService);
 
   dataSource = signal<Reports[]>([]);
-  displayedColumns: string[] = ['name', 'actions'];
+  displayedColumns: string[] = ['name', 'print'];
   range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),

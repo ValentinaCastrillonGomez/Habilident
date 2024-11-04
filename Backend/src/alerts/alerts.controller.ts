@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { AlertsService } from './alerts.service';
 import { Alert } from 'src/types/alert';
 import { AuthGuard } from '@nestjs/passport';
@@ -6,16 +6,16 @@ import { AuthGuard } from '@nestjs/passport';
 @Controller('alerts')
 @UseGuards(AuthGuard("jwt"))
 export class AlertsController {
-  constructor(private readonly alertsService: AlertsService) {}
+  constructor(private readonly alertsService: AlertsService) { }
 
   @Post()
-  create(@Body() createAlertDto: Alert) {
-    return this.alertsService.create(createAlertDto);
+  create(@Body() alertDto: Alert) {
+    return this.alertsService.create(alertDto);
   }
 
   @Get()
-  findAll() {
-    return this.alertsService.findAll();
+  findAll(@Query() { skip, limit, query }) {
+    return this.alertsService.findAll(skip, limit, query);
   }
 
   @Get(':id')
@@ -24,8 +24,8 @@ export class AlertsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAlertDto: Alert) {
-    return this.alertsService.update(id, updateAlertDto);
+  update(@Param('id') id: string, @Body() alertDto: Alert) {
+    return this.alertsService.update(id, alertDto);
   }
 
   @Delete(':id')

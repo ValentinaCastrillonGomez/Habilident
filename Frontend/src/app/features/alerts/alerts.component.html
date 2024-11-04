@@ -4,18 +4,18 @@
         <button mat-stroked-button (click)="open()"><mat-icon>add</mat-icon>Añadir alarma</button>
     </div>
 
-    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="hidden">
         <mat-label>Filtrar alarma</mat-label>
-        <input matInput #filter id="filterRoles" (input)="search(filter.value)">
+        <input matInput #filter id="filterAlerts" (input)="search(filter.value)">
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 </div>
 <mat-card appearance="outlined">
     <mat-card-content>
         <mat-table [dataSource]="dataSource()">
-            <ng-container matColumnDef="id_format">
+            <ng-container matColumnDef="format">
                 <mat-header-cell *matHeaderCellDef> Formato </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.id_format.name}} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{element.format.name}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="frequency">
@@ -25,10 +25,17 @@
                 </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="date_alert">
-                <mat-header-cell *matHeaderCellDef> Fecha Inicio </mat-header-cell>
+            <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef> Fecha inicio </mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                    <div class="truncate">{{element.date_alert}}</div>
+                    <div class="truncate">{{element.date | date: 'dd/MM/yyyy, h:mm a'}}</div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="last_generated">
+                <mat-header-cell *matHeaderCellDef> Última generación </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <div class="truncate">{{element.last_generated | date: 'dd/MM/yyyy, h:mm a'}}</div>
                 </mat-cell>
             </ng-container>
 

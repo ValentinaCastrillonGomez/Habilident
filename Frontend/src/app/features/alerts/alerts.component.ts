@@ -26,7 +26,7 @@ export default class AlertsComponent implements AfterViewInit {
   dataSource = signal<Alert[]>([]);
   totalRecords = 0;
   pageSize = 10;
-  displayedColumns: string[] = ['id_format', 'frequency', 'date_alert', 'actions'];
+  displayedColumns: string[] = ['format', 'frequency', 'date', 'last_generated', 'actions'];
   private searchTerms = new BehaviorSubject<string>('');
   private actions = new Subject<void>();
 

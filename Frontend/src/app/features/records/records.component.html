@@ -38,13 +38,13 @@
             </ng-container>
 
             <ng-container matColumnDef="dateLastUpdate">
-                <mat-header-cell *matHeaderCellDef> Fecha de ultima actualización </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef> Ultima actualización </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.dateLastUpdate | date: 'dd/MM/yyyy, h:mm a' }}
                 </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="userLastUpdate">
-                <mat-header-cell *matHeaderCellDef> Usuario de ultima actualización </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef> Usuario que actualizo </mat-header-cell>
                 <mat-cell *matCellDef="let element">
                     {{element.userLastUpdate?.firstNames}} {{element.userLastUpdate?.lastNames}}
                 </mat-cell>

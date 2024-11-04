@@ -21,7 +21,7 @@
                 <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="actions">
+            <ng-container matColumnDef="print">
                 <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
                 <mat-cell *matCellDef="let element" class="justify-end">
                     <button mat-button class="invisible group-hover:visible" (click)="print(element.id)">
