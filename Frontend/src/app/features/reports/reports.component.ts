@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@shared/services/formats.service';
 import { ReportsService } from '@shared/services/reports.service';
+import moment from 'moment';
 
 interface Reports {
   id: string;
@@ -12,7 +14,8 @@ interface Reports {
   selector: 'app-reports',
   standalone: true,
   imports: [
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule,
   ],
   providers: [FormatsService],
   templateUrl: './reports.component.html',
@@ -25,6 +28,10 @@ export default class ReportsComponent implements OnInit {
 
   dataSource = signal<Reports[]>([]);
   displayedColumns: string[] = ['name', 'actions'];
+  range = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
 
   async ngOnInit() {
     const { data } = await this.formatsService.getAll();
@@ -32,7 +39,10 @@ export default class ReportsComponent implements OnInit {
   }
 
   print(id: string) {
-    this.reportsService.print(`formats/${id}`);
+    this.reportsService.print(`formats/${id}`,
+      this.range.controls.start.value ? moment(this.range.controls.start.value).format('YYYY/MM/DD') : undefined,
+      this.range.controls.end.value ? moment(this.range.controls.end.value).format('YYYY/MM/DD') : undefined,
+    );
   }
 
 }

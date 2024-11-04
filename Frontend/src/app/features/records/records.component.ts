@@ -10,7 +10,7 @@ import { RecordComponent } from './components/record/record.component';
 import { Format } from '@tipos/format';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ReportsService } from '@shared/services/reports.service';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import moment from 'moment';
 
 @Component({
     selector: 'app-records',
@@ -22,10 +22,10 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecordsComponent implements AfterViewInit {
-    private recordsService = inject(RecordsService);
-    private reportsService = inject(ReportsService);
-    private dialog = inject(MatDialog);
-    private injector = inject(Injector);
+    private readonly recordsService = inject(RecordsService);
+    private readonly reportsService = inject(ReportsService);
+    private readonly dialog = inject(MatDialog);
+    private readonly injector = inject(Injector);
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     format = input.required<Format>();
@@ -48,7 +48,9 @@ export class RecordsComponent implements AfterViewInit {
             this.paginator.page
         ).subscribe(async () => {
             const { data, totalRecords } = await this.recordsService.getAll(
-                this.paginator.pageIndex, this.paginator.pageSize, this.format()._id
+                this.paginator.pageIndex, this.paginator.pageSize, this.format()._id,
+                this.range.controls.start.value ? moment(this.range.controls.start.value).format('YYYY/MM/DD') : undefined,
+                this.range.controls.end.value ? moment(this.range.controls.end.value).format('YYYY/MM/DD') : undefined,
             );
             this.dataSource.set(data);
             this.totalRecords = totalRecords;
@@ -56,8 +58,6 @@ export class RecordsComponent implements AfterViewInit {
     }
 
     search() {
-        console.log(this.range.value);
-        
         this.searchTerms.next(this.range.value);
     }
 
@@ -75,7 +75,7 @@ export class RecordsComponent implements AfterViewInit {
     }
 
     print(id: string) {
-        this.reportsService.print(`records/${id}`);
+        this.reportsService.print(`records/${id}`, );
     }
 
 }

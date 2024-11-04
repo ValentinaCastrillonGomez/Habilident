@@ -14,8 +14,8 @@ export class RecordsController {
     }
 
     @Get()
-    findAll(@Query() { skip, limit, query }) {
-        return this.recordsService.findAll(skip, limit, query);
+    findAll(@Query() { skip, limit, query, start, end }) {
+        return this.recordsService.findAll(skip, limit, query, start, end);
     }
 
     @Get(':id')

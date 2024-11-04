@@ -2,6 +2,16 @@
     <div class="flex items-center gap-x-2">
         <h6 class="mb-0">Listado de reportes</h6>
     </div>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Rango de consulta</mat-label>
+        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+            <input matStartDate placeholder="Fecha inicio" formControlName="start">
+            <input matEndDate placeholder="Fecha fin" formControlName="end">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
 </div>
 <mat-card appearance="outlined">
     <mat-card-content>

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, Res, UseGuards } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
@@ -15,8 +15,8 @@ export class ReportsController {
   }
 
   @Get('formats/:id')
-  async findFormat(@Param('id') id: string, @Res() response: Response) {
-    const report = await this.reportsService.getFormatReport(id);
+  async findFormat(@Param('id') id: string, @Res() response: Response, @Query() { start, end }) {
+    const report = await this.reportsService.getFormatReport(id, start, end);
     this.sendPdf(report, response);
   }
 

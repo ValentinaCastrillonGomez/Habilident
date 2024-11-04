@@ -76,9 +76,9 @@ export class ReportsService {
         return this.createPdf(record.format.name, data);
     }
 
-    async getFormatReport(formatId: string) {
-        const format = await this.formatsService.findOne({ _id: formatId });
-        const records = await this.recordsService.find({ format: formatId });
+    async getFormatReport(_id: string, start: string, end: string) {
+        const format = await this.formatsService.findOne({ _id });
+        const { data } = await this.recordsService.findAll(0, 0, _id, start, end);
         const parameters = await this.parametersService.findAll();
 
         const head = format.rows
@@ -90,7 +90,7 @@ export class ReportsService {
                 fillColor: '#cce5ff'
             })));
 
-        const body = records.map(record => record.rows
+        const body = data.map(record => record.rows
             .filter(row => row.type === ROW_TYPES.SINGLE)
             .flatMap(row => row.fields[0].map(field => field)))
             .map(row => head.map(column => {
@@ -98,16 +98,19 @@ export class ReportsService {
                 return field?.type === INPUT_TYPES.DATE ? new Date(field.value).toLocaleDateString() : field?.value || '';
             }));
 
-        const data: Content = {
+        const content: Content = {
             table: {
                 headerRows: 1, widths: '*',
                 body: [
-                    head, ...body
+                    head, body.length > 0 ? [...body] : [{
+                        text: 'Sin registros',
+                        alignment: 'center',
+                    }]
                 ]
             }
         };
 
-        return this.createPdf(format.name, data, 'landscape');
+        return this.createPdf(format.name, content, 'landscape');
     }
 
     getNameField(field: FormatField, parameters: Parameter[]) {

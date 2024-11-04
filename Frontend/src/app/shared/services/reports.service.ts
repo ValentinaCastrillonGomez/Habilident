@@ -13,8 +13,8 @@ export class ReportsService {
     private pdf = new Subject<string>();
     pdf$ = this.pdf.asObservable();
 
-    async print(path: string) {
-        const pdf = await firstValueFrom(this.http.get(`${this.api.API_REPORTS}/${path}`, { responseType: 'blob' }));
+    async print(path: string, start = '', end = '') {
+        const pdf = await firstValueFrom(this.http.get(`${this.api.API_REPORTS}/${path}`, { responseType: 'blob', params: { start, end } }));
         this.pdf.next(URL.createObjectURL(pdf));
     }
 
