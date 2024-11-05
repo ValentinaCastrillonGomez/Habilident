@@ -15,7 +15,7 @@ import { ReportsService } from '@shared/services/reports.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class HomeComponent implements OnInit {
-  private reportsService = inject(ReportsService);
+  private readonly reportsService = inject(ReportsService);
 
   @ViewChild('pdfIframe', { static: false }) pdfIframe!: ElementRef;
 

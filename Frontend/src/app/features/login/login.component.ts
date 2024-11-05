@@ -16,8 +16,8 @@ import Swal from 'sweetalert2';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class AuthComponent {
-  private formBuilder = inject(NonNullableFormBuilder);
-  private authService = inject(AuthService);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly authService = inject(AuthService);
 
   loginForm = this.formBuilder.group({
     email: this.formBuilder.control('', [Validators.required, Validators.email]),

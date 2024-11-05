@@ -4,8 +4,15 @@
         <mat-icon>drag_indicator</mat-icon>
     </button>
     @if(input){
-        <app-input-text class="w-full overflow-x-hidden pt-5" [field]="input" [isArea]="true"
-            [isUnique]="true"></app-input-text>
+    <mat-form-field appearance="outline" class="w-full" [formGroup]="input">
+        <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?" matTooltipPosition="right">
+        </mat-checkbox>
+        <mat-label>Texto en area</mat-label>
+        <input matInput type="text" formControlName="name" required>
+        @if (input.controls.name.invalid) {
+        <mat-error class="truncate">Introduce un nombre válido</mat-error>
+        }
+    </mat-form-field>
     }
     @if(!isUnique()){
     <button mat-icon-button type="button" [matMenuTriggerFor]="rowInputs" class="self-center">

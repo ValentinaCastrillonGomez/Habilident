@@ -8,5 +8,4 @@ import { ENV } from 'src/app/app.config';
 export class AlertsService extends GenericService<Alert> {
   protected http = inject(HttpClient);
   protected api = inject(ENV).API_ALERTS;
-
 }

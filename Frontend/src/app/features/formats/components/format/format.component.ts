@@ -8,7 +8,6 @@ import { FormatsService } from '@shared/services/formats.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RowAreaComponent } from '../row-area/row-area.component';
 import { RowTableComponent } from '../row-table/row-table.component';
-import Swal from 'sweetalert2';
 
 export type RowsFormType = {
   type: FormControl<RowTypes>;
@@ -38,13 +37,14 @@ export type FieldsFormType = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormatComponent {
-  private dialog = inject(MatDialogRef<FormatComponent>);
-  private formBuilder = inject(NonNullableFormBuilder);
-  private formatsService = inject(FormatsService);
+  private readonly dialog = inject(MatDialogRef<FormatComponent>);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly formatsService = inject(FormatsService);
+
   format = inject<Format | null>(MAT_DIALOG_DATA);
 
   formatForm = this.formBuilder.group({
-    name: this.formBuilder.control(this.format?.name || '', [Validators.required]),
+    name: this.formBuilder.control(this.format?.name ?? '', [Validators.required]),
     rows: this.formBuilder.array<FormGroup<RowsFormType>>(
       this.format?.rows.map((row) => this.formBuilder.group<RowsFormType>({
         type: this.formBuilder.control(row.type),
@@ -92,19 +92,7 @@ export class FormatComponent {
 
     const format = this.formatForm.getRawValue();
 
-    this.formatsService.save(format, this.format?._id)
-      .then(() => {
-        this.dialog.close(true);
-        Swal.fire({
-          title: "Registro guardado",
-          icon: "success",
-          timer: 1000,
-          showConfirmButton: false,
-        });
-      })
-      .catch(({ error }) => Swal.fire({
-        icon: 'error',
-        title: error.message,
-      }));
+    const resp = await this.formatsService.save(format, this.format?._id)
+    if (resp) this.dialog.close(true);
   }
 }

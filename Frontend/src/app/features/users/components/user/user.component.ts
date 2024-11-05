@@ -8,7 +8,6 @@ import { MaterialModule } from '@shared/modules/material/material.module';
 import { RolesService } from '@features/roles/services/roles.service';
 import { Parameter } from '@tipos/parameter';
 import { ParametersService } from '@shared/services/parameters.service';
-import Swal from 'sweetalert2';
 import moment from 'moment';
 
 const ADULT = 18;
@@ -26,11 +25,11 @@ const ADULT = 18;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserComponent implements OnInit {
-  private dialog = inject(MatDialogRef<UserComponent>);
-  private formBuilder = inject(NonNullableFormBuilder);
-  private usersService = inject(UsersService);
-  private rolesService = inject(RolesService);
-  private parametersService = inject(ParametersService);
+  private readonly dialog = inject(MatDialogRef<UserComponent>);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly usersService = inject(UsersService);
+  private readonly rolesService = inject(RolesService);
+  private readonly parametersService = inject(ParametersService);
   user = inject<User | null>(MAT_DIALOG_DATA);
 
   options: Parameter[] = [];
@@ -104,19 +103,7 @@ export class UserComponent implements OnInit {
 
     const user = this.userForm.getRawValue();
 
-    this.usersService.save(user, this.user?._id)
-      .then(() => {
-        this.dialog.close(true);
-        Swal.fire({
-          title: "Registro guardado",
-          icon: "success",
-          timer: 1000,
-          showConfirmButton: false,
-        });
-      })
-      .catch(({ error }) => Swal.fire({
-        icon: 'error',
-        title: error.message,
-      }));
+    const resp = await this.usersService.save(user, this.user?._id)
+    if (resp) this.dialog.close(true);
   }
 }

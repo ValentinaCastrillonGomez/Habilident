@@ -16,7 +16,7 @@ import { paths } from 'src/app/app.routes';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
-  private authService = inject(AuthService);
+  private readonly authService = inject(AuthService);
   loadingService = inject(LoadingService);
 
   readonly administration = [

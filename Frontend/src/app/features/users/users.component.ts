@@ -19,17 +19,17 @@ import { MaterialModule } from '@shared/modules/material/material.module';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class UsersComponent implements AfterViewInit {
-  private usersService = inject(UsersService);
-  private dialog = inject(MatDialog);
+  private readonly usersService = inject(UsersService);
+  private readonly dialog = inject(MatDialog);
+
+  private readonly searchTerms = new BehaviorSubject<string>('');
+  private readonly actions = new Subject<void>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   dataSource = signal<User[]>([]);
   totalRecords = 0;
   pageSize = 10;
   displayedColumns: string[] = ['firstNames', 'lastNames', 'typeDocument', 'numberDocument', 'email', 'address', 'phone', 'role', 'state', 'actions'];
-
-  private searchTerms = new BehaviorSubject<string>('');
-  private actions = new Subject<void>();
 
   ngAfterViewInit() {
     merge(

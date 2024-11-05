@@ -22,9 +22,9 @@ import { ParametersService } from '@shared/services/parameters.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class FormatsComponent {
-  private formatsService = inject(FormatsService);
-  private dialog = inject(MatDialog);
-  private parametersService = inject(ParametersService);
+  private readonly formatsService = inject(FormatsService);
+  private readonly dialog = inject(MatDialog);
+  private readonly parametersService = inject(ParametersService);
 
   formats = signal<Format[]>([]);
   formatSelected = signal<Format | null>(null);

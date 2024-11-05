@@ -27,6 +27,9 @@ export class RecordsComponent implements AfterViewInit {
     private readonly dialog = inject(MatDialog);
     private readonly injector = inject(Injector);
 
+    private readonly searchTerms = new Subject<any>();
+    private readonly actions = new Subject<void>();
+
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     format = input.required<Format>();
     dataSource = signal<Record[]>([]);
@@ -37,8 +40,6 @@ export class RecordsComponent implements AfterViewInit {
         start: new FormControl<Date | null>(null),
         end: new FormControl<Date | null>(null),
     });
-    private searchTerms = new Subject<any>();
-    private actions = new Subject<void>();
 
     ngAfterViewInit() {
         merge(
@@ -75,7 +76,7 @@ export class RecordsComponent implements AfterViewInit {
     }
 
     print(id: string) {
-        this.reportsService.print(`records/${id}`, );
+        this.reportsService.print(`records/${id}`,);
     }
 
 }

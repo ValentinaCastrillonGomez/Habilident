@@ -2,14 +2,13 @@ import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MaterialModule } from "@shared/modules/material/material.module";
-import { AlertsService } from "@shared/services/alerts.service";
+import { AlertsService } from "@features/alerts/services/alerts.service";
 import { FormatsService } from "@shared/services/formats.service";
 import { ParametersService } from "@shared/services/parameters.service";
 import { Alert } from "@tipos/alert";
 import { Format } from "@tipos/format";
 import { Parameter } from "@tipos/parameter";
 import moment from "moment";
-import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-alert',
@@ -42,8 +41,6 @@ export class AlertComponent {
   });
 
   async ngOnInit() {
-    console.log(this.alert);
-
     this.formats = (await this.formatsService.getAll()).data;
     this.options = (await this.parametersService.getAll()).data;
   }
@@ -57,19 +54,7 @@ export class AlertComponent {
 
     const { date, ...alert } = this.alertForm.getRawValue();
 
-    this.alertsService.save({ ...alert, date: new Date(date) }, this.alert?._id)
-      .then(() => {
-        this.dialog.close(true);
-        Swal.fire({
-          title: "Registro guardado",
-          icon: "success",
-          timer: 1000,
-          showConfirmButton: false,
-        });
-      })
-      .catch(({ error }) => Swal.fire({
-        icon: 'error',
-        title: error.message,
-      }));
+    const resp = await this.alertsService.save({ ...alert, date: new Date(date) }, this.alert?._id)
+    if (resp) this.dialog.close(true);
   }
 }

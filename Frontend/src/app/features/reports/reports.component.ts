@@ -23,8 +23,8 @@ interface Reports {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ReportsComponent implements OnInit {
-  private reportsService = inject(ReportsService);
-  private formatsService = inject(FormatsService);
+  private readonly reportsService = inject(ReportsService);
+  private readonly formatsService = inject(FormatsService);
 
   dataSource = signal<Reports[]>([]);
   displayedColumns: string[] = ['name', 'print'];

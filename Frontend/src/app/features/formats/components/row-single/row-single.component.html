@@ -6,12 +6,42 @@
     @for (input of row.controls.fields.controls; track input; let columnIndex = $index) {
     @switch(input.controls.type.value){
     @case ('select') {
-    <app-input-select class="w-full overflow-x-hidden pt-5" [field]="input" (remove)="removeColumn($index)"
-        [isUnique]="row.controls.fields.controls.length === 1"></app-input-select>
+    <mat-form-field appearance="outline" class="w-full" [formGroup]="input">
+        <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?" matTooltipPosition="right">
+        </mat-checkbox>
+        <mat-label>Selección</mat-label>
+        <mat-select formControlName="name" required>
+            @for (option of options; track option._id) {
+            <mat-option [value]="option._id">{{option.name}}</mat-option>
+            }
+        </mat-select>
+        @if(row.controls.fields.controls.length > 1){
+        <button matSuffix mat-icon-button type="button" matTooltip="Eliminar campo" matTooltipPosition="left"
+            (click)="removeColumn($index)">
+            <mat-icon>close</mat-icon>
+        </button>
+        }
+        @if (input.controls.name.invalid) {
+        <mat-error class="truncate">Introduce una parametro válido</mat-error>
+        }
+    </mat-form-field>
     }
     @default {
-    <app-input-text class="w-full overflow-x-hidden pt-5" [field]="input" (remove)="removeColumn($index)"
-        [isUnique]="row.controls.fields.controls.length === 1"></app-input-text>
+    <mat-form-field appearance="outline" class="w-full" [formGroup]="input">
+        <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?" matTooltipPosition="right">
+        </mat-checkbox>
+        <mat-label>{{getType(input)}}</mat-label>
+        <input matInput type="text" formControlName="name" required>
+        @if(row.controls.fields.controls.length > 1){
+        <button matSuffix mat-icon-button type="button" matTooltip="Eliminar campo" matTooltipPosition="left"
+            (click)="removeColumn($index)">
+            <mat-icon>close</mat-icon>
+        </button>
+        }
+        @if (input.controls.name.invalid) {
+        <mat-error class="truncate">Introduce un nombre válido</mat-error>
+        }
+    </mat-form-field>
     }
     }
     }

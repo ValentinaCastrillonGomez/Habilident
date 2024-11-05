@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { AlertsService } from '@shared/services/alerts.service';
+import { AlertsService } from '@features/alerts/services/alerts.service';
 import { Alert } from '@tipos/alert';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
 import { AlertComponent } from './components/alert/alert.component';
@@ -19,16 +19,17 @@ import { MaterialModule } from '@shared/modules/material/material.module';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class AlertsComponent implements AfterViewInit {
-  private alertsService = inject(AlertsService);
-  private dialog = inject(MatDialog);
+  private readonly alertsService = inject(AlertsService);
+  private readonly dialog = inject(MatDialog);
+
+  private readonly searchTerms = new BehaviorSubject<string>('');
+  private readonly actions = new Subject<void>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   dataSource = signal<Alert[]>([]);
   totalRecords = 0;
   pageSize = 10;
   displayedColumns: string[] = ['format', 'frequency', 'date', 'last_generated', 'actions'];
-  private searchTerms = new BehaviorSubject<string>('');
-  private actions = new Subject<void>();
 
   ngAfterViewInit() {
     merge(

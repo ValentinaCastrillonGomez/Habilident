@@ -18,17 +18,17 @@ import { ParameterComponent } from './components/parameter/parameter.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ParametersComponent implements AfterViewInit {
-  private parametersService = inject(ParametersService);
-  private dialog = inject(MatDialog);
+  private readonly parametersService = inject(ParametersService);
+  private readonly dialog = inject(MatDialog);
+
+  private readonly searchTerms = new BehaviorSubject<string>('');
+  private readonly actions = new Subject<void>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   dataSource = signal<Parameter[]>([]);
   totalRecords = 0;
   pageSize = 10;
   displayedColumns: string[] = ['name', 'options', 'actions'];
-
-  private searchTerms = new BehaviorSubject<string>('');
-  private actions = new Subject<void>();
 
   ngAfterViewInit() {
     merge(

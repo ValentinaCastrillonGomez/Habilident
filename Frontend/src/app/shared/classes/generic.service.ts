@@ -15,11 +15,23 @@ export abstract class GenericService<T> {
         return firstValueFrom(this.http.get<T>(`${this.api}/${id}`));
     }
 
-    save(data: T, id?: string): Promise<T> {
-        return firstValueFrom(!id ? this.http.post<T>(this.api, data) : this.http.patch<T>(`${this.api}/${id}`, this.removeNullKeys(data)));
+    async save(data: T, id?: string): Promise<boolean> {
+        try {
+            await firstValueFrom(!id ? this.http.post<T>(this.api, data) : this.http.patch<T>(`${this.api}/${id}`, this.removeNullKeys(data)));
+            Swal.fire({
+                title: "Registro guardado",
+                icon: "success",
+                timer: 1000,
+                showConfirmButton: false,
+            });
+            return true;
+        } catch ({ error }: any) {
+            Swal.fire({ icon: 'error', title: error.message, })
+            return false;
+        }
     }
 
-    async delete(id: string) {
+    async delete(id: string): Promise<boolean> {
         const { isConfirmed } = await Swal.fire({
             title: "¿Desea eliminar este registro?",
             showCancelButton: true,
