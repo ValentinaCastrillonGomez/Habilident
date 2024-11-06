@@ -1,10 +1,10 @@
-<div class="flex gap-x-3 overflow-x-hidden" cdkDrag>
+<div class="flex gap-x-3 overflow-x-hidden border-dashed border-black/50" cdkDrag>
     <button mat-icon-button type="button" matTooltip="Arrastrar" matTooltipPosition="before" class="self-center"
         cdkDragHandle>
         <mat-icon>drag_indicator</mat-icon>
     </button>
     @if(input){
-    <mat-form-field appearance="outline" class="w-full" [formGroup]="input">
+    <mat-form-field appearance="outline" class="w-full mt-5" [formGroup]="input">
         <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?" matTooltipPosition="right">
         </mat-checkbox>
         <mat-label>Texto en area</mat-label>
