@@ -18,7 +18,7 @@ const fonts = {
 
 @Injectable()
 export class ReportsService {
-    private printer = new PdfPrinter(fonts);
+    private readonly printer = new PdfPrinter(fonts);
 
     constructor(
         private readonly recordsService: RecordsService,
@@ -90,25 +90,29 @@ export class ReportsService {
                 fillColor: '#cce5ff'
             })));
 
-        const body = data.map(record => record.rows
+        let body: any[];
+
+        body = data.map(record => record.rows
             .filter(row => row.type === ROW_TYPES.SINGLE)
             .flatMap(row => row.fields[0].map(field => field)))
             .map(row => head.map(column => {
                 const field = row.find(field => column.text === this.getNameField(field, parameters.data));
-                return field?.type === INPUT_TYPES.DATE ? new Date(field.value).toLocaleDateString() : field?.value || '';
+                return field?.type === INPUT_TYPES.DATE ? new Date(field.value).toLocaleDateString() : field?.value || '[No registrado]';
             }));
 
-        const content: Content = {
+        let content: Content = {
             table: {
                 headerRows: 1, widths: '*',
-                body: [
-                    head, body.length > 0 ? [...body] : [{
-                        text: 'Sin registros',
-                        alignment: 'center',
-                    }]
-                ]
+                body: [head, ...body],
             }
         };
+
+        if (body.length === 0) {
+            content = {
+                text: 'Sin registros',
+                alignment: 'center',
+            }
+        }
 
         return this.createPdf(format.name, content, 'landscape');
     }

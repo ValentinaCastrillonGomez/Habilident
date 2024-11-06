@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, input, Input, OnInit, output } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { INPUT_TYPES, InputTypes, TYPES_NAMES } from '@tipos/format';
-import { CdkDrag, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FieldsFormType, RowsFormType } from '../format/format.component';
 import { ParametersService } from '@shared/services/parameters.service';
 import { Parameter } from '@tipos/parameter';
@@ -54,6 +54,10 @@ export class RowTableComponent implements OnInit {
 
   removeRow(): void {
     this.remove.emit();
+  }
+
+  drop(event: CdkDragDrop<FormArray>) {
+    moveItemInArray(this.row.controls.fields.controls, event.previousIndex, event.currentIndex);
   }
 
   getType(input: FormGroup<FieldsFormType>) {

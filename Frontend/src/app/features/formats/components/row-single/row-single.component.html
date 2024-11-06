@@ -1,14 +1,15 @@
-<div class="flex overflow-x-hidden border-dashed border-black/50" cdkDrag>
+<div class="flex border-dashed border-black/50" cdkDrag>
     <button mat-icon-button type="button" matTooltip="Arrastrar" matTooltipPosition="before" class="self-center"
         cdkDragHandle>
         <mat-icon>drag_indicator</mat-icon>
     </button>
 
-    <div cdkDropList (cdkDropListDropped)="drop($event)" class="flex gap-x-3 w-full">
+    <div cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)"
+        class="flex gap-x-3 w-full mt-5">
         @for (input of row.controls.fields.controls; track input; let columnIndex = $index) {
         @switch(input.controls.type.value){
         @case ('select') {
-        <mat-form-field appearance="outline" class="w-full mt-5" [formGroup]="input" cdkDrag>
+        <mat-form-field appearance="outline" class="w-full horizontal" [formGroup]="input" cdkDrag>
             <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?">
             </mat-checkbox>
             <mat-label>Campo Selección</mat-label>
@@ -26,9 +27,10 @@
             <mat-error class="truncate">Introduce una parametro válido</mat-error>
             }
         </mat-form-field>
+
         }
         @default {
-        <mat-form-field appearance="outline" class="w-full mt-5" [formGroup]="input" cdkDrag>
+        <mat-form-field appearance="outline" class="w-full horizontal" [formGroup]="input" cdkDrag>
             <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?">
             </mat-checkbox>
             <mat-label>Campo {{getType(input)}}</mat-label>
