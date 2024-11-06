@@ -3,5 +3,6 @@ export type Alert = {
     format: any;
     frequency: string;
     date: Date;
+    userCreate: any;
     last_generated?: Date;
 }

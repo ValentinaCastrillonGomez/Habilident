@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { LoadingService } from '@core/services/loading.service';
+import { NotificationService } from '@core/services/notification.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { paths } from 'src/app/app.routes';
 
@@ -17,6 +18,7 @@ import { paths } from 'src/app/app.routes';
 })
 export class NavbarComponent {
   private readonly authService = inject(AuthService);
+  private readonly notificationService = inject(NotificationService);
   loadingService = inject(LoadingService);
 
   readonly administration = [
@@ -31,6 +33,7 @@ export class NavbarComponent {
   ];
 
   username = this.authService.getUser().name;
+  notifications = this.notificationService.notifications;
 
   logout() {
     this.authService.logout();

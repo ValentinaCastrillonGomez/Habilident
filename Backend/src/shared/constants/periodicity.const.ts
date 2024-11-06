@@ -1,10 +1,10 @@
-export const  PERIODICITY = {
-    D: "diario",
-    S: "Semanal",
-    M: "Mensual",
-    T: "Trimestral",
-    ST: "Semestral",
-    A: "Anual",
+export const PERIODICITY = {
+    DIARY: "diario",
+    WEEKLY: "Semanal",
+    MONTHLY: "Mensual",
+    QUARTERLY: "Trimestral",
+    BIANNUAL: "Semestral",
+    ANNUAL: "Anual",
 } as const;
 
-export type Periodicitys = typeof PERIODICITY[keyof typeof PERIODICITY];
+export type Periodicity = typeof PERIODICITY[keyof typeof PERIODICITY];

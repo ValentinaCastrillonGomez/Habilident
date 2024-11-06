@@ -2,8 +2,8 @@
     <span mat-dialog-title>Guardar alerta</span>
     <mat-dialog-content class="mat-typography">
         <div class="mt-2 mb-4 space-y-4">
-            <div class="flex gap-x-4">
-                <mat-form-field appearance="outline">
+            <div class="flex gap-4">
+                <mat-form-field appearance="outline" class="w-full">
                     <mat-label>Formato</mat-label>
                     <mat-select formControlName="format" required>
                         @for (formart of formats; track formart._id) {
@@ -15,7 +15,7 @@
                     }
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class="w-full">
                     <mat-label>Peridiocidad</mat-label>
                     <mat-select id="frequency" formControlName="frequency" required>
                         @for (option of periodicity; track option) {
@@ -26,12 +26,25 @@
                     <mat-error>Introduce una peridiocidad válida</mat-error>
                     }
                 </mat-form-field>
-
-                <mat-form-field appearance="outline">
+            </div>
+            <div class="flex gap-4">
+                <mat-form-field appearance="outline" class="w-full">
                     <mat-label>Fecha de inicio</mat-label>
-                    <input matInput type="datetime-local" formControlName="date" [min]="minDate">
+                    <input matInput [matDatepicker]="picker" [min]="minDate" id="date" formControlName="date" required>
+
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+
                     @if (alertForm.controls.date.invalid) {
                     <mat-error>Introduce una fecha de inicio válida</mat-error>
+                    }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Hora de notificación</mat-label>
+                    <input matInput type="time" formControlName="hour">
+                    @if (alertForm.controls.hour.invalid) {
+                    <mat-error>Introduce una hora de notificación válida</mat-error>
                     }
                 </mat-form-field>
             </div>

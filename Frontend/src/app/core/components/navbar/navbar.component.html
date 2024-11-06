@@ -7,8 +7,8 @@
         }
     </div>
 
-    <div class="flex items-center gap-x-2">
-        <button mat-icon-button>
+    <div class="flex items-center gap-x-4">
+        <button mat-icon-button [matBadge]="notifications().length" [matBadgeHidden]="!notifications().length">
             <mat-icon>notifications</mat-icon>
         </button>
         {{username | titlecase}}

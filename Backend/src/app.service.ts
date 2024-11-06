@@ -15,20 +15,26 @@ import { PERIODICITY } from './shared/constants/periodicity.const';
 export class AppService {
 
   constructor(
-    private rolesService: RolesService,
-    private usersService: UsersService,
-    private parametersService: ParametersService
+    private readonly rolesService: RolesService,
+    private readonly usersService: UsersService,
+    private readonly parametersService: ParametersService
   ) { }
 
   getHealth() {
     return { status: 'UP' };
   }
 
+  async deleteAll() {
+    await this.parametersService.removeAll();
+    await this.usersService.removeAll();
+    await this.rolesService.removeAll();
+  }
+
   async getInit() {
+    await this.deleteAll();
     const rol = await this.rolesService.create(this.initRole());
     await this.usersService.create(this.initUser(rol));
     this.initParameters().forEach(async (parameter) => await this.parametersService.create(parameter));
-    return { status: 'INIT' };
   }
 
   private initRole(): Role {
@@ -43,10 +49,10 @@ export class AppService {
       firstNames: 'admin',
       lastNames: 'admin',
       birthday: new Date(),
-      typeDocument: '1',
+      typeDocument: TYPE_DOCUMENTS.CC,
       numberDocument: '1',
       email: 'admin@admin.com',
-      gender: 'H',
+      gender: GENDERS.O,
       address: '1',
       phone: '1',
       office: '1',
