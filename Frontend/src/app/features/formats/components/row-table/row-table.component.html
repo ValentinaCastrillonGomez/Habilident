@@ -10,8 +10,7 @@
         @switch(input.controls.type.value){
         @case ('select') {
         <mat-form-field appearance="outline" class="w-full horizontal" [formGroup]="input" cdkDrag>
-            <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?"
-                matTooltipPosition="right">
+            <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?">
             </mat-checkbox>
             <mat-label>Columna Selección</mat-label>
             <mat-select formControlName="name" required>
@@ -20,7 +19,7 @@
                 }
             </mat-select>
             @if(row.controls.fields.controls.length > 1){
-            <button matSuffix mat-icon-button type="button" matTooltip="Eliminar columna" matTooltipPosition="left"
+            <button matSuffix mat-icon-button type="button" matTooltip="Eliminar columna"
                 (click)="removeColumn($index)">
                 <mat-icon>delete</mat-icon>
             </button>
@@ -32,13 +31,12 @@
         }
         @default {
         <mat-form-field appearance="outline" class="w-full horizontal" [formGroup]="input" cdkDrag>
-            <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?"
-                matTooltipPosition="right">
+            <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?">
             </mat-checkbox>
             <mat-label>Columna {{getType(input)}}</mat-label>
             <input matInput type="text" formControlName="name" required>
             @if(row.controls.fields.controls.length > 1){
-            <button matSuffix mat-icon-button type="button" matTooltip="Eliminar columna" matTooltipPosition="left"
+            <button matSuffix mat-icon-button type="button" matTooltip="Eliminar columna"
                 (click)="removeColumn($index)">
                 <mat-icon>delete</mat-icon>
             </button>

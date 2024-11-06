@@ -6,12 +6,14 @@ import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } f
 import { AlertComponent } from './components/alert/alert.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MaterialModule } from '@shared/modules/material/material.module';
+import { PermissionDirective } from '@shared/directives/permission.directive';
 
 @Component({
   selector: 'app-alerts',
   standalone: true,
   imports: [
     MaterialModule,
+    PermissionDirective,
   ],
   providers: [AlertsService],
   templateUrl: './alerts.component.html',

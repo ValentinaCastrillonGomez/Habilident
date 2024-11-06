@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RecordsComponent } from '@features/records/records.component';
 import { FormatComponent } from './components/format/format.component';
 import { ParametersService } from '@shared/services/parameters.service';
+import { PermissionDirective } from '@shared/directives/permission.directive';
 
 @Component({
   selector: 'app-formats',
@@ -15,6 +16,7 @@ import { ParametersService } from '@shared/services/parameters.service';
     MaterialModule,
     RouterLink,
     RecordsComponent,
+    PermissionDirective,
   ],
   providers: [FormatsService],
   templateUrl: './formats.component.html',

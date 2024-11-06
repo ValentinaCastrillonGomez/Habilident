@@ -9,8 +9,8 @@ import { Login } from 'src/types/login';
 export class AuthService {
 
   constructor(
-    private usersService: UsersService,
-    private jwtService: JwtService
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService
   ) { }
 
   async signIn({ email, password }: Login) {

@@ -5,8 +5,10 @@ import { AuthService } from '@core/services/auth.service';
 import { LoadingService } from '@core/services/loading.service';
 import { NotificationService } from '@core/services/notification.service';
 import { RecordComponent } from '@features/records/components/record/record.component';
+import { PermissionDirective } from '@shared/directives/permission.directive';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@shared/services/formats.service';
+import { PERMISSIONS } from '@tipos/permission';
 import { paths } from 'src/app/app.routes';
 
 @Component({
@@ -14,7 +16,8 @@ import { paths } from 'src/app/app.routes';
   standalone: true,
   imports: [
     RouterLink,
-    MaterialModule
+    MaterialModule,
+    PermissionDirective,
   ],
   providers: [FormatsService],
   templateUrl: './navbar.component.html',
@@ -28,14 +31,14 @@ export class NavbarComponent {
   loadingService = inject(LoadingService);
 
   readonly administration = [
-    { id: 'roles', path: paths.ROLES, title: 'Roles', icon: 'admin_panel_settings' },
-    { id: 'users', path: paths.USERS, title: 'Usuarios', icon: 'group' },
-    { id: 'parameters', path: paths.PARAMETERS, title: 'Parametros', icon: 'fact_check' },
+    { id: 'roles', path: paths.ROLES, title: 'Roles', icon: 'admin_panel_settings', permission: PERMISSIONS.READ_ROLES },
+    { id: 'users', path: paths.USERS, title: 'Usuarios', icon: 'group', permission: PERMISSIONS.READ_USERS },
+    { id: 'parameters', path: paths.PARAMETERS, title: 'Parametros', icon: 'fact_check', permission: PERMISSIONS.READ_PARAMETERS },
   ];
   readonly management = [
-    { id: 'formats', path: paths.FORMATS, title: 'Formatos' },
-    { id: 'reports', path: paths.REPORTS, title: 'Reportes' },
-    { id: 'alarms', path: paths.ALERTS, title: 'Alarmas' },
+    { id: 'formats', path: paths.FORMATS, title: 'Formatos', permission: PERMISSIONS.READ_FORMATS },
+    { id: 'reports', path: paths.REPORTS, title: 'Reportes', permission: PERMISSIONS.PRINT_REPORTS },
+    { id: 'alarms', path: paths.ALERTS, title: 'Alarmas', permission: PERMISSIONS.READ_ALERTS },
   ];
 
   username = this.authService.getUser().name;

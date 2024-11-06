@@ -13,7 +13,7 @@ export class UsersService extends GenericService<UserDocument, UserEntity> {
     constructor(
         @InjectModel(UserEntity.name) private readonly userModel: Model<UserDocument>,
     ) {
-        super(userModel, ['email'], [{ path: 'role', select: 'name' }]);
+        super(userModel, ['email'], [{ path: 'role', select: 'name permissions' }]);
     }
 
     async encryiptPassword(userDto: User): Promise<User> {

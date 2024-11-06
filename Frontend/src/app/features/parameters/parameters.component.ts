@@ -6,12 +6,14 @@ import { MaterialModule } from '@shared/modules/material/material.module';
 import { Parameter } from '@tipos/parameter';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
 import { ParameterComponent } from './components/parameter/parameter.component';
+import { PermissionDirective } from '@shared/directives/permission.directive';
 
 @Component({
   selector: 'app-parameters',
   standalone: true,
   imports: [
     MaterialModule,
+    PermissionDirective,
   ],
   templateUrl: './parameters.component.html',
   styleUrl: './parameters.component.scss',

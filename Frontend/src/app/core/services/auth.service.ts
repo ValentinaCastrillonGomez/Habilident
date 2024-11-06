@@ -4,6 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
 import { Login } from '@tipos/login';
 import { paths } from 'src/app/app.routes';
+import { Permission } from '@tipos/permission';
 
 @Injectable({
   providedIn: 'root',
@@ -21,8 +22,12 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
-  getUser(): { name: string; roles: string[] } {
+  getUser(): { name: string; roles: string, permissions: Permission[] } {
     return JSON.parse(window.atob(this.getToken()!.split('.')[1]));
+  }
+
+  hasPermission(permission: Permission): boolean {
+    return this.getUser().permissions.includes(permission);
   }
 
   async singIn(login: Login) {

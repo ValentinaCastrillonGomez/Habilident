@@ -6,12 +6,14 @@ import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } f
 import { MatDialog } from '@angular/material/dialog';
 import { RoleComponent } from './components/role/role.component';
 import { MaterialModule } from '@shared/modules/material/material.module';
+import { PermissionDirective } from '@shared/directives/permission.directive';
 
 @Component({
   selector: 'app-roles',
   standalone: true,
   imports: [
     MaterialModule,
+    PermissionDirective,
   ],
   providers: [RolesService],
   templateUrl: './roles.component.html',

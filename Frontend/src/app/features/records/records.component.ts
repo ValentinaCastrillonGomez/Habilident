@@ -10,12 +10,17 @@ import { RecordComponent } from './components/record/record.component';
 import { Format } from '@tipos/format';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ReportsService } from '@shared/services/reports.service';
+import { PermissionDirective } from '@shared/directives/permission.directive';
 import moment from 'moment';
 
 @Component({
     selector: 'app-records',
     standalone: true,
-    imports: [MaterialModule, ReactiveFormsModule],
+    imports: [
+        MaterialModule,
+        ReactiveFormsModule,
+        PermissionDirective,
+    ],
     providers: [RecordsService],
     templateUrl: './records.component.html',
     styleUrl: './records.component.scss',
