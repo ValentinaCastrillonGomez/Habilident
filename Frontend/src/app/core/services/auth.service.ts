@@ -9,9 +9,9 @@ import { paths } from 'src/app/app.routes';
   providedIn: 'root',
 })
 export class AuthService {
-  private API_LOGIN = '/login';
-  private http = inject(HttpClient);
-  private router = inject(Router);
+  private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
+  private readonly API_LOGIN = '/login';
 
   get isLoggedIn() {
     return !!this.getToken();

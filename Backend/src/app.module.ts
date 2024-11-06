@@ -12,6 +12,8 @@ import { FormatsModule } from './formats/formats.module';
 import { RecordsModule } from './records/records.module';
 import { ParametersModule } from './parameters/parameters.module';
 import { ReportsModule } from './reports/reports.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
@@ -24,6 +26,17 @@ import { ReportsModule } from './reports/reports.module';
       secret: process.env.SECRET_KEY,
       signOptions: { expiresIn: '1h' },
     }),
+    MailerModule.forRoot({
+      transport: {
+        host: process.env.EMAIL_HOST,
+        secure: false,
+        auth: {
+          user: process.env.EMAIL_USERNAME,
+          pass: process.env.EMAIL_PASSWORD,
+        }
+      }
+    }),
+    ScheduleModule.forRoot(),
     UsersModule,
     AlertsModule,
     AuthModule,

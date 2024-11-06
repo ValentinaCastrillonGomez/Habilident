@@ -10,7 +10,7 @@ export class ReportsService {
     protected http = inject(HttpClient);
     protected api = inject(ENV);
 
-    private pdf = new Subject<string>();
+    private readonly pdf = new Subject<string>();
     pdf$ = this.pdf.asObservable();
 
     async print(path: string, start = '', end = '') {

@@ -1,11 +1,18 @@
-<div class="flex gap-x-3 overflow-x-hidden" cdkDrag>
+<div class="flex border-dashed border-black/50" cdkDrag>
     <button mat-icon-button type="button" matTooltip="Arrastrar" matTooltipPosition="before" class="self-center"
         cdkDragHandle>
         <mat-icon>drag_indicator</mat-icon>
     </button>
     @if(input){
-        <app-input-text class="w-full overflow-x-hidden pt-5" [field]="input" [isArea]="true"
-            [isUnique]="true"></app-input-text>
+    <mat-form-field appearance="outline" class="w-full mt-5" [formGroup]="input">
+        <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?" matTooltipPosition="right">
+        </mat-checkbox>
+        <mat-label>Texto en area</mat-label>
+        <input matInput type="text" formControlName="name" required>
+        @if (input.controls.name.invalid) {
+        <mat-error class="truncate">Introduce un nombre válido</mat-error>
+        }
+    </mat-form-field>
     }
     @if(!isUnique()){
     <button mat-icon-button type="button" [matMenuTriggerFor]="rowInputs" class="self-center">

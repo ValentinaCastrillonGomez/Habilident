@@ -1,20 +1,56 @@
-<div class="flex gap-x-3 overflow-x-hidden rounded border border-solid border-b-4 border-black/50" cdkDrag>
+<div class="flex border-dashed border-black/50 bg-sky-300/20" cdkDrag>
     <button mat-icon-button type="button" matTooltip="Arrastrar" matTooltipPosition="before" class="self-center"
         cdkDragHandle>
         <mat-icon>drag_indicator</mat-icon>
     </button>
-    @for (input of row.controls.fields.controls; track input; let columnIndex = $index) {
-    @switch(input.controls.type.value){
-    @case ('select') {
-    <app-input-select class="w-full overflow-x-hidden pt-5" [field]="input" (remove)="removeColumn($index)"
-        [isUnique]="row.controls.fields.controls.length === 1"></app-input-select>
-    }
-    @default {
-    <app-input-text class="w-full overflow-x-hidden pt-5" [field]="input" (remove)="removeColumn($index)"
-        [isUnique]="row.controls.fields.controls.length === 1"></app-input-text>
-    }
-    }
-    }
+
+    <div cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)"
+        class="flex gap-x-3 w-full mt-5">
+        @for (input of row.controls.fields.controls; track input; let columnIndex = $index) {
+        @switch(input.controls.type.value){
+        @case ('select') {
+        <mat-form-field appearance="outline" class="w-full horizontal" [formGroup]="input" cdkDrag>
+            <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?"
+                matTooltipPosition="right">
+            </mat-checkbox>
+            <mat-label>Columna Selección</mat-label>
+            <mat-select formControlName="name" required>
+                @for (option of options; track option._id) {
+                <mat-option [value]="option._id">{{option.name}}</mat-option>
+                }
+            </mat-select>
+            @if(row.controls.fields.controls.length > 1){
+            <button matSuffix mat-icon-button type="button" matTooltip="Eliminar columna" matTooltipPosition="left"
+                (click)="removeColumn($index)">
+                <mat-icon>delete</mat-icon>
+            </button>
+            }
+            @if (input.controls.name.invalid) {
+            <mat-error class="truncate">Introduce una parametro válido</mat-error>
+            }
+        </mat-form-field>
+        }
+        @default {
+        <mat-form-field appearance="outline" class="w-full horizontal" [formGroup]="input" cdkDrag>
+            <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?"
+                matTooltipPosition="right">
+            </mat-checkbox>
+            <mat-label>Columna {{getType(input)}}</mat-label>
+            <input matInput type="text" formControlName="name" required>
+            @if(row.controls.fields.controls.length > 1){
+            <button matSuffix mat-icon-button type="button" matTooltip="Eliminar columna" matTooltipPosition="left"
+                (click)="removeColumn($index)">
+                <mat-icon>delete</mat-icon>
+            </button>
+            }
+            @if (input.controls.name.invalid) {
+            <mat-error class="truncate">Introduce un nombre válido</mat-error>
+            }
+        </mat-form-field>
+        }
+        }
+        }
+    </div>
     <button mat-icon-button type="button" [matMenuTriggerFor]="rowInputs" class="self-center">
         <mat-icon>more_vert</mat-icon>
     </button>

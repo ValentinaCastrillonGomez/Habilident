@@ -1,5 +1,5 @@
 <form [formGroup]="recordForm" (ngSubmit)="save()">
-    <h6 mat-dialog-title>Guardar Registro</h6>
+    <h6 mat-dialog-title>Guardar Registro - <span>{{data.format.name | titlecase}}</span></h6>
     <mat-dialog-content class="mat-typography">
         @for (row of recordForm.controls.rows.controls; track row; let rowIndex = $index) {
         @if(row.controls.type.value === 'single'){

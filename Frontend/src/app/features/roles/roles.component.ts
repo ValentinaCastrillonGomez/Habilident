@@ -19,17 +19,17 @@ import { MaterialModule } from '@shared/modules/material/material.module';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class RolesComponent implements AfterViewInit {
-  private rolesService = inject(RolesService);
-  private dialog = inject(MatDialog);
+  private readonly rolesService = inject(RolesService);
+  private readonly dialog = inject(MatDialog);
+
+  private readonly searchTerms = new BehaviorSubject<string>('');
+  private readonly actions = new Subject<void>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   dataSource = signal<Role[]>([]);
   totalRecords = 0;
   pageSize = 10;
   displayedColumns: string[] = ['name', 'permissions', 'actions'];
-
-  private searchTerms = new BehaviorSubject<string>('');
-  private actions = new Subject<void>();
 
   ngAfterViewInit() {
     merge(

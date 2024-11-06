@@ -28,6 +28,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatBadgeModule } from '@angular/material/badge';
 import { APP_FORMATS, AppDateAdapter } from './material-date.adapter';
 
 @NgModule({
@@ -56,7 +57,8 @@ import { APP_FORMATS, AppDateAdapter } from './material-date.adapter';
     MatTooltipModule,
     MatStepperModule,
     MatProgressBarModule,
-    MatChipsModule
+    MatChipsModule,
+    MatBadgeModule,
   ],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: APP_FORMATS },

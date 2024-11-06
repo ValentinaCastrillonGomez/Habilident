@@ -8,7 +8,7 @@ import { hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService extends GenericService<UserDocument, UserEntity> {
-    private SALT = 10;
+    private readonly SALT = 10;
 
     constructor(
         @InjectModel(UserEntity.name) private readonly userModel: Model<UserDocument>,

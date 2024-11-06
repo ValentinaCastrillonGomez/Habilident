@@ -1,5 +1,5 @@
 <mat-toolbar class="justify-between sticky top-0 z-[101] border-0 border-solid border-b border-b-slate-400">
-    <h3 class="text-sky-600 mb-0">Habilident</h3>
+    <h3 class="text-sky-600 mb-0">HabiliDent</h3>
 
     <div>
         @for (item of management; track item.id) {
@@ -7,8 +7,9 @@
         }
     </div>
 
-    <div class="flex items-center gap-x-2">
-        <button mat-icon-button>
+    <div class="flex items-center gap-x-4">
+        <button mat-icon-button [matBadge]="notifications().length" [matBadgeHidden]="!notifications().length"
+            (click)="showAlerts = !showAlerts">
             <mat-icon>notifications</mat-icon>
         </button>
         {{username | titlecase}}
@@ -32,3 +33,26 @@
         <span>Cerrar sesión</span>
     </button>
 </mat-menu>
+
+@if (showAlerts) {
+<mat-card appearance="outlined" class="absolute right-1 z-[101] shadow-xl">
+    <mat-card-content>
+        <mat-list>
+            <div mat-subheader>Notificaciones</div>
+            <mat-divider></mat-divider>
+            @for (alert of notifications(); track alert._id) {
+            <mat-list-item>
+                <div matListItemTitle>
+                    <b>{{alert.format.name | titlecase}}</b> - {{alert.last_generated | date: 'shortTime'}}
+                </div>
+                <div matListItemLine>
+                    Realizar el registro {{alert.frequency | lowercase}} del formato
+                    <button mat-button (click)="open(alert.format._id)">Ir</button>
+                </div>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            }
+        </mat-list>
+    </mat-card-content>
+</mat-card>
+}

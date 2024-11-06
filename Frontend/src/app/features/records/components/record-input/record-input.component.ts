@@ -17,7 +17,7 @@ import { Parameter } from '@tipos/parameter';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecordInputComponent {
-  private parametersService = inject(ParametersService);
+  private readonly parametersService = inject(ParametersService);
 
   @Input() input!: FormGroup<{
     name: FormControl<string>;

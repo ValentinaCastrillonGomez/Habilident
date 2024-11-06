@@ -1,32 +1,32 @@
 import { ChangeDetectionStrategy, Component, inject, input, Input, OnInit, output } from '@angular/core';
-import { FormArray, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { INPUT_TYPES, InputTypes } from '@tipos/format';
+import { INPUT_TYPES, InputTypes, TYPES_NAMES } from '@tipos/format';
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { InputTextComponent } from '../input-text/input-text.component';
-import { InputSelectComponent } from '../input-select/input-select.component';
-import { RowsFormType } from '../format/format.component';
+import { FieldsFormType, RowsFormType } from '../format/format.component';
+import { ParametersService } from '@shared/services/parameters.service';
+import { Parameter } from '@tipos/parameter';
 
 @Component({
   selector: 'app-row-single',
   standalone: true,
   imports: [
     MaterialModule,
-    CdkDrag, CdkDragHandle,
-    InputTextComponent,
-    InputSelectComponent,
-    CdkDropList,
+    CdkDrag, CdkDragHandle, CdkDropList,
+    ReactiveFormsModule,
   ],
   templateUrl: './row-single.component.html',
   styleUrl: './row-single.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RowSingleComponent implements OnInit {
-  private formBuilder = inject(NonNullableFormBuilder);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly parametersService = inject(ParametersService);
 
   @Input({ required: true }) row!: FormGroup<RowsFormType>;
   isUnique = input<boolean>(false);
   remove = output<void>();
+  options: Parameter[] = [];
 
   typeInputs = [
     { type: INPUT_TYPES.TEXT, name: 'Texto' },
@@ -37,6 +37,7 @@ export class RowSingleComponent implements OnInit {
 
   ngOnInit() {
     if (!this.row.controls.fields.length) this.addColumn(INPUT_TYPES.TEXT);
+    this.options = this.parametersService.parameters();
   }
 
   addColumn(type: InputTypes): void {
@@ -57,6 +58,10 @@ export class RowSingleComponent implements OnInit {
 
   drop(event: CdkDragDrop<FormArray>) {
     moveItemInArray(this.row.controls.fields.controls, event.previousIndex, event.currentIndex);
+  }
+
+  getType(input: FormGroup<FieldsFormType>) {
+    return TYPES_NAMES[input.controls.type.value];
   }
 
 }

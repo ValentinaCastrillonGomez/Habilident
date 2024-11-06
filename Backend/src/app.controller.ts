@@ -11,7 +11,8 @@ export class AppController {
   }
 
   @Get('init')
-  getInit() {
-    return this.appService.getInit();
+  async getInit() {
+    await this.appService.getInit();
+    return { status: 'INIT' };
   }
 }

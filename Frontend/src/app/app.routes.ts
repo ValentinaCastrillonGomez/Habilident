@@ -43,7 +43,7 @@ export const routes: Routes = [
         loadComponent: () => import('@features/reports/reports.component'),
       },
       {
-        path: `${paths.ALERTS}`,
+        path: `${paths.ALERTS}`, data: { title: 'Generación de alarmas' },
         loadComponent: () => import('@features/alerts/alerts.component'),
       },
       { path: '**', redirectTo: paths.FORMATS },

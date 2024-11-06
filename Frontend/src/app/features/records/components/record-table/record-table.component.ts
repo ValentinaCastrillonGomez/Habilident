@@ -18,8 +18,9 @@ import { ParametersService } from '@shared/services/parameters.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecordTableComponent {
-  private formBuilder = inject(NonNullableFormBuilder);
-  private parametersService = inject(ParametersService);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly parametersService = inject(ParametersService);
+
   @Input() fields!: FormArray<FormArray<FormGroup<{
     name: FormControl<string>;
     type: FormControl<InputTypes>;
