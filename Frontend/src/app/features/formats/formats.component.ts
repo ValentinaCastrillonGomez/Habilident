@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@shared/services/formats.service';
 import { RouterLink } from '@angular/router';
@@ -6,7 +6,6 @@ import { Format } from '@tipos/format';
 import { MatDialog } from '@angular/material/dialog';
 import { RecordsComponent } from '@features/records/records.component';
 import { FormatComponent } from './components/format/format.component';
-import { ParametersService } from '@shared/services/parameters.service';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 
 @Component({
@@ -18,7 +17,6 @@ import { PermissionDirective } from '@shared/directives/permission.directive';
     RecordsComponent,
     PermissionDirective,
   ],
-  providers: [FormatsService],
   templateUrl: './formats.component.html',
   styleUrl: './formats.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,32 +24,37 @@ import { PermissionDirective } from '@shared/directives/permission.directive';
 export default class FormatsComponent {
   private readonly formatsService = inject(FormatsService);
   private readonly dialog = inject(MatDialog);
-  private readonly parametersService = inject(ParametersService);
 
-  formats = signal<Format[]>([]);
+  formats = computed<Format[]>(() => this.formatsService.formats() || []);
   formatSelected = signal<Format | null>(null);
 
   async ngOnInit() {
-    await this.loadFormats();
-    await this.parametersService.loadParameters();
+    await this.formatsService.loadFormats();
     this.formatSelected.set(this.formats()[0] || null);
-  }
-
-  async loadFormats() {
-    const { data } = await this.formatsService.getAll();
-    this.formats.set(data);
   }
 
   async remove(id: string) {
     const result = await this.formatsService.delete(id);
-    if (result) this.loadFormats();
+    if (result) {
+      await this.formatsService.loadFormats();
+      this.formatSelected.set(this.formats()[0] || null);
+    }
   }
 
   open(data?: Format) {
     const dialogRef = this.dialog.open(FormatComponent, { data });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) this.loadFormats();
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result) {
+        await this.formatsService.loadFormats();
+
+        if (!data) {
+          this.formatSelected.set(this.formats()[this.formats().length - 1]);
+        } else if (data._id === this.formatSelected()?._id) {
+          const index = this.formats().findIndex(format => format._id === data._id);
+          this.formatSelected.set(this.formats()[index]);
+        }
+      }
     });
   }
 }

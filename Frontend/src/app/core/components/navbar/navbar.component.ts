@@ -19,7 +19,6 @@ import { paths } from 'src/app/app.routes';
     MaterialModule,
     PermissionDirective,
   ],
-  providers: [FormatsService],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })

@@ -1,7 +1,7 @@
 <table class="mb-3 border-collapse w-full">
     <thead>
         <tr>
-            @for (header of displayedColumns; track $index) {
+            @for (header of displayedColumns(); track $index) {
             <th>{{header}}</th>
             }
             <th>

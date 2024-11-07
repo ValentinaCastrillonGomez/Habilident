@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, inject, Injector, in
 import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Record } from '@tipos/record';
-import { debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, merge, Subject, tap } from 'rxjs';
 import { RecordsService } from './services/records.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';

@@ -17,8 +17,4 @@ export class ParametersService extends GenericService<Parameter> {
     this.parameters.set(data);
   }
 
-  getOptions(id: string) {
-    return this.parameters().find(parameter => parameter._id === id);
-  }
-
 }

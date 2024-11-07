@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, computed, inject } from "@angular/core";
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MaterialModule } from "@shared/modules/material/material.module";
@@ -7,7 +7,7 @@ import { FormatsService } from "@shared/services/formats.service";
 import { ParametersService } from "@shared/services/parameters.service";
 import { Alert } from "@tipos/alert";
 import { Format } from "@tipos/format";
-import { Parameter } from "@tipos/parameter";
+import { TYPE_PARAMETERS } from "@const/parameters.const";
 import moment from "moment";
 
 @Component({
@@ -17,7 +17,7 @@ import moment from "moment";
     MaterialModule,
     ReactiveFormsModule,
   ],
-  providers: [AlertsService, FormatsService],
+  providers: [AlertsService],
   templateUrl: './alert.component.html',
   styleUrl: './alert.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,8 +30,8 @@ export class AlertComponent {
   private readonly parametersService = inject(ParametersService);
 
   alert = inject<Alert | null>(MAT_DIALOG_DATA);
-  options: Parameter[] = [];
-  formats: Format[] = [];
+  periodicity = computed<string[]>(() => this.parametersService.parameters().find(option => option.name === TYPE_PARAMETERS.PERIODICITY)?.options || []);
+  formats = computed<Format[]>(() => this.formatsService.formats() || []);
   minDate = moment().subtract(1, 'day').toDate();
 
   alertForm = this.formBuilder.group({
@@ -40,15 +40,6 @@ export class AlertComponent {
     date: this.formBuilder.control<any>(this.alert?.date ?? null, [Validators.required]),
     hour: this.formBuilder.control<any>(this.alert?.date ? moment(this.alert?.date).format('HH:mm') : '', [Validators.required]),
   });
-
-  async ngOnInit() {
-    this.formats = (await this.formatsService.getAll()).data;
-    this.options = (await this.parametersService.getAll()).data;
-  }
-
-  get periodicity() {
-    return this.options.find(option => option.name === 'Periocidad')?.options || [];
-  }
 
   async save() {
     if (this.alertForm.invalid) return;

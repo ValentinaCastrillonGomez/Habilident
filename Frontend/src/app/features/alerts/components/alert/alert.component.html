@@ -6,7 +6,7 @@
                 <mat-form-field appearance="outline" class="w-full">
                     <mat-label>Formato</mat-label>
                     <mat-select formControlName="format" required>
-                        @for (formart of formats; track formart._id) {
+                        @for (formart of formats(); track formart._id) {
                         <mat-option [value]="formart._id">{{formart.name}}</mat-option>
                         }
                     </mat-select>
@@ -18,7 +18,7 @@
                 <mat-form-field appearance="outline" class="w-full">
                     <mat-label>Peridiocidad</mat-label>
                     <mat-select id="frequency" formControlName="frequency" required>
-                        @for (option of periodicity; track option) {
+                        @for (option of periodicity(); track option) {
                         <mat-option [value]="option">{{option}}</mat-option>
                         }
                     </mat-select>

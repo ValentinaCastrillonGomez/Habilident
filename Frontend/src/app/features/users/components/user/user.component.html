@@ -22,7 +22,7 @@
                 <mat-form-field appearance="outline" class="w-full">
                     <mat-label>Tipo de documento</mat-label>
                     <mat-select id="typeDocument" formControlName="typeDocument" required>
-                        @for (option of typesDocuments; track option) {
+                        @for (option of typesDocuments(); track option) {
                         <mat-option [value]="option">{{option}}</mat-option>
                         }
                     </mat-select>
@@ -81,7 +81,7 @@
                 <mat-form-field appearance="outline" class="w-full">
                     <mat-label>Genero</mat-label>
                     <mat-select id="gender" formControlName="gender" required>
-                        @for (option of genders; track option) {
+                        @for (option of genders(); track option) {
                         <mat-option [value]="option">{{option}}</mat-option>
                         }
                     </mat-select>
