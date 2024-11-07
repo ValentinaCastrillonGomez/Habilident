@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, Injector, OnInit, signal } from '@angular/core';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@shared/services/formats.service';
 import { RouterLink } from '@angular/router';
@@ -7,6 +7,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { RecordsComponent } from '@features/records/records.component';
 import { FormatComponent } from './components/format/format.component';
 import { PermissionDirective } from '@shared/directives/permission.directive';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { filter, first } from 'rxjs';
 
 @Component({
   selector: 'app-formats',
@@ -21,16 +23,18 @@ import { PermissionDirective } from '@shared/directives/permission.directive';
   styleUrl: './formats.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class FormatsComponent {
+export default class FormatsComponent implements OnInit {
   private readonly formatsService = inject(FormatsService);
   private readonly dialog = inject(MatDialog);
+  private readonly injector = inject(Injector);
 
   formats = computed<Format[]>(() => this.formatsService.formats() || []);
   formatSelected = signal<Format | null>(null);
 
   async ngOnInit() {
-    await this.formatsService.loadFormats();
-    this.formatSelected.set(this.formats()[0] || null);
+    toObservable(this.formats, { injector: this.injector })
+      .pipe(filter(formats => formats.length > 0), first())
+      .subscribe(() => this.formatSelected.set(this.formats()[0] || null));
   }
 
   async remove(id: string) {
