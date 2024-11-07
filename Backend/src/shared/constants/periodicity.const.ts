@@ -1,5 +1,5 @@
 export const PERIODICITY = {
-    DIARY: "diario",
+    DIARY: "Diario",
     WEEKLY: "Semanal",
     MONTHLY: "Mensual",
     QUARTERLY: "Trimestral",

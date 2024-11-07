@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@shared/services/formats.service';
@@ -17,26 +17,20 @@ interface Reports {
     MaterialModule,
     ReactiveFormsModule,
   ],
-  providers: [FormatsService],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class ReportsComponent implements OnInit {
+export default class ReportsComponent {
   private readonly reportsService = inject(ReportsService);
   private readonly formatsService = inject(FormatsService);
 
-  dataSource = signal<Reports[]>([]);
+  dataSource = computed<Reports[]>(() => this.formatsService.formats().map(format => ({ id: format._id, name: `Reporte de ${format.name.toLowerCase()}` })));
   displayedColumns: string[] = ['name', 'print'];
   range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
   });
-
-  async ngOnInit() {
-    const { data } = await this.formatsService.getAll();
-    this.dataSource.set(data.map(format => ({ id: format._id, name: `Reporte de ${format.name.toLowerCase()}` })));
-  }
 
   print(id: string) {
     this.reportsService.print(`formats/${id}`,

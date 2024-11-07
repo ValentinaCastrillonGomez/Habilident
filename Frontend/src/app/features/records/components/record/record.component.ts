@@ -41,7 +41,7 @@ export class RecordComponent implements OnInit {
     data = inject<{ record: Record | null, format: Format }>(MAT_DIALOG_DATA);
 
     recordForm = this.formBuilder.group({
-        format: this.formBuilder.control(this.data.record?.format || this.data.format._id),
+        format: this.formBuilder.control(this.data.record?.format._id || this.data.format._id),
         rows: this.formBuilder.array<FormGroup<ValuesFormType>>([]),
     });
 

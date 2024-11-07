@@ -14,7 +14,7 @@
             </mat-checkbox>
             <mat-label>Campo Selección</mat-label>
             <mat-select formControlName="name" required>
-                @for (option of options; track option._id) {
+                @for (option of options(); track option._id) {
                 <mat-option [value]="option._id">{{option.name}}</mat-option>
                 }
             </mat-select>

@@ -31,7 +31,6 @@ export type FieldsFormType = {
     RowTableComponent,
     CdkDropList,
   ],
-  providers: [FormatsService],
   templateUrl: './format.component.html',
   styleUrl: './format.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

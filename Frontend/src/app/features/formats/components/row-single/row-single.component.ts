@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, Input, OnInit, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, Input, OnInit, output } from '@angular/core';
 import { FormArray, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { INPUT_TYPES, InputTypes, TYPES_NAMES } from '@tipos/format';
@@ -26,7 +26,7 @@ export class RowSingleComponent implements OnInit {
   @Input({ required: true }) row!: FormGroup<RowsFormType>;
   isUnique = input<boolean>(false);
   remove = output<void>();
-  options: Parameter[] = [];
+  options = computed<Parameter[]>(() => this.parametersService.parameters());
 
   typeInputs = [
     { type: INPUT_TYPES.TEXT, name: 'Texto' },
@@ -37,7 +37,6 @@ export class RowSingleComponent implements OnInit {
 
   ngOnInit() {
     if (!this.row.controls.fields.length) this.addColumn(INPUT_TYPES.TEXT);
-    this.options = this.parametersService.parameters();
   }
 
   addColumn(type: InputTypes): void {

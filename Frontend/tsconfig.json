@@ -28,6 +28,9 @@
       "@tipos/*": [
         "../Backend/src/types/*"
       ],
+      "@const/*": [
+        "../Backend/src/shared/constants/*"
+      ],
       "@core/*": [
         "src/app/core/*"
       ],

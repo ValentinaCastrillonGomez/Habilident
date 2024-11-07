@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { User, Signature } from '@tipos/user';
 import { Role } from '@tipos/role';
@@ -8,6 +8,7 @@ import { MaterialModule } from '@shared/modules/material/material.module';
 import { RolesService } from '@features/roles/services/roles.service';
 import { Parameter } from '@tipos/parameter';
 import { ParametersService } from '@shared/services/parameters.service';
+import { TYPE_PARAMETERS } from '@const/parameters.const';
 import moment from 'moment';
 
 const ADULT = 18;
@@ -19,7 +20,7 @@ const ADULT = 18;
     ReactiveFormsModule,
     MaterialModule,
   ],
-  providers: [UsersService, RolesService, ParametersService],
+  providers: [UsersService, RolesService],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,8 +41,8 @@ export class UserComponent implements OnInit {
     firstNames: this.formBuilder.control(this.user?.firstNames ?? '', [Validators.required]),
     lastNames: this.formBuilder.control(this.user?.lastNames ?? '', [Validators.required]),
     typeDocument: this.formBuilder.control(this.user?.typeDocument ?? '', [Validators.required]),
-    numberDocument: this.formBuilder.control(this.user?.numberDocument ?? '', [Validators.required]),
-    email: this.formBuilder.control(this.user?.email ?? '', [Validators.required, Validators.email]),
+    numberDocument: this.formBuilder.control({ value: this.user?.numberDocument ?? '', disabled: !!this.user }, [Validators.required]),
+    email: this.formBuilder.control({ value: this.user?.email ?? '', disabled: !!this.user }, [Validators.required, Validators.email]),
     address: this.formBuilder.control(this.user?.address ?? '', [Validators.required]),
     phone: this.formBuilder.control(this.user?.phone ?? '', [Validators.required]),
     gender: this.formBuilder.control(this.user?.gender ?? '', [Validators.required]),
@@ -54,25 +55,14 @@ export class UserComponent implements OnInit {
     state: this.formBuilder.control(true),
   });
 
+  typesDocuments = computed<string[]>(() => this.parametersService.parameters().find(option => option.name === TYPE_PARAMETERS.TYPE_DOCUMENTS)?.options || []);
+  genders = computed<string[]>(() => this.parametersService.parameters().find(option => option.name === TYPE_PARAMETERS.GENDERS)?.options || []);
+
   get isNew() {
     return !this.user?._id;
   }
 
-  get typesDocuments() {
-    return this.options.find(option => option.name === 'Tipo de documentos')?.options || [];
-  }
-
-  get genders() {
-    return this.options.find(option => option.name === 'Generos')?.options || [];
-  }
-
   async ngOnInit() {
-    this.loadRoles();
-    const { data } = await this.parametersService.getAll();
-    this.options = data;
-  }
-
-  private async loadRoles() {
     const { data } = await this.rolesService.getAll();
     this.roles = data;
   }

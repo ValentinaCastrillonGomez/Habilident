@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, Input, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ParametersService } from '@shared/services/parameters.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
@@ -26,11 +26,8 @@ export class RecordInputComponent {
     value: FormControl<string>;
   }>;
   isTable = input<boolean>(false);
-  select: Parameter | undefined = undefined;
+  select = computed(() => (this.input.controls.type.value === INPUT_TYPES.SELECT) ?
+    this.parametersService.parameters().find(parameter => parameter._id === this.input.controls.name.value)
+    : undefined);
 
-  async ngOnInit() {
-    if (this.input.controls.type.value === INPUT_TYPES.SELECT) {
-      this.select = this.parametersService.getOptions(this.input.controls.name.value);
-    }
-  }
 }

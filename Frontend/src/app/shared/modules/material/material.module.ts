@@ -65,7 +65,7 @@ import { APP_FORMATS, AppDateAdapter } from './material-date.adapter';
     { provide: DateAdapter, useClass: AppDateAdapter },
     { provide: MatPaginatorIntl, useClass: AppPaginatorIntl },
     { provide: MAT_PAGINATOR_DEFAULT_OPTIONS, useValue: { hidePageSize: true, showFirstLastButtons: true } },
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { maxWidth: '70vw', disableClose: true, hasBackdrop: true, } },
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { maxWidth: '90vw', disableClose: true, hasBackdrop: true, } },
   ]
 })
 export class MaterialModule { }

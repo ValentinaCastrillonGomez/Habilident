@@ -9,8 +9,8 @@ import { Login } from 'src/types/login';
 export class AuthService {
 
   constructor(
-    private usersService: UsersService,
-    private jwtService: JwtService
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService
   ) { }
 
   async signIn({ email, password }: Login) {
@@ -24,8 +24,8 @@ export class AuthService {
           access_token: await this.jwtService.signAsync({
             sub: user._id,
             name: `${user.firstNames} ${user.lastNames}`,
-            role: user.role.name,
-            permissions: user.role.permissions
+            role: user.role?.name,
+            permissions: user.role?.permissions
           })
         };
       }

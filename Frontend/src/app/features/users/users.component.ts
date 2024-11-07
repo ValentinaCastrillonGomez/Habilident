@@ -6,12 +6,14 @@ import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } f
 import { MatDialog } from '@angular/material/dialog';
 import { UserComponent } from './components/user/user.component';
 import { MaterialModule } from '@shared/modules/material/material.module';
+import { PermissionDirective } from '@shared/directives/permission.directive';
 
 @Component({
   selector: 'app-users',
   standalone: true,
   imports: [
     MaterialModule,
+    PermissionDirective,
   ],
   providers: [UsersService],
   templateUrl: './users.component.html',
@@ -29,7 +31,7 @@ export default class UsersComponent implements AfterViewInit {
   dataSource = signal<User[]>([]);
   totalRecords = 0;
   pageSize = 10;
-  displayedColumns: string[] = ['firstNames', 'lastNames', 'typeDocument', 'numberDocument', 'email', 'address', 'phone', 'role', 'state', 'actions'];
+  displayedColumns: string[] = ['firstNames', 'lastNames', 'typeDocument', 'numberDocument', 'email', 'role', 'state', 'actions'];
 
   ngAfterViewInit() {
     merge(

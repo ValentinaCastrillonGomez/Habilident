@@ -1,7 +1,9 @@
 <div class="flex items-center justify-between mb-3">
     <div class="flex items-center gap-x-2">
         <h6 class="mb-0">Listado de alarmas</h6>
-        <button mat-stroked-button (click)="open()"><mat-icon>add</mat-icon>Añadir alarma</button>
+        <button mat-stroked-button (click)="open()" *appPermission="'Crear alarmas'">
+            <mat-icon>add</mat-icon>Añadir alarma
+        </button>
     </div>
 
     <mat-form-field appearance="outline" subscriptSizing="dynamic" class="hidden">
@@ -15,7 +17,7 @@
         <mat-table [dataSource]="dataSource()">
             <ng-container matColumnDef="format">
                 <mat-header-cell *matHeaderCellDef> Formato </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.format.name}} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{element.format?.name}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="frequency">
@@ -51,7 +53,7 @@
             </ng-container>
 
             <div *matNoDataRow class="text-center">
-                hay datos que coincidan con el filtro.
+               No hay datos que coincidan con el filtro.
             </div>
 
             <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
@@ -64,11 +66,11 @@
 
 <mat-menu #actions="matMenu">
     <ng-template matMenuContent let-element="data">
-        <button mat-menu-item (click)="open(element)">
+        <button mat-menu-item (click)="open(element)" *appPermission="'Actualizar alarmas'">
             <mat-icon>edit</mat-icon>
             <span>Actualizar</span>
         </button>
-        <button mat-menu-item (click)="remove(element._id)">
+        <button mat-menu-item (click)="remove(element._id)" *appPermission="'Eliminar alarmas'">
             <mat-icon class="text-red-600">delete</mat-icon>
             <span class="text-red-600">Eliminar</span>
         </button>

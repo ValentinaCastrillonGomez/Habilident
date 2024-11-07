@@ -10,6 +10,7 @@ import { Parameter } from './types/parameter';
 import { TYPE_DOCUMENTS } from './shared/constants/type-documents.const';
 import { GENDERS } from './shared/constants/genders.const';
 import { PERIODICITY } from './shared/constants/periodicity.const';
+import { TYPE_PARAMETERS } from './shared/constants/parameters.const';
 
 @Injectable()
 export class AppService {
@@ -66,17 +67,17 @@ export class AppService {
   private initParameters(): Parameter[] {
     return [
       {
-        name: 'Tipo de documentos',
+        name: TYPE_PARAMETERS.TYPE_DOCUMENTS,
         protected: true,
         options: Object.values(TYPE_DOCUMENTS),
       },
       {
-        name: 'Generos',
+        name: TYPE_PARAMETERS.GENDERS,
         protected: true,
         options: Object.values(GENDERS),
       },
       {
-        name: 'Periocidad',
+        name: TYPE_PARAMETERS.PERIODICITY,
         protected: true,
         options: Object.values(PERIODICITY),
       },

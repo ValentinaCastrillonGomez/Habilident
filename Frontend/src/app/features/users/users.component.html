@@ -1,7 +1,9 @@
 <div class="flex items-center justify-between mb-3">
     <div class="flex items-center gap-x-2">
         <h6 class="mb-0">Listado de usuarios</h6>
-        <button mat-stroked-button (click)="open()"><mat-icon>add</mat-icon>Añadir usuario</button>
+        <button mat-stroked-button (click)="open()" *appPermission="'Crear usuarios'">
+            <mat-icon>add</mat-icon>Añadir usuario
+        </button>
     </div>
 
     <mat-form-field appearance="outline" subscriptSizing="dynamic">
@@ -38,16 +40,6 @@
                 <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="address">
-                <mat-header-cell *matHeaderCellDef> Dirección </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.address}} </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="phone">
-                <mat-header-cell *matHeaderCellDef> Teléfono </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.phone}} </mat-cell>
-            </ng-container>
-
             <ng-container matColumnDef="role">
                 <mat-header-cell *matHeaderCellDef> Rol </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.role?.name}} </mat-cell>
@@ -70,7 +62,7 @@
             </ng-container>
 
             <div *matNoDataRow class="text-center">
-                hay datos que coincidan con el filtro.
+                No hay datos que coincidan con el filtro.
             </div>
 
             <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
@@ -83,11 +75,11 @@
 
 <mat-menu #actions="matMenu">
     <ng-template matMenuContent let-element="data">
-        <button mat-menu-item (click)="open(element)">
+        <button mat-menu-item (click)="open(element)" *appPermission="'Actualizar usuarios'">
             <mat-icon>edit</mat-icon>
             <span>Actualizar</span>
         </button>
-        <button mat-menu-item (click)="remove(element._id)">
+        <button mat-menu-item (click)="remove(element._id)" *appPermission="'Eliminar usuarios'">
             <mat-icon class="text-red-600">delete</mat-icon>
             <span class="text-red-600">Eliminar</span>
         </button>

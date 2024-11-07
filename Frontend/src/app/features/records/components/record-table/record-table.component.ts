@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, Input } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { INPUT_TYPES, InputTypes } from '@tipos/format';
@@ -28,14 +28,11 @@ export class RecordTableComponent {
     value: FormControl<string>;
   }>>>;
 
-  get displayedColumns() {
-    return this.fields.controls[0].controls.map(control => {
-      if (control.controls.type.value === INPUT_TYPES.SELECT) {
-        return this.parametersService.getOptions(control.controls.name.value)?.name;
-      }
-      return control.controls.name.value;
-    });
-  }
+  displayedColumns = computed(() => this.fields.controls[0].controls.map(control =>
+    (control.controls.type.value === INPUT_TYPES.SELECT)
+      ? this.parametersService.parameters().find(parameter => parameter._id === control.controls.name.value)?.name
+      : control.controls.name.value
+  ));
 
   addRow(): void {
     this.fields.push(this.formBuilder.array(this.fields.controls[0].controls.map(field => this.formBuilder.group({

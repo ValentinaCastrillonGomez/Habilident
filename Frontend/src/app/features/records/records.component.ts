@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, inject, Injector, in
 import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Record } from '@tipos/record';
-import { debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, merge, Subject, tap } from 'rxjs';
 import { RecordsService } from './services/records.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,12 +10,17 @@ import { RecordComponent } from './components/record/record.component';
 import { Format } from '@tipos/format';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ReportsService } from '@shared/services/reports.service';
+import { PermissionDirective } from '@shared/directives/permission.directive';
 import moment from 'moment';
 
 @Component({
     selector: 'app-records',
     standalone: true,
-    imports: [MaterialModule, ReactiveFormsModule],
+    imports: [
+        MaterialModule,
+        ReactiveFormsModule,
+        PermissionDirective,
+    ],
     providers: [RecordsService],
     templateUrl: './records.component.html',
     styleUrl: './records.component.scss',

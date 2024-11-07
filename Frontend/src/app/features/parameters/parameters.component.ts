@@ -6,12 +6,14 @@ import { MaterialModule } from '@shared/modules/material/material.module';
 import { Parameter } from '@tipos/parameter';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
 import { ParameterComponent } from './components/parameter/parameter.component';
+import { PermissionDirective } from '@shared/directives/permission.directive';
 
 @Component({
   selector: 'app-parameters',
   standalone: true,
   imports: [
     MaterialModule,
+    PermissionDirective,
   ],
   templateUrl: './parameters.component.html',
   styleUrl: './parameters.component.scss',
@@ -48,14 +50,20 @@ export default class ParametersComponent implements AfterViewInit {
 
   async remove(id: string) {
     const result = await this.parametersService.delete(id);
-    if (result) this.actions.next();
+    if (result) {
+      this.actions.next();
+      this.parametersService.loadParameters();
+    };
   }
 
   open(data?: Parameter) {
     const dialogRef = this.dialog.open(ParameterComponent, { data });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) this.actions.next();
+      if (result) {
+        this.actions.next();
+        this.parametersService.loadParameters();
+      }
     });
   }
 
