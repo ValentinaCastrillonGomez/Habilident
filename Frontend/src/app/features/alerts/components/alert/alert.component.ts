@@ -35,7 +35,7 @@ export class AlertComponent {
   minDate = moment().subtract(1, 'day').toDate();
 
   alertForm = this.formBuilder.group({
-    format: this.formBuilder.control(this.alert?.format._id ?? '', [Validators.required]),
+    format: this.formBuilder.control(this.alert?.format?._id ?? '', [Validators.required]),
     frequency: this.formBuilder.control(this.alert?.frequency ?? '', [Validators.required]),
     date: this.formBuilder.control<any>(this.alert?.date ?? null, [Validators.required]),
     hour: this.formBuilder.control<any>(this.alert?.date ? moment(this.alert?.date).format('HH:mm') : '', [Validators.required]),

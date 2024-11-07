@@ -44,11 +44,11 @@
             @for (alert of notifications(); track alert._id) {
             <mat-list-item>
                 <div matListItemTitle>
-                    <b>{{alert.format.name | titlecase}}</b> - {{alert.last_generated | date: 'shortTime'}}
+                    <b>{{alert.format?.name | titlecase}}</b> - {{alert.last_generated | date: 'shortTime'}}
                 </div>
                 <div matListItemLine>
                     Realizar el registro {{alert.frequency | lowercase}} del formato
-                    <button mat-button (click)="open(alert.format._id)">Ir</button>
+                    <button mat-button (click)="open(alert.format?._id)">Ir</button>
                 </div>
             </mat-list-item>
             <mat-divider></mat-divider>

@@ -17,7 +17,7 @@
         <mat-table [dataSource]="dataSource()">
             <ng-container matColumnDef="format">
                 <mat-header-cell *matHeaderCellDef> Formato </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.format.name}} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{element.format?.name}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="frequency">

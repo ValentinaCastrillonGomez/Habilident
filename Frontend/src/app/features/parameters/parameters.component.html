@@ -56,9 +56,11 @@
             <mat-icon>edit</mat-icon>
             <span>Actualizar</span>
         </button>
+        @if (!element.protected) {
         <button mat-menu-item (click)="remove(element._id)" *appPermission="'Eliminar parametros'">
             <mat-icon class="text-red-600">delete</mat-icon>
             <span class="text-red-600">Eliminar</span>
         </button>
+        }
     </ng-template>
 </mat-menu>

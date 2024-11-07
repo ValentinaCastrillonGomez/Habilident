@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   hasPermission(permission: Permission): boolean {
-    return this.getUser().permissions.includes(permission);
+    return this.getUser()?.permissions?.includes(permission);
   }
 
   async singIn(login: Login) {

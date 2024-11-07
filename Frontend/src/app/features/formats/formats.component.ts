@@ -8,7 +8,7 @@ import { RecordsComponent } from '@features/records/records.component';
 import { FormatComponent } from './components/format/format.component';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { filter, first } from 'rxjs';
+import { filter, take } from 'rxjs';
 
 @Component({
   selector: 'app-formats',
@@ -31,9 +31,9 @@ export default class FormatsComponent implements OnInit {
   formats = computed<Format[]>(() => this.formatsService.formats() || []);
   formatSelected = signal<Format | null>(null);
 
-  async ngOnInit() {
+  ngOnInit(): void {
     toObservable(this.formats, { injector: this.injector })
-      .pipe(filter(formats => formats.length > 0), first())
+      .pipe(filter(formats => formats.length > 0), take(1))
       .subscribe(() => this.formatSelected.set(this.formats()[0] || null));
   }
 
