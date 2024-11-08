@@ -37,6 +37,8 @@
         <main class="m-5" *appPermission="'Listar registros'">
             @if(formatSelected()){
             <app-records [format]="formatSelected()!"></app-records>
+            }@else{
+            Crea un formato para continuar...
             }
         </main>
     </mat-sidenav-content>
