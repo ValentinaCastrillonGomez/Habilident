@@ -18,6 +18,11 @@ export class AlertsController {
     return this.alertsService.findAll(skip, limit, query);
   }
 
+  @Get()
+  findCalendar(@Query() { dateStart, dateEnd }) {
+    return this.alertsService.findGenerations(dateStart, dateEnd);
+  }
+
   @Get(':id')
   findOne(@Param('id') _id: string) {
     return this.alertsService.findOne({ _id });

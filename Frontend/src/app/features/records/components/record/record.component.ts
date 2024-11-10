@@ -42,6 +42,7 @@ export class RecordComponent implements OnInit {
 
     recordForm = this.formBuilder.group({
         format: this.formBuilder.control(this.data.record?.format._id || this.data.format._id),
+        dateEffective: this.formBuilder.control(this.data.record?.dateEffective || new Date()),
         rows: this.formBuilder.array<FormGroup<ValuesFormType>>([]),
     });
 

@@ -8,6 +8,7 @@ export type RecordRow = {
 export type Record = {
     _id?: any;
     format: any;
+    dateEffective: Date;
     dateCreate: Date;
     userCreate: any;
     dateLastUpdate: Date;

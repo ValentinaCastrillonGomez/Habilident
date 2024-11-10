@@ -13,10 +13,10 @@ export class AlertsCron {
 
     @Cron(CronExpression.EVERY_MINUTE)
     async handleCron() {
-        const notification = await this.alertsService.findNotifications();
-        if (notification.length > 0) {
-            this.alertsSocket.sendAlerts(notification);
-            await this.alertsService.updateMany(notification.map(alert => alert._id), { last_generated: new Date() } as any);
+        const notifications = await this.alertsService.findNotifications();
+        if (notifications.length > 0) {
+            this.alertsSocket.sendAlerts(notifications);
+            await this.alertsService.updateMany(notifications.map(alert => alert._id), { last_generated: new Date() } as any);
         }
     }
 }

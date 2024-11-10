@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, inject, Injector, in
 import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Record } from '@tipos/record';
-import { debounceTime, distinctUntilChanged, merge, Subject, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
 import { RecordsService } from './services/records.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -40,7 +40,7 @@ export class RecordsComponent implements AfterViewInit {
     dataSource = signal<Record[]>([]);
     totalRecords = 0;
     pageSize = 10;
-    displayedColumns: string[] = ['dateCreate', 'userCreate', 'dateLastUpdate', 'userLastUpdate', 'actions'];
+    displayedColumns: string[] = ['dateEffective', 'userCreate', 'dateCreate', 'userLastUpdate', 'dateLastUpdate', 'actions'];
     range = new FormGroup({
         start: new FormControl<Date | null>(null),
         end: new FormControl<Date | null>(null),
