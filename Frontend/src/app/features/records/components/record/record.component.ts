@@ -38,11 +38,11 @@ export class RecordComponent implements OnInit {
     private readonly recordsService = inject(RecordsService);
     private readonly dialog = inject(MatDialogRef<RecordComponent>);
     private readonly formBuilder = inject(NonNullableFormBuilder);
-    data = inject<{ record: Record | null, format: Format }>(MAT_DIALOG_DATA);
+    data = inject<{ record: Record | null, format: Format, dateEffective: Date }>(MAT_DIALOG_DATA);
 
     recordForm = this.formBuilder.group({
         format: this.formBuilder.control(this.data.record?.format._id || this.data.format._id),
-        dateEffective: this.formBuilder.control(this.data.record?.dateEffective || new Date()),
+        dateEffective: this.formBuilder.control(this.data.record?.dateEffective || this.data.dateEffective || new Date()),
         rows: this.formBuilder.array<FormGroup<ValuesFormType>>([]),
     });
 

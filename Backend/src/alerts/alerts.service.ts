@@ -8,8 +8,7 @@ import { PERIODICITY } from 'src/shared/constants/periodicity.const';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ERROR_MESSAGES } from 'src/shared/constants/messages.const';
 import { RecordsService } from 'src/records/records.service';
-
-type Notification = Alert & { registered: boolean };
+import { Notification } from 'src/types/notification';
 
 @Injectable()
 export class AlertsService extends GenericService<AlertDocument, AlertEntity> {
@@ -34,32 +33,56 @@ export class AlertsService extends GenericService<AlertDocument, AlertEntity> {
     ]);
   }
 
-  async findGenerations(dateStart: Date, dateEnd: Date): Promise<Notification[]> {
-    const { data } = await this.findAll();
-    const alerts: Notification[] = [];
+  async findGenerations(start: string, end: string): Promise<Notification[]> {
+    const alerts = await this.find({});
+    const records = await this.recordsService.find({});
 
-    for (const alert of data) {
-      const { frequency, date } = alert;
+    const notification: Notification[] = [];
 
-      let currentDate = new Date(date);
-      while (currentDate < dateStart) {
+    for (const alert of alerts) {
+      const { frequency, dateStart } = alert;
+
+      let currentDate = new Date(dateStart);
+      this.frequencyIncrement[frequency](currentDate);
+
+      while (currentDate < new Date(start)) {
         this.frequencyIncrement[frequency](currentDate);
       }
 
-      while (currentDate <= dateEnd) {
-        const registered = await this.recordsService.findOne({ format: alert.format._id, dateEffective: new Date() }).then((record) => !!record);
-        alerts.push({ ...alert, last_generated: new Date(currentDate), registered });
+      while (currentDate <= new Date(end)) {
+        const startOfDay = new Date(currentDate);
+        startOfDay.setHours(0, 0, 0, 0);
+
+        const endOfDay = new Date(currentDate);
+        endOfDay.setHours(23, 59, 59, 999);
+
+        const registered = records.filter(record =>
+          record.format._id.toString() === alert.format._id.toString() &&
+          startOfDay <= record.dateEffective && record.dateEffective <= endOfDay
+        );
+
+        notification.push({ format: alert.format, dateGenerated: new Date(currentDate), registered: registered.length > 0 });
         this.frequencyIncrement[frequency](currentDate);
       }
     }
 
-    return alerts;
+    return notification;
   }
 
   async findNotifications(): Promise<Alert[]> {
-    const { data } = await this.findAll();
-    return data.filter(({ frequency, last_generated, date }) =>
-      this.frequencyIncrement[frequency](last_generated || date) <= new Date());
+    const alerts = await this.find({});
+
+    return alerts.filter(({ frequency, lastGenerated, dateStart }) =>
+      this.frequencyIncrement[frequency](lastGenerated || dateStart) <= new Date());
+  }
+
+  async findRecords(alerts: Alert[]): Promise<Alert[]> {
+    const now = new Date();
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+    const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+
+    const records = await this.recordsService.find({ dateEffective: { $gte: startOfDay, $lte: endOfDay } });
+    return alerts.filter(alert => records.filter(record => record.format._id.toString() === alert.format._id.toString()).length === 0);
   }
 
   async sendEmail(alerts: Alert[]) {

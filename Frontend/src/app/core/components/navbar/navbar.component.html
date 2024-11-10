@@ -8,9 +8,8 @@
     </div>
 
     <div class="flex items-center gap-x-4">
-        <button mat-icon-button [ngClass]="{'pointer-events-none': !notifications().length}"
-            [matBadge]="notifications().length" [matBadgeHidden]="!notifications().length"
-            (click)="showAlerts = !showAlerts">
+        <button mat-icon-button [matBadge]="notifications().length" [matBadgeHidden]="!notifications().length"
+            [cdkMenuTriggerFor]="menu">
             <mat-icon>notifications</mat-icon>
         </button>
         {{username | titlecase}}
@@ -35,25 +34,31 @@
     </button>
 </mat-menu>
 
-@if (showAlerts) {
-<mat-card appearance="outlined" class="absolute right-1 z-[101] shadow-xl">
-    <mat-card-content>
-        <mat-list>
-            <div mat-subheader>Notificaciones</div>
-            <mat-divider></mat-divider>
-            @for (alert of notifications(); track alert._id) {
-            <mat-list-item>
-                <div matListItemTitle>
-                    <b>{{alert.format?.name | titlecase}}</b> - {{alert.last_generated | date: 'shortTime'}}
+<ng-template #menu>
+    <mat-card appearance="outlined" class="shadow-xl min-w-96" cdkMenu>
+        <mat-card-content>
+            <mat-list>
+                <div mat-subheader class="flex items-center justify-between m-0">
+                    <b> Notificaciones </b>
+                    <a mat-button routerLink="/calendar" tabindex="-1" cdkMenuItem>Ver calendario</a>
                 </div>
-                <div matListItemLine>
-                    Realizar el registro {{alert.frequency | lowercase}} del formato
-                    <button mat-button (click)="open(alert.format?._id)">Ir</button>
-                </div>
-            </mat-list-item>
-            <mat-divider></mat-divider>
+                <mat-divider></mat-divider>
+                @for (alert of notifications(); track alert._id) {
+                <mat-list-item>
+                    <div matListItemTitle>
+                        <b>{{alert.format?.name | titlecase}}</b> - {{alert.lastGenerated | date: 'shortTime'}}
+                    </div>
+                    <div matListItemLine>
+                        Realizar el registro {{alert.frequency | lowercase}} del formato
+                        <button mat-button (click)="open(alert.format?._id)" cdkMenuItem>Ir</button>
+                    </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                }
+            </mat-list>
+            @if(notifications().length === 0){
+            No hay alarmas para hoy
             }
-        </mat-list>
-    </mat-card-content>
-</mat-card>
-}
+        </mat-card-content>
+    </mat-card>
+</ng-template>

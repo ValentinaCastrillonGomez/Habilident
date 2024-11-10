@@ -30,12 +30,13 @@
             <div class="flex gap-4">
                 <mat-form-field appearance="outline" class="w-full">
                     <mat-label>Fecha de inicio</mat-label>
-                    <input matInput [matDatepicker]="picker" [min]="minDate" id="date" formControlName="date" required>
+                    <input matInput [matDatepicker]="picker" [min]="minDate" id="dateStart" formControlName="dateStart"
+                        required>
 
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
 
-                    @if (alertForm.controls.date.invalid) {
+                    @if (alertForm.controls.dateStart.invalid) {
                     <mat-error>Introduce una fecha de inicio válida</mat-error>
                     }
                 </mat-form-field>

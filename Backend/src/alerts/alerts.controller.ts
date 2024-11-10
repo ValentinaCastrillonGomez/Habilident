@@ -18,7 +18,7 @@ export class AlertsController {
     return this.alertsService.findAll(skip, limit, query);
   }
 
-  @Get()
+  @Get('calendar')
   findCalendar(@Query() { dateStart, dateEnd }) {
     return this.alertsService.findGenerations(dateStart, dateEnd);
   }
@@ -30,7 +30,7 @@ export class AlertsController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() alertDto: Alert) {
-    return this.alertsService.update(id, { ...alertDto, last_generated: null });
+    return this.alertsService.update(id, { ...alertDto, lastGenerated: null });
   }
 
   @Delete(':id')

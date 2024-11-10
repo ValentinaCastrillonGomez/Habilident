@@ -27,17 +27,17 @@
                 </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="date">
+            <ng-container matColumnDef="dateStart">
                 <mat-header-cell *matHeaderCellDef> Fecha inicio </mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                    <div class="truncate">{{element.date | date: 'dd/MM/yyyy, h:mm a'}}</div>
+                    <div class="truncate">{{element.dateStart | date: 'dd/MM/yyyy, h:mm a'}}</div>
                 </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="last_generated">
+            <ng-container matColumnDef="lastGenerated">
                 <mat-header-cell *matHeaderCellDef> Última generación </mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                    <div class="truncate">{{element.last_generated | date: 'dd/MM/yyyy, h:mm a'}}</div>
+                    <div class="truncate">{{element.lastGenerated | date: 'dd/MM/yyyy, h:mm a'}}</div>
                 </mat-cell>
             </ng-container>
 

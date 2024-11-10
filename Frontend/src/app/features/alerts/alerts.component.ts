@@ -31,7 +31,7 @@ export default class AlertsComponent implements AfterViewInit {
   dataSource = signal<Alert[]>([]);
   totalRecords = 0;
   pageSize = 10;
-  displayedColumns: string[] = ['format', 'frequency', 'date', 'last_generated', 'actions'];
+  displayedColumns: string[] = ['format', 'frequency', 'dateStart', 'lastGenerated', 'actions'];
 
   ngAfterViewInit() {
     merge(

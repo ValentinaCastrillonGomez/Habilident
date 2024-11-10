@@ -10,6 +10,7 @@ export const paths = {
   FORMATS: 'formats',
   REPORTS: 'reports',
   ALERTS: 'alerts',
+  CALENDAR: 'calendar',
 };
 
 export const routes: Routes = [
@@ -43,8 +44,12 @@ export const routes: Routes = [
         loadComponent: () => import('@features/reports/reports.component'),
       },
       {
-        path: `${paths.ALERTS}`, data: { title: 'Generación de alarmas' },
+        path: `${paths.ALERTS}`,
         loadComponent: () => import('@features/alerts/alerts.component'),
+      },
+      {
+        path: `${paths.CALENDAR}`,
+        loadComponent: () => import('@features/calendar/calendar.component'),
       },
       { path: '**', redirectTo: paths.FORMATS },
     ]

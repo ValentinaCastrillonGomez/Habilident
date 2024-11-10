@@ -7,8 +7,8 @@ import { Alert } from "@tipos/alert";
     providedIn: 'root',
 })
 export class NotificationService {
-    private readonly baseUrl = inject(ENV).BASE_URL;
-    private readonly socket = io(this.baseUrl);
+    private readonly socketUrl = inject(ENV).SOCKET_URL;
+    private readonly socket = io(this.socketUrl);
     notifications = signal<Alert[]>([]);
     audio = new Audio('alert.mp3');
 
