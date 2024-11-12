@@ -31,7 +31,7 @@ export abstract class GenericService<T extends Document, G> {
         }
 
         const totalRecords = await this._model.countDocuments(orConditions).exec();
-        const data = await this._model.find(orConditions).limit(limit).skip(skip).populate(this._poputale).exec();
+        const data = await this._model.find(orConditions).limit(limit).skip(skip * limit).populate(this._poputale).exec();
 
         return { data, totalRecords };
     }

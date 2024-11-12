@@ -35,7 +35,7 @@
             <ng-container matColumnDef="userCreate">
                 <mat-header-cell *matHeaderCellDef> Usuario que registro </mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                    {{element.userCreate.firstNames}} {{element.userCreate.lastNames}}
+                    {{element.userCreate?.firstNames}} {{element.userCreate?.lastNames}}
                 </mat-cell>
             </ng-container>
 
