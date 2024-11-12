@@ -37,20 +37,20 @@ export class AlertComponent {
   alertForm = this.formBuilder.group({
     format: this.formBuilder.control(this.alert?.format?._id ?? '', [Validators.required]),
     frequency: this.formBuilder.control(this.alert?.frequency ?? '', [Validators.required]),
-    date: this.formBuilder.control<any>(this.alert?.date ?? null, [Validators.required]),
-    hour: this.formBuilder.control<any>(this.alert?.date ? moment(this.alert?.date).format('HH:mm') : '', [Validators.required]),
+    dateStart: this.formBuilder.control<any>(this.alert?.dateStart ?? null, [Validators.required]),
+    hour: this.formBuilder.control<any>(this.alert?.dateStart ? moment(this.alert?.dateStart).format('HH:mm') : '', [Validators.required]),
   });
 
   async save() {
     if (this.alertForm.invalid) return;
 
-    const { date, hour, ...alert } = this.alertForm.getRawValue();
+    const { dateStart, hour, ...alert } = this.alertForm.getRawValue();
 
     const [hours, minutes] = hour.split(':').map(Number);
-    const newDate = new Date(date);
+    const newDate = new Date(dateStart);
     newDate.setHours(hours, minutes, 0, 0);
 
-    const resp = await this.alertsService.save({ ...alert, date: newDate } as any, this.alert?._id)
+    const resp = await this.alertsService.save({ ...alert, dateStart: newDate } as any, this.alert?._id)
     if (resp) this.dialog.close(true);
   }
 

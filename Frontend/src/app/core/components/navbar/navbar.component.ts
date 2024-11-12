@@ -10,6 +10,7 @@ import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@shared/services/formats.service';
 import { PERMISSIONS } from '@tipos/permission';
 import { paths } from 'src/app/app.routes';
+import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 
 @Component({
   selector: 'app-navbar',
@@ -18,6 +19,7 @@ import { paths } from 'src/app/app.routes';
     RouterLink,
     MaterialModule,
     PermissionDirective,
+    CdkMenuTrigger, CdkMenu, CdkMenuItem
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
@@ -42,14 +44,12 @@ export class NavbarComponent {
 
   username = this.authService.getUser().name;
   notifications = this.notificationService.notifications;
-  showAlerts = false;
 
   logout() {
     this.authService.logout();
   }
 
   async open(formatId: string) {
-    this.showAlerts = false;
     const format = await this.formatsService.get(formatId);
     this.dialog.open(RecordComponent, { data: { format } });
   }

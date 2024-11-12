@@ -5,11 +5,11 @@
     </button>
 
     <div cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)"
-        class="flex gap-x-3 w-full mt-5">
+        class="flex gap-x-3 w-full overflow-hidden">
         @for (input of row.controls.fields.controls; track input; let columnIndex = $index) {
         @switch(input.controls.type.value){
         @case ('select') {
-        <mat-form-field appearance="outline" class="w-full horizontal" [formGroup]="input" cdkDrag>
+        <mat-form-field appearance="outline" class="w-full mt-5 horizontal" [formGroup]="input" cdkDrag>
             <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?">
             </mat-checkbox>
             <mat-label>Campo Selección</mat-label>
@@ -30,7 +30,7 @@
 
         }
         @default {
-        <mat-form-field appearance="outline" class="w-full horizontal" [formGroup]="input" cdkDrag>
+        <mat-form-field appearance="outline" class="w-full mt-5 horizontal" [formGroup]="input" cdkDrag>
             <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?">
             </mat-checkbox>
             <mat-label>Campo {{getType(input)}}</mat-label>

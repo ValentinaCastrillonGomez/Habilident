@@ -7,22 +7,25 @@ import { Alert } from 'src/types/alert';
 import { PERIODICITY } from 'src/shared/constants/periodicity.const';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ERROR_MESSAGES } from 'src/shared/constants/messages.const';
+import { RecordsService } from 'src/records/records.service';
+import { Notification } from 'src/types/notification';
 
 @Injectable()
 export class AlertsService extends GenericService<AlertDocument, AlertEntity> {
 
-  private readonly frequencyCalculate = {
-    [PERIODICITY.DIARY]: this.isNewDay,
-    [PERIODICITY.WEEKLY]: this.isNewWeek,
-    [PERIODICITY.MONTHLY]: this.isNewMonth,
-    [PERIODICITY.QUARTERLY]: this.isNewQuarter,
-    [PERIODICITY.BIANNUAL]: this.isNewBiannual,
-    [PERIODICITY.ANNUAL]: this.isNewAnnual,
-  }
+  private readonly frequencyIncrement = {
+    [PERIODICITY.DIARY]: (date: Date) => new Date(date.setDate(date.getDate() + 1)),
+    [PERIODICITY.WEEKLY]: (date: Date) => new Date(date.setDate(date.getDate() + 7)),
+    [PERIODICITY.MONTHLY]: (date: Date) => new Date(date.setMonth(date.getMonth() + 1)),
+    [PERIODICITY.QUARTERLY]: (date: Date) => new Date(date.setMonth(date.getMonth() + 3)),
+    [PERIODICITY.BIANNUAL]: (date: Date) => new Date(date.setMonth(date.getMonth() + 6)),
+    [PERIODICITY.ANNUAL]: (date: Date) => new Date(date.setFullYear(date.getFullYear() + 1)),
+  };
 
   constructor(
     @InjectModel(AlertEntity.name) private readonly alertModel: Model<AlertDocument>,
     private readonly mailerService: MailerService,
+    private readonly recordsService: RecordsService,
   ) {
     super(alertModel, [], [
       { path: 'format', select: 'name' },
@@ -30,10 +33,56 @@ export class AlertsService extends GenericService<AlertDocument, AlertEntity> {
     ]);
   }
 
+  async findGenerations(start: string, end: string): Promise<Notification[]> {
+    const alerts = await this.find({});
+    const records = await this.recordsService.find({});
+
+    const notification: Notification[] = [];
+
+    for (const alert of alerts) {
+      const { frequency, dateStart } = alert;
+
+      let currentDate = new Date(dateStart);
+      this.frequencyIncrement[frequency](currentDate);
+
+      while (currentDate < new Date(start)) {
+        this.frequencyIncrement[frequency](currentDate);
+      }
+
+      while (currentDate <= new Date(end)) {
+        const startOfDay = new Date(currentDate);
+        startOfDay.setHours(0, 0, 0, 0);
+
+        const endOfDay = new Date(currentDate);
+        endOfDay.setHours(23, 59, 59, 999);
+
+        const registered = records.filter(record =>
+          record.format._id.toString() === alert.format._id.toString() &&
+          startOfDay <= record.dateEffective && record.dateEffective <= endOfDay
+        );
+
+        notification.push({ format: alert.format, dateGenerated: new Date(currentDate), registered: registered.length > 0 });
+        this.frequencyIncrement[frequency](currentDate);
+      }
+    }
+
+    return notification;
+  }
+
   async findNotifications(): Promise<Alert[]> {
-    const { data } = await this.findAll();
-    return data.filter(({ frequency, last_generated, date }) =>
-      this.frequencyCalculate[frequency](last_generated || date, new Date()));
+    const alerts = await this.find({});
+
+    return alerts.filter(({ frequency, lastGenerated, dateStart }) =>
+      this.frequencyIncrement[frequency](lastGenerated || dateStart) <= new Date());
+  }
+
+  async findRecords(alerts: Alert[]): Promise<Alert[]> {
+    const now = new Date();
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+    const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+
+    const records = await this.recordsService.find({ dateEffective: { $gte: startOfDay, $lte: endOfDay } });
+    return alerts.filter(alert => records.filter(record => record.format._id.toString() === alert.format._id.toString()).length === 0);
   }
 
   async sendEmail(alerts: Alert[]) {
@@ -55,35 +104,5 @@ export class AlertsService extends GenericService<AlertDocument, AlertEntity> {
         console.error(ERROR_MESSAGES.SEND_EMAIL_FAILED, error);
       }
     }
-  }
-
-  private isNewDay(lastGenerated: Date, currentDate: Date): boolean {
-    lastGenerated.setDate(lastGenerated.getDate() + 1);
-    return lastGenerated <= currentDate;
-  }
-
-  private isNewWeek(lastGenerated: Date, currentDate: Date): boolean {
-    lastGenerated.setDate(lastGenerated.getDate() + 7);
-    return lastGenerated <= currentDate;
-  }
-
-  private isNewMonth(lastGenerated: Date, currentDate: Date): boolean {
-    lastGenerated.setMonth(lastGenerated.getMonth() + 1);
-    return lastGenerated <= currentDate;
-  }
-
-  private isNewQuarter(lastGenerated: Date, currentDate: Date): boolean {
-    lastGenerated.setMonth(lastGenerated.getMonth() + 3);
-    return lastGenerated <= currentDate;
-  }
-
-  private isNewBiannual(lastGenerated: Date, currentDate: Date): boolean {
-    lastGenerated.setMonth(lastGenerated.getMonth() + 6);
-    return lastGenerated <= currentDate;
-  }
-
-  private isNewAnnual(lastGenerated: Date, currentDate: Date): boolean {
-    lastGenerated.setFullYear(lastGenerated.getFullYear() + 1);
-    return lastGenerated <= currentDate;
   }
 }

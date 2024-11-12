@@ -18,13 +18,13 @@ export class AlertEntity implements Alert {
     frequency: string;
 
     @Prop({ required: true })
-    date: Date;
+    dateStart: Date;
 
     @Prop({ type: Types.ObjectId, ref: 'UserEntity', required: true })
     userCreate: UserEntity;
 
     @Prop()
-    last_generated?: Date;
+    lastGenerated?: Date;
 }
 
 export const AlertSchema = SchemaFactory.createForClass(AlertEntity);

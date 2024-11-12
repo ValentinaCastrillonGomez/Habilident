@@ -14,7 +14,7 @@ export class RecordsService extends GenericService<RecordDocument, RecordEntity>
       { path: 'format', select: 'name' },
       { path: 'userCreate', select: 'firstNames lastNames' },
       { path: 'userLastUpdate', select: 'firstNames lastNames' },
-    ], 'dateCreate');
+    ], 'dateEffective');
   }
 
 }

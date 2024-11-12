@@ -26,9 +26,9 @@
 <mat-card appearance="outlined">
     <mat-card-content>
         <mat-table [dataSource]="dataSource()">
-            <ng-container matColumnDef="dateCreate">
-                <mat-header-cell *matHeaderCellDef> Fecha de registro </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.dateCreate | date: 'dd/MM/yyyy, h:mm a' }}
+            <ng-container matColumnDef="dateEffective">
+                <mat-header-cell *matHeaderCellDef> Fecha de vigencia </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.dateEffective | date: 'dd/MM/yyyy' }}
                 </mat-cell>
             </ng-container>
 
@@ -39,9 +39,9 @@
                 </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="dateLastUpdate">
-                <mat-header-cell *matHeaderCellDef> Ultima actualización </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.dateLastUpdate | date: 'dd/MM/yyyy, h:mm a' }}
+            <ng-container matColumnDef="dateCreate">
+                <mat-header-cell *matHeaderCellDef> Fecha de registro </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.dateCreate | date: 'dd/MM/yyyy, h:mm a' }}
                 </mat-cell>
             </ng-container>
 
@@ -49,6 +49,12 @@
                 <mat-header-cell *matHeaderCellDef> Usuario que actualizo </mat-header-cell>
                 <mat-cell *matCellDef="let element">
                     {{element.userLastUpdate?.firstNames}} {{element.userLastUpdate?.lastNames}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="dateLastUpdate">
+                <mat-header-cell *matHeaderCellDef> Ultima actualización </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.dateLastUpdate | date: 'dd/MM/yyyy, h:mm a' }}
                 </mat-cell>
             </ng-container>
 

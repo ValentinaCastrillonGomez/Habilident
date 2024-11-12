@@ -11,6 +11,9 @@ export class RecordEntity implements Record {
     _id?: Types.ObjectId;
 
     @Prop({ required: true })
+    dateEffective: Date;
+
+    @Prop({ required: true })
     dateCreate: Date;
 
     @Prop({ type: Types.ObjectId, ref: 'UserEntity', required: true })
