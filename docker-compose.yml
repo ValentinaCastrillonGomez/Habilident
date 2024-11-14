@@ -1,0 +1,49 @@
+services:
+  # Servicio de Backend (NestJS)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: nestjs-backend
+    ports:
+      - "3000:3000"  # Mapea el puerto 3000 del contenedor al puerto 3000 de la máquina host
+    environment:
+      DATABASE_NAME: habilident
+      DATABASE_USER: habilident
+      DATABASE_PASS: habilident
+      DATABASE_URI: mongodb://mongo:27017  # URI de conexión para MongoDB
+      SECRET_KEY: habilident
+      ORIGIN_HOST: '*' # Dominio para configuracion de CORS
+      EMAIL_HOST: smtp.gmail.com
+      EMAIL_USERNAME: # Correo para las notificaciones por email
+      EMAIL_PASSWORD: # Clave de aplicacion de la cuenta de correo
+      NODE_ENV: production
+    depends_on:
+      - mongo  # Asegura que MongoDB esté disponible antes de iniciar el backend
+    links:
+      - mongo
+
+  # Servicio de Frontend (Angular)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: angular-frontend
+    ports:
+      - "4200:80"  # Mapea el puerto 4200 del contenedor al puerto 80 de la máquina host
+    depends_on:
+      - backend  # Asegura que Backend esté disponible antes de iniciar el frontend
+    links:
+      - backend
+
+  # Servicio de Base de Datos (MongoDB)
+  mongo:
+    image: mongo:6.0  # Usa la versión 6.0 de MongoDB
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"  # Mapea el puerto 27017 para acceso externo (opcional)
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: habilident  # Usuario root de MongoDB
+      MONGO_INITDB_ROOT_PASSWORD: habilident  # Contraseña de root de MongoDB
+      MONGO_INITDB_DATABASE: habilident  # Base de datos inicial

@@ -7,8 +7,7 @@ describe('CRUD de roles', () => {
     cy.visit('/roles');
     cy.wait(1000);
 
-    cy.get('#addRoles').should('exist');
-    cy.get('#addRoles').click();
+    cy.get('#addRole').should('exist').click();
     cy.get('#name').type(`rol ${Date.now()}`);
 
     cy.get('input[id^="mat-mdc-checkbox-"]').each(($checkbox) => {

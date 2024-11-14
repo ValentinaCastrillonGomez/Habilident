@@ -26,10 +26,10 @@
     ],
     "paths": {
       "@tipos/*": [
-        "../Backend/src/types/*"
+        "src/app/shared/types/*"
       ],
       "@const/*": [
-        "../Backend/src/shared/constants/*"
+        "src/app/shared/constants/*"
       ],
       "@core/*": [
         "src/app/core/*"

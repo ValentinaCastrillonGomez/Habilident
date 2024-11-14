@@ -1,6 +1,6 @@
 export const environment = {
-  BASE_URL: '',
-  SOCKET_URL: '',
+  BASE_URL: 'http://localhost:3000',
+  SOCKET_URL: 'http://localhost:3000',
   API_USERS: '/users',
   API_ROLES: '/roles',
   API_PARAMETERS: '/parameters',
