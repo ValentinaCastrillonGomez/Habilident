@@ -1,7 +1,7 @@
 <div class="flex items-center justify-between mb-3">
     <div class="flex items-center gap-x-2">
         <h6 class="mb-0">Listado de usuarios</h6>
-        <button mat-stroked-button (click)="open()" *appPermission="'Crear usuarios'">
+        <button mat-stroked-button (click)="open()" *appPermission="'Crear usuarios'" id="addUser">
             <mat-icon>add</mat-icon>Añadir usuario
         </button>
     </div>
@@ -54,9 +54,9 @@
                 <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
                 <mat-cell *matCellDef="let element" class="justify-end">
                     <button mat-icon-button [matMenuTriggerFor]="actions" [matMenuTriggerData]="{data: element}"
-                        #menu="matMenuTrigger"
+                        #menu="matMenuTrigger" class="options"
                         [ngClass]="{'invisible group-hover:visible': !menu.menuOpen, 'visible': menu.menuOpen}">
-                        <mat-icon class="">more_horiz</mat-icon>
+                        <mat-icon>more_horiz</mat-icon>
                     </button>
                 </mat-cell>
             </ng-container>
@@ -75,11 +75,11 @@
 
 <mat-menu #actions="matMenu">
     <ng-template matMenuContent let-element="data">
-        <button mat-menu-item (click)="open(element)" *appPermission="'Actualizar usuarios'">
+        <button mat-menu-item (click)="open(element)" *appPermission="'Actualizar usuarios'" id="updateUser">
             <mat-icon>edit</mat-icon>
             <span>Actualizar</span>
         </button>
-        <button mat-menu-item (click)="remove(element._id)" *appPermission="'Eliminar usuarios'">
+        <button mat-menu-item (click)="remove(element._id)" *appPermission="'Eliminar usuarios'" id="deleteUser">
             <mat-icon class="text-red-600">delete</mat-icon>
             <span class="text-red-600">Eliminar</span>
         </button>

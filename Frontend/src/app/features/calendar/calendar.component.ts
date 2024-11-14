@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RouterLink } from '@angular/router';
 import { AlertsService } from '@features/alerts/services/alerts.service';
 import { RecordComponent } from '@features/records/components/record/record.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -16,7 +15,6 @@ import moment from 'moment';
   selector: 'app-calendar',
   standalone: true,
   imports: [
-    RouterLink,
     MaterialModule,
     FullCalendarModule
   ],
@@ -30,6 +28,8 @@ export default class CalendarComponent {
   private readonly formatsService = inject(FormatsService);
   private readonly dialog = inject(MatDialog);
 
+  startDate = '';
+  endDate = '';
   notifications = signal<any[]>([]);
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
@@ -45,15 +45,19 @@ export default class CalendarComponent {
     eventClick: this.handleFormatClick.bind(this),
   };
 
-  async handleMonthChange(payload: any) {
-    const startDate = moment(payload.start).format('YYYY/MM/DD');
-    const endDate = moment(payload.end).format('YYYY/MM/DD');
-    const data = await this.alertsService.getCalendar(startDate, endDate);
+  handleMonthChange(payload: any) {
+    this.startDate = moment(payload.start).format('YYYY/MM/DD');
+    this.endDate = moment(payload.end).format('YYYY/MM/DD');
+    this.loadCalendar();
+  }
+
+  async loadCalendar() {
+    const data = await this.alertsService.getCalendar(this.startDate, this.endDate);
 
     this.notifications.set(data.map(alert => ({
       title: alert.format.name,
       start: alert.dateGenerated,
-      url: !alert.registered ? alert.format._id : '',
+      url: !alert.registered && new Date(alert.dateGenerated) <= new Date() ? alert.format._id : '',
       allDay: true,
       backgroundColor: alert.registered ? '#0284c7' : 'gray',
     })));
@@ -66,6 +70,10 @@ export default class CalendarComponent {
 
   async open(formatId: string, dateEffective: Date) {
     const format = await this.formatsService.get(formatId);
-    this.dialog.open(RecordComponent, { data: { format, dateEffective } });
+    const dialogRef = this.dialog.open(RecordComponent, { data: { format, dateEffective } });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) this.loadCalendar();
+    });
   }
 }

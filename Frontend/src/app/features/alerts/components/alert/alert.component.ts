@@ -32,7 +32,6 @@ export class AlertComponent {
   alert = inject<Alert | null>(MAT_DIALOG_DATA);
   periodicity = computed<string[]>(() => this.parametersService.parameters().find(option => option.name === TYPE_PARAMETERS.PERIODICITY)?.options || []);
   formats = computed<Format[]>(() => this.formatsService.formats() || []);
-  minDate = moment().subtract(1, 'day').toDate();
 
   alertForm = this.formBuilder.group({
     format: this.formBuilder.control(this.alert?.format?._id ?? '', [Validators.required]),

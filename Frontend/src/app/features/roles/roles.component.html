@@ -1,7 +1,7 @@
 <div class="flex items-center justify-between mb-3">
     <div class="flex items-center gap-x-2">
         <h6 class="mb-0">Listado de roles</h6>
-        <button mat-stroked-button (click)="open()" *appPermission="'Crear roles'">
+        <button mat-stroked-button (click)="open()" *appPermission="'Crear roles'" id="addRole">
             <mat-icon>add</mat-icon>Añadir rol
         </button>
     </div>
@@ -31,7 +31,7 @@
                 <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
                 <mat-cell *matCellDef="let element" class="justify-end">
                     <button mat-icon-button [matMenuTriggerFor]="actions" [matMenuTriggerData]="{data: element}"
-                        #menu="matMenuTrigger"
+                        #menu="matMenuTrigger" class="options"
                         [ngClass]="{'invisible group-hover:visible': !menu.menuOpen, 'visible': menu.menuOpen}">
                         <mat-icon>more_horiz</mat-icon>
                     </button>
@@ -52,11 +52,11 @@
 
 <mat-menu #actions="matMenu">
     <ng-template matMenuContent let-element="data">
-        <button mat-menu-item (click)="open(element)" *appPermission="'Actualizar roles'">
+        <button mat-menu-item (click)="open(element)" *appPermission="'Actualizar roles'" id="updateRole">
             <mat-icon>edit</mat-icon>
             <span>Actualizar</span>
         </button>
-        <button mat-menu-item (click)="remove(element._id)" *appPermission="'Eliminar roles'">
+        <button mat-menu-item (click)="remove(element._id)" *appPermission="'Eliminar roles'" id="deleteRole">
             <mat-icon class="text-red-600">delete</mat-icon>
             <span class="text-red-600">Eliminar</span>
         </button>
