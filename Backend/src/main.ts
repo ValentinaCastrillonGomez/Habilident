@@ -9,6 +9,8 @@ async function bootstrap() {
     origin: process.env.ORIGIN_HOST
   });
 
+  app.setGlobalPrefix('api');
+
   await app.listen(port, '0.0.0.0');
 }
 bootstrap();
