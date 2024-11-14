@@ -1,43 +1,40 @@
+version: '3.8'
 services:
-  backend: # Servicio de Backend (NestJS)
-    build:
-      context: ./backend
-    ports:
-      - "3000:3000"  # Mapea el puerto 3000 del contenedor al puerto 3000 de la máquina host
+  db:
+    image: mongo:8.0.3
+    container_name: mongo_dayanneduque
+    restart: always
+    volumes:
+      - /root/system/vols/dayanneduque/mongo/config:/etc/mongo
+      - /root/system/vols/dayanneduque/mongo/data:/data/db
     environment:
-      MONGO_URI: mongodb://habilident:habilident@mongo:27017/habilident?authSource=admin
-      SECRET_KEY: habilident
-      ORIGIN_HOST: http://localhost:4200 # Dominio permitido en configuracion de CORS
-      EMAIL_HOST: smtp.gmail.com
-      EMAIL_USERNAME: # Correo para las notificaciones por email
-      EMAIL_PASSWORD: # Clave de aplicacion de la cuenta de correo
-      NODE_ENV: production
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+  backend:
+    build: ./Backend
+    container_name: backend_dayanneduque
+    ports:
+      - "5890:3000"
+    environment:
+      - MONGO_URI=mongodb://root:root@db:27017/habilident?authSource=admin
+      - SECRET_KEY=habilident
+      - ORIGIN_HOST=https://dayanneduque.ig-soft.com
+      - EMAIL_HOST=smtp.gmail.com
+      - EMAIL_USERNAME=dra.dayanneduque@gmail.com
+      - EMAIL_PASSWORD=nzxxuitjfqoxrwoi
+      - NODE_ENV=production
+    links:
+      - db
     deploy:
       resources:
         limits:
-          memory: 1g
-    depends_on:
-      - mongo  # Asegura que MongoDB esté disponible antes de iniciar el backend
-    links:
-      - mongo
-
-  frontend:  # Servicio de Frontend (Angular)
+          memory: 1G
+          cpus: 'ALL'
+  frontend:
     build:
-      context: ./frontend
+      context: ./Frontend
       args:
-        BACKEND_URL: http://localhost:3000 # Url del backend
+        - BACKEND_URL=https://dayanneduque.ig-soft.com/api
+    container_name: frontend_dayanneduque
     ports:
-      - "4200:80"  # Mapea el puerto 4200 del contenedor al puerto 80 de la máquina host
-    depends_on:
-      - backend  # Asegura que Backend esté disponible antes de iniciar el frontend
-    links:
-      - backend
-
-  mongo: # Servicio de Base de Datos (MongoDB)
-    image: mongo:6.0  # Usa la versión 6.0 de MongoDB
-    ports:
-      - "27017:27017"  # Mapea el puerto 27017 para acceso externo (opcional)
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: habilident  # Usuario root de MongoDB
-      MONGO_INITDB_ROOT_PASSWORD: habilident  # Contraseña de root de MongoDB
-      MONGO_INITDB_DATABASE: habilident  # Base de datos inicial
+      - "5891:8080"
