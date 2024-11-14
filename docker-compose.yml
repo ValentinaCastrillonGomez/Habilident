@@ -12,6 +12,10 @@ services:
       EMAIL_USERNAME: # Correo para las notificaciones por email
       EMAIL_PASSWORD: # Clave de aplicacion de la cuenta de correo
       NODE_ENV: production
+    deploy:
+      resources:
+        limits:
+          memory: 1g
     depends_on:
       - mongo  # Asegura que MongoDB esté disponible antes de iniciar el backend
     links:
