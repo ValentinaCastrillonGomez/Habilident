@@ -35,6 +35,7 @@ services:
       context: ./Frontend
       args:
         - BACKEND_URL=https://dayanneduque.ig-soft.com/api
+        - BACKEND_SOCKET=https://dayanneduque.ig-soft.com
     container_name: frontend_dayanneduque
     ports:
       - "5891:8080"
