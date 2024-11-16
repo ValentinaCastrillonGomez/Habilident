@@ -11,6 +11,7 @@ import { TYPE_DOCUMENTS } from './shared/constants/type-documents.const';
 import { GENDERS } from './shared/constants/genders.const';
 import { PERIODICITY } from './shared/constants/periodicity.const';
 import { TYPE_PARAMETERS } from './shared/constants/parameters.const';
+import { AlertsService } from './alerts/alerts.service';
 
 @Injectable()
 export class AppService {
@@ -18,11 +19,16 @@ export class AppService {
   constructor(
     private readonly rolesService: RolesService,
     private readonly usersService: UsersService,
-    private readonly parametersService: ParametersService
+    private readonly parametersService: ParametersService,
+    private readonly alertsService: AlertsService,
   ) { }
 
   getHealth() {
     return { status: 'UP' };
+  }
+
+  async getGeneration() {
+    await this.alertsService.findGeneration();
   }
 
   async deleteAll() {

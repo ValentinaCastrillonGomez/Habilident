@@ -54,11 +54,6 @@ export abstract class GenericService<T extends Document, G> {
             .catch(this.catchDuplicateError);
     }
 
-    async updateMany(ids: string[], dto: G): Promise<boolean> {
-        await this._model.updateMany({ _id: { $in: ids } }, { $set: dto });
-        return true;
-    }
-
     async remove(id: string): Promise<T> {
         return this._model.findByIdAndDelete({ _id: id }).exec();
     }

@@ -20,7 +20,12 @@ export class AlertsController {
 
   @Get('calendar')
   findCalendar(@Query() { dateStart, dateEnd }) {
-    return this.alertsService.findGenerations(dateStart, dateEnd);
+    return this.alertsService.findCalendar(dateStart, dateEnd);
+  }
+
+  @Get('notifications')
+  findNotifications() {
+    return this.alertsService.findNotifications();
   }
 
   @Get(':id')

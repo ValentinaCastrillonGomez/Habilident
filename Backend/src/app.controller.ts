@@ -15,4 +15,11 @@ export class AppController {
     await this.appService.getInit();
     return { status: 'INIT' };
   }
+
+  @Get('generated')
+  async getGenerated() {
+    await this.appService.getGeneration();
+    return { status: 'GENERATED' };
+  }
+
 }

@@ -1,24 +1,19 @@
-import { OnGatewayConnection, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
-import { Server, Socket } from "socket.io";
-import { Alert } from "src/types/alert";
+import { WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
+import { Server } from "socket.io";
 import { AlertsService } from "./alerts.service";
 
 @WebSocketGateway({ cors: { origin: '*' } })
-export class AlertsSocket implements OnGatewayConnection {
+export class AlertsSocket {
     @WebSocketServer() server: Server;
 
     constructor(private readonly alertsService: AlertsService) { }
 
-    async handleConnection(client: Socket) {
-        const alerts = await this.alertsService.findNotifications();
-        const notifications = await this.alertsService.findRecords(alerts);
-        client.emit('notifications', notifications);
-    }
-
-    sendAlerts(alerts: Alert[]) {
-        (this.server.engine.clientsCount > 0)
-            ? this.server.emit('notifications', alerts)
-            : this.alertsService.sendEmail(alerts);
+    async sendAlerts() {
+        const alerts = await this.alertsService.findAlerts();
+        if (alerts.length > 0) {
+            this.server.emit('notifications', alerts);
+            this.alertsService.sendEmail(alerts);
+        }
     }
 
 }

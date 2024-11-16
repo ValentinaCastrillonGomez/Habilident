@@ -11,12 +11,13 @@ export class AlertsCron {
         private readonly alertsSocket: AlertsSocket
     ) { }
 
-    @Cron(CronExpression.EVERY_MINUTE)
-    async handleCron() {
-        const alerts = await this.alertsService.findNotifications();
-        if (alerts.length > 0) await this.alertsService.updateMany(alerts.map(alert => alert._id), { last_generated: new Date() } as any);
+    @Cron(CronExpression.EVERY_DAY_AT_8AM)
+    async handleCronGeneration() {
+        await this.alertsService.findGeneration();
+    }
 
-        const notifications = await this.alertsService.findRecords(alerts);
-        if (notifications.length > 0) this.alertsSocket.sendAlerts(notifications);
+    @Cron(CronExpression.EVERY_MINUTE)
+    async handleCronNotification() {
+        await this.alertsSocket.sendAlerts();
     }
 }
