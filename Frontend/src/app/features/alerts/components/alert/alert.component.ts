@@ -17,7 +17,6 @@ import moment from "moment";
     MaterialModule,
     ReactiveFormsModule,
   ],
-  providers: [AlertsService],
   templateUrl: './alert.component.html',
   styleUrl: './alert.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

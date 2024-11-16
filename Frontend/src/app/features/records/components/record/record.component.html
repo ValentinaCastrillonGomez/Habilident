@@ -1,7 +1,7 @@
 <form [formGroup]="recordForm" (ngSubmit)="save()">
     <h6 mat-dialog-title>Guardar Registro - <span>{{data.format.name | titlecase}}</span></h6>
     <mat-dialog-content class="mat-typography">
-        <mat-form-field appearance="outline" class="w-full mt-5">
+        <mat-form-field appearance="outline" class="w-full mt-5 hidden">
             <mat-label>Fecha de vigencia</mat-label>
             <input matInput [matDatepicker]="picker" id="dateEffective" formControlName="dateEffective" required>
 

@@ -15,7 +15,6 @@ import { PermissionDirective } from '@shared/directives/permission.directive';
     MaterialModule,
     PermissionDirective,
   ],
-  providers: [AlertsService],
   templateUrl: './alerts.component.html',
   styleUrl: './alerts.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -19,7 +19,7 @@
     </div>
 </mat-toolbar>
 
-<mat-progress-bar mode="query" class="z-[101]" [ngClass]="{'opacity-0' : !loadingService.loading()}"></mat-progress-bar>
+<mat-progress-bar mode="query" class="z-[101]" [ngClass]="{'opacity-0' : !loading()}"></mat-progress-bar>
 
 <mat-menu #subMenu="matMenu">
     @for (item of administration; track item.id) {

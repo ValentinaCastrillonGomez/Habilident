@@ -18,7 +18,6 @@ import moment from 'moment';
     MaterialModule,
     FullCalendarModule
   ],
-  providers: [AlertsService],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -53,7 +52,7 @@ export default class CalendarComponent {
 
   async loadCalendar() {
     const data = await this.alertsService.getCalendar(this.startDate, this.endDate);
-
+    
     this.notifications.set(data.map(alert => ({
       title: alert.format.name,
       start: alert.dateGenerated,
