@@ -40,6 +40,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "Dockerfile",
+                "input": "./",
+                "output": "/"
               }
             ],
             "styles": [
