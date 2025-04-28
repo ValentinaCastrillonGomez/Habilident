@@ -8,9 +8,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { loadingInterceptor } from '@core/interceptors/loading.interceptor';
 import { authInterceptor } from '@core/interceptors/auth.interceptor';
 
-export type Environment = typeof environment;
+export const ENV = new InjectionToken<typeof environment>('ENV');
 
-export const ENV = new InjectionToken<Environment>('ENV');
+const LOCAL_COL = 'es-CO';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,6 +22,6 @@ export const appConfig: ApplicationConfig = {
     ),
     provideAnimationsAsync(),
     { provide: ENV, useValue: environment },
-    { provide: LOCALE_ID, useValue: 'es-CO' }
+    { provide: LOCALE_ID, useValue: LOCAL_COL }
   ],
 };
