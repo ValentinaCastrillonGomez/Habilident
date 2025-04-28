@@ -15,7 +15,6 @@ import moment from 'moment';
 
 @Component({
     selector: 'app-records',
-    standalone: true,
     imports: [
         MaterialModule,
         ReactiveFormsModule,

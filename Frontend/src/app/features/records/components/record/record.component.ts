@@ -22,7 +22,6 @@ type ValuesFormType = {
 
 @Component({
     selector: 'app-record',
-    standalone: true,
     imports: [
         MaterialModule,
         ReactiveFormsModule,

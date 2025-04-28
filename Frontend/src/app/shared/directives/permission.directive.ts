@@ -3,8 +3,7 @@ import { AuthService } from '@core/services/auth.service';
 import { Permission } from '@tipos/permission';
 
 @Directive({
-  selector: '[appPermission]',
-  standalone: true
+  selector: '[appPermission]'
 })
 export class PermissionDirective {
   private readonly authService = inject(AuthService);
