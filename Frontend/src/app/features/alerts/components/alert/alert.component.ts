@@ -12,7 +12,6 @@ import moment from "moment";
 
 @Component({
   selector: 'app-alert',
-  standalone: true,
   imports: [
     MaterialModule,
     ReactiveFormsModule,

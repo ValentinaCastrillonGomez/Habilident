@@ -8,7 +8,6 @@ import { Parameter } from "@tipos/parameter";
 
 @Component({
   selector: 'app-parameter',
-  standalone: true,
   imports: [
     MaterialModule,
     ReactiveFormsModule,

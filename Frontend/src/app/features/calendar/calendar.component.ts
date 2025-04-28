@@ -13,7 +13,6 @@ import moment from 'moment';
 
 @Component({
   selector: 'app-calendar',
-  standalone: true,
   imports: [
     MaterialModule,
     FullCalendarModule

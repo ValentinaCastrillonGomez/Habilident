@@ -8,7 +8,6 @@ import { Role } from '@tipos/role';
 
 @Component({
   selector: 'app-role',
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     MaterialModule,

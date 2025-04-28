@@ -12,7 +12,6 @@ interface Reports {
 
 @Component({
   selector: 'app-reports',
-  standalone: true,
   imports: [
     MaterialModule,
     ReactiveFormsModule,

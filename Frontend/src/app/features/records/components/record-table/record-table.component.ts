@@ -7,7 +7,6 @@ import { ParametersService } from '@shared/services/parameters.service';
 
 @Component({
   selector: 'app-record-table',
-  standalone: true,
   imports: [
     MaterialModule,
     ReactiveFormsModule,

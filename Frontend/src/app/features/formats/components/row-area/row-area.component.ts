@@ -7,7 +7,6 @@ import { FieldsFormType, RowsFormType } from '../format/format.component';
 
 @Component({
   selector: 'app-row-area',
-  standalone: true,
   imports: [
     MaterialModule,
     CdkDrag, CdkDragHandle,

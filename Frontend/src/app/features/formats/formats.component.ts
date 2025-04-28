@@ -12,7 +12,6 @@ import { filter, take } from 'rxjs';
 
 @Component({
   selector: 'app-formats',
-  standalone: true,
   imports: [
     MaterialModule,
     RouterLink,

@@ -15,7 +15,6 @@ const ADULT = 18;
 
 @Component({
   selector: 'app-user',
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     MaterialModule,

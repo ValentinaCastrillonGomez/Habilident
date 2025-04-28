@@ -7,7 +7,6 @@ import { ReportsService } from '@shared/services/reports.service';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
   imports: [
     RouterOutlet,
     NavbarComponent,

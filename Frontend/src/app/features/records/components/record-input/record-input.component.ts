@@ -7,7 +7,6 @@ import { Parameter } from '@tipos/parameter';
 
 @Component({
   selector: 'app-record-input',
-  standalone: true,
   imports: [
     MaterialModule,
     ReactiveFormsModule,

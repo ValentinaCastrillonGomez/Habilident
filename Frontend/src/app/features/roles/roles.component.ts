@@ -10,7 +10,6 @@ import { PermissionDirective } from '@shared/directives/permission.directive';
 
 @Component({
   selector: 'app-roles',
-  standalone: true,
   imports: [
     MaterialModule,
     PermissionDirective,

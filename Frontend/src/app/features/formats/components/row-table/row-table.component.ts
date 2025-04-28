@@ -9,7 +9,6 @@ import { Parameter } from '@tipos/parameter';
 
 @Component({
   selector: 'app-row-table',
-  standalone: true,
   imports: [
     MaterialModule,
     CdkDrag, CdkDragHandle, CdkDropList,

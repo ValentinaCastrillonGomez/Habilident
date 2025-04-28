@@ -22,7 +22,6 @@ export type FieldsFormType = {
 
 @Component({
   selector: 'app-format',
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     MaterialModule,
