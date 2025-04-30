@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Page } from "@tipos/page";
+import { Page } from "@habilident/shared/types";
 import { firstValueFrom } from "rxjs";
 import Swal from "sweetalert2";
 

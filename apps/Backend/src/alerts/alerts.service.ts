@@ -3,14 +3,11 @@ import { AlertDocument, AlertEntity } from './entities/alert.entity';
 import { GenericService } from 'src/shared/classes/generic.service';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Alert } from 'src/types/alert';
-import { PERIODICITY } from 'src/shared/constants/periodicity.const';
+import { Alert, PERMISSIONS, Notification } from '@habilident/shared/types';
+import { PERIODICITY, ERROR_MESSAGES } from '@habilident/shared/constants';
 import { MailerService } from '@nestjs-modules/mailer';
-import { ERROR_MESSAGES } from 'src/shared/constants/messages.const';
 import { RecordsService } from 'src/records/records.service';
 import { UsersService } from 'src/users/users.service';
-import { PERMISSIONS } from 'src/types/permission';
-import { Notification } from 'src/types/notification';
 import moment from 'moment';
 
 @Injectable()

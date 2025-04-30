@@ -2,9 +2,8 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RolesService } from '../../services/roles.service';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Permission, PERMISSIONS } from '@tipos/permission';
+import { Permission, PERMISSIONS, Role } from '@habilident/shared/types';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { Role } from '@tipos/role';
 
 @Component({
   selector: 'app-role',

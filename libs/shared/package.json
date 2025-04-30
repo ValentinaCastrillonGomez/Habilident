@@ -1,6 +1,13 @@
 {
   "name": "@habilident/shared",
   "version": "1.0.0",
-  "main": "index.ts",
-  "types": "index.ts"
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "private": true,
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
 }

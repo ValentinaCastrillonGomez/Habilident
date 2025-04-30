@@ -25,9 +25,6 @@
       "dom"
     ],
     "paths": {
-      "@habilident/shared": [
-        "../../libs/shared/index.ts"
-      ],
       "@core/*": [
         "src/app/core/*"
       ],
@@ -44,5 +41,10 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "references": [
+    {
+      "path": "../../libs/shared"
+    }
+  ],
 }

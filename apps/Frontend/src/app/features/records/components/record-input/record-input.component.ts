@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, Input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, Input, } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ParametersService } from '@shared/services/parameters.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { INPUT_TYPES, InputTypes } from '@tipos/format';
-import { Parameter } from '@tipos/parameter';
+import { INPUT_TYPES, InputTypes } from '@habilident/shared/types';
 
 @Component({
   selector: 'app-record-input',

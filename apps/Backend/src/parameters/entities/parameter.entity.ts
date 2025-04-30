@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { Parameter } from 'src/types/parameter';
+import { Parameter } from '@habilident/shared/types';
 
 export type ParameterDocument = HydratedDocument<ParameterEntity>;
 

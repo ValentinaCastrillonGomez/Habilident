@@ -1,6 +1,6 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Login } from 'src/types/login';
+import { Login } from '@habilident/shared/types';
 
 @Controller('login')
 export class AuthController {

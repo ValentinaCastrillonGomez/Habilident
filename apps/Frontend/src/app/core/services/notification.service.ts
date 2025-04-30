@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { ENV } from "src/app/app.config";
 import { io } from 'socket.io-client';
-import { Alert } from "@tipos/alert";
+import { Alert } from "@habilident/shared/types";
 import { AlertsService } from "@features/alerts/services/alerts.service";
 
 @Injectable({

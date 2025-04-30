@@ -1,16 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from './users/users.service';
-import { User } from './types/user';
+import { User, Role, PERMISSIONS, Parameter } from '@habilident/shared/types';
 import { RolesService } from './roles/roles.service';
-import { Role } from './types/role';
-import { PERMISSIONS } from './types/permission';
 import { hashSync } from 'bcrypt';
 import { ParametersService } from './parameters/parameters.service';
-import { Parameter } from './types/parameter';
-import { TYPE_DOCUMENTS } from './shared/constants/type-documents.const';
-import { GENDERS } from './shared/constants/genders.const';
-import { PERIODICITY } from './shared/constants/periodicity.const';
-import { TYPE_PARAMETERS } from './shared/constants/parameters.const';
+import { TYPE_DOCUMENTS, GENDERS, PERIODICITY, TYPE_PARAMETERS } from '@habilident/shared/constants';
 import { AlertsService } from './alerts/alerts.service';
 
 @Injectable()

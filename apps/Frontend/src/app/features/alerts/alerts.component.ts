@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { AlertsService } from '@features/alerts/services/alerts.service';
-import { Alert } from '@tipos/alert';
+import { Alert } from '@habilident/shared/types';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
 import { AlertComponent } from './components/alert/alert.component';
 import { MatDialog } from '@angular/material/dialog';

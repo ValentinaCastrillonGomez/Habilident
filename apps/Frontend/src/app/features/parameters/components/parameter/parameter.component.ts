@@ -4,7 +4,7 @@ import { MatChipEditedEvent, MatChipInputEvent } from "@angular/material/chips";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { ParametersService } from "@shared/services/parameters.service";
 import { MaterialModule } from "@shared/modules/material/material.module";
-import { Parameter } from "@tipos/parameter";
+import { Parameter } from "@habilident/shared/types";
 
 @Component({
   selector: 'app-parameter',

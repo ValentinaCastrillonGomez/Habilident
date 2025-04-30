@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, Request } from '@nestjs/common';
 import { AlertsService } from './alerts.service';
-import { Alert } from 'src/types/alert';
+import { Alert } from '@habilident/shared/types';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('alerts')

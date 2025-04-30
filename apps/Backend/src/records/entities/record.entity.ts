@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument, Types } from "mongoose";
 import { FormatEntity } from "src/formats/entities/format.entity";
-import { Record, RecordRow } from "src/types/record";
+import { Record, RecordRow } from "@habilident/shared/types";
 import { UserEntity } from "src/users/entities/user.entity";
 
 export type RecordDocument = HydratedDocument<RecordEntity>;

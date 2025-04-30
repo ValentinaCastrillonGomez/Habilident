@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { GenericService } from '@shared/classes/generic.service';
-import { Alert } from '@tipos/alert';
+import { Alert, Notification } from '@habilident/shared/types';
 import { firstValueFrom } from 'rxjs';
 import { ENV } from 'src/app/app.config';
-import { Notification } from '@tipos/notification';
 
 @Injectable({
   providedIn: 'root'

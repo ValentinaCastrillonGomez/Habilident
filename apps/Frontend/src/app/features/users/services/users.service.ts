@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { User } from '@tipos/user';
+import { User } from '@habilident/shared/types';
 import { GenericService } from '@shared/classes/generic.service';
 import { ENV } from 'src/app/app.config';
 

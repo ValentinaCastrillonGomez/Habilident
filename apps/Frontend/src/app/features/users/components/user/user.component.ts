@@ -1,14 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { User, Signature } from '@tipos/user';
-import { Role } from '@tipos/role';
+import { User, Signature, Role, Parameter } from '@habilident/shared/types';
 import { UsersService } from '../../services/users.service';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { RolesService } from '@features/roles/services/roles.service';
-import { Parameter } from '@tipos/parameter';
 import { ParametersService } from '@shared/services/parameters.service';
-import { TYPE_PARAMETERS } from '@const/parameters.const';
+import { TYPE_PARAMETERS } from '@habilident/shared/constants';
 import moment from 'moment';
 
 const ADULT = 18;
