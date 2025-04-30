@@ -1,0 +1,42 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --proxy-config proxy.conf.json",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development"
+  },
+  "private": true,
+  "dependencies": {
+    "@habilident/shared": "*",
+    "@angular/animations": "^19.2.8",
+    "@angular/cdk": "^19.2.11",
+    "@angular/common": "^19.2.8",
+    "@angular/compiler": "^19.2.8",
+    "@angular/core": "^19.2.8",
+    "@angular/forms": "^19.2.8",
+    "@angular/material": "^19.2.11",
+    "@angular/platform-browser": "^19.2.8",
+    "@angular/platform-browser-dynamic": "^19.2.8",
+    "@angular/router": "^19.2.8",
+    "@fullcalendar/angular": "^6.1.17",
+    "@fullcalendar/core": "^6.1.17",
+    "@fullcalendar/daygrid": "^6.1.17",
+    "@fullcalendar/list": "^6.1.17",
+    "moment": "^2.30.1",
+    "rxjs": "~7.8.0",
+    "socket.io-client": "^4.8.1",
+    "sweetalert2": "^11.19.1",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^19.2.9",
+    "@angular/cli": "^19.2.9",
+    "@angular/compiler-cli": "^19.2.8",
+    "@angular/localize": "^19.2.8",
+    "tailwindcss": "^3.4.13",
+    "typescript": "~5.5.2"
+  }
+}
