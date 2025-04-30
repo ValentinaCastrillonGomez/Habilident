@@ -1,0 +1,8 @@
+{
+  "name": "habilident",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ]
+}

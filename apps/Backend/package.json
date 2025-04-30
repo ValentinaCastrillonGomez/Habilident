@@ -12,6 +12,7 @@
   },
   "private": true,
   "dependencies": {
+    "@habilident/shared": "*",
     "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.3.0",

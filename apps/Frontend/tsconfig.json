@@ -25,11 +25,8 @@
       "dom"
     ],
     "paths": {
-      "@tipos/*": [
-        "src/app/shared/types/*"
-      ],
-      "@const/*": [
-        "src/app/shared/constants/*"
+      "@habilident/shared": [
+        "../../libs/shared/index.ts"
       ],
       "@core/*": [
         "src/app/core/*"
