@@ -1,6 +1,6 @@
 export const environment = {
-  BASE_URL: '{BACKEND_URL}',
-  SOCKET_URL: '{BACKEND_SOCKET}',
+  BASE_URL: 'https://dayanneduque.ig-soft.com/api',
+  SOCKET_URL: 'https://dayanneduque.ig-soft.com',
   API_USERS: '/users',
   API_ROLES: '/roles',
   API_PARAMETERS: '/parameters',
