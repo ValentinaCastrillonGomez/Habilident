@@ -42,9 +42,4 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   },
-  "references": [
-    {
-      "path": "../../libs/shared"
-    }
-  ],
 }
