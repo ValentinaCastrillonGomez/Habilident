@@ -6,20 +6,14 @@ export class AppController {
   constructor(private readonly appService: AppService) { }
 
   @Get()
-  getHello() {
-    return this.appService.getHealth();
+  getHealth() {
+    return { status: 'UP' };
   }
 
   @Get('init')
   async getInit() {
     await this.appService.getInit();
     return { status: 'INIT' };
-  }
-
-  @Get('generated')
-  async getGenerated() {
-    await this.appService.getGeneration();
-    return { status: 'GENERATED' };
   }
 
 }

@@ -9,8 +9,7 @@
 			"path": "Backend"
 		},
 		{
-			"name": "Shared",
-			"path": "Shared"
+			"path": "Types"
 		}
 	]
 }

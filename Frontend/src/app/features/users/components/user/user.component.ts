@@ -1,15 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { User, Signature, Role, Parameter } from '@habilident/shared';
+import { User, Signature, Role, Parameter, TYPE_PARAMETERS } from '@habilident/types';
 import { UsersService } from '../../services/users.service';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { RolesService } from '@features/roles/services/roles.service';
 import { ParametersService } from '@shared/services/parameters.service';
-import { TYPE_PARAMETERS } from '@habilident/shared';
 import moment from 'moment';
-
-const ADULT = 18;
 
 @Component({
   selector: 'app-user',
@@ -32,7 +29,7 @@ export class UserComponent implements OnInit {
 
   options: Parameter[] = [];
   roles: Role[] = [];
-  maxDate = moment().subtract(ADULT, 'years').toDate();
+  maxDate = moment().subtract(18, 'years').toDate();
   nameFile = this.user?.signature?.name ?? null;
   userForm = this.formBuilder.group({
     firstNames: this.formBuilder.control(this.user?.firstNames ?? '', [Validators.required]),

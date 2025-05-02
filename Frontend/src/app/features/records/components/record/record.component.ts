@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { Record, Format, InputTypes, RowTypes } from '@habilident/shared';
+import { Record, Format, InputTypes, RowTypes } from '@habilident/types';
 import { RecordsService } from '@features/records/services/records.service';
 import { RecordTableComponent } from '../record-table/record-table.component';
 import { RecordInputComponent } from '../record-input/record-input.component';

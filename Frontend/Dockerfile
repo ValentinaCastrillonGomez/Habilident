@@ -1,7 +1,9 @@
 FROM node:20.11.1-alpine
-
 WORKDIR /app
-COPY . .
+
+COPY package*.json ./
+RUN npm install
+COPY dist ./dist
 
 RUN npm install angular-http-server@latest -g
 

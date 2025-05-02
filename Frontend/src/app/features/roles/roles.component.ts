@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
 import { RolesService } from './services/roles.service';
-import { Role } from '@habilident/shared';
+import { Role } from '@habilident/types';
 import { MatPaginator } from '@angular/material/paginator';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';

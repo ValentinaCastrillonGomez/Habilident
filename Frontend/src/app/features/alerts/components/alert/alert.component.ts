@@ -5,8 +5,7 @@ import { MaterialModule } from "@shared/modules/material/material.module";
 import { AlertsService } from "@features/alerts/services/alerts.service";
 import { FormatsService } from "@shared/services/formats.service";
 import { ParametersService } from "@shared/services/parameters.service";
-import { Alert, Format } from "@habilident/shared";
-import { TYPE_PARAMETERS } from "@habilident/shared";
+import { Alert, Format, TYPE_PARAMETERS } from "@habilident/types";
 import moment from "moment";
 
 @Component({

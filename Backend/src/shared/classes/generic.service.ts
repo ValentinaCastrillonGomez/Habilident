@@ -1,7 +1,9 @@
 import { Document, FilterQuery, Model, PopulateOptions } from 'mongoose';
-import { Page } from '@habilident/shared';
+import { Page } from '@habilident/types';
 import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
-import { ERROR_MESSAGES, DB_ERROR_CODES } from '@habilident/shared';
+import { ERROR_MESSAGES } from '../consts/messages.const';
+
+const ERROR_DB_DUPLICATE_KEY = 11000;
 
 export abstract class GenericService<T extends Document, G> {
 
@@ -48,6 +50,11 @@ export abstract class GenericService<T extends Document, G> {
             .catch(this.catchDuplicateError);
     }
 
+    async createAll(dto: G[]): Promise<any> {
+        return this._model.insertMany(dto)
+            .catch(this.catchDuplicateError);
+    }
+
     async update(id: string, dto: G): Promise<T> {
         return this._model.findOneAndUpdate({ _id: id }, dto, { new: true, })
             .catch(this.catchDuplicateError);
@@ -63,7 +70,7 @@ export abstract class GenericService<T extends Document, G> {
     }
 
     private catchDuplicateError = (error: any) => {
-        if (error.code === DB_ERROR_CODES.DUPLICATE_KEY) {
+        if (error.code === ERROR_DB_DUPLICATE_KEY) {
             throw new BadRequestException(ERROR_MESSAGES.REGISTERED);
         }
 

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { GenericService } from '@shared/classes/generic.service';
-import { Parameter } from '@habilident/shared';
+import { Parameter } from '@habilident/types';
 import { ENV } from 'src/app/app.config';
 
 @Injectable({

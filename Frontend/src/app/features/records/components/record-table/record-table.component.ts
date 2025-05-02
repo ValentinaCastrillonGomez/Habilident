@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, Input } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { INPUT_TYPES, InputTypes } from '@habilident/shared';
+import { INPUT_TYPES, InputTypes } from '@habilident/types';
 import { RecordInputComponent } from '../record-input/record-input.component';
 import { ParametersService } from '@shared/services/parameters.service';
 

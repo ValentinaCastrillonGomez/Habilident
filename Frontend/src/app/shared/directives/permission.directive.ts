@@ -1,6 +1,6 @@
 import { Directive, inject, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { AuthService } from '@core/services/auth.service';
-import { Permission } from '@habilident/shared';
+import { Permission } from '@habilident/types';
 
 @Directive({
   selector: '[appPermission]'

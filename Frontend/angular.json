@@ -33,7 +33,7 @@
             "allowedCommonJsDependencies": [
               "moment",
               "sweetalert2",
-              "@habilident/shared"
+              "@habilident/types"
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",

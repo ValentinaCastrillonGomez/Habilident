@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, Input, OnInit, output } from '@angular/core';
 import { FormArray, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { INPUT_TYPES, InputTypes, TYPES_NAMES, Parameter } from '@habilident/shared';
+import { INPUT_TYPES, InputTypes, TYPES_NAMES, Parameter } from '@habilident/types';
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FieldsFormType, RowsFormType } from '../format/format.component';
 import { ParametersService } from '@shared/services/parameters.service'; 

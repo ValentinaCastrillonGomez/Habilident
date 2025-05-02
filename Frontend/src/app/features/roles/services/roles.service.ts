@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { GenericService } from '@shared/classes/generic.service';
-import { Role } from '@habilident/shared';
+import { Role } from '@habilident/types';
 import { HttpClient } from '@angular/common/http';
 import { ENV } from 'src/app/app.config';
 
