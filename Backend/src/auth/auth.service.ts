@@ -2,8 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { ERROR_MESSAGES } from '@habilident/shared/constants';
-import { Login } from '@habilident/shared/types';
+import { ERROR_MESSAGES } from '@habilident/shared';
+import { Login } from '@habilident/shared';
 
 @Injectable()
 export class AuthService {

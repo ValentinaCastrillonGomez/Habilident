@@ -8,7 +8,7 @@ import { RecordComponent } from '@features/records/components/record/record.comp
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@shared/services/formats.service';
-import { PERMISSIONS } from '@habilident/shared/types';
+import { PERMISSIONS } from '@habilident/shared';
 import { paths } from 'src/app/app.routes';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 

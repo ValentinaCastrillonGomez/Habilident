@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from '@habilident/shared/types';
+import { User } from '@habilident/shared';
 
 @Controller('users')
 @UseGuards(AuthGuard("jwt"))

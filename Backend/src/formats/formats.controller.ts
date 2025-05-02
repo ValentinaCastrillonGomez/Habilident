@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { FormatsService } from './formats.service';
-import { Format } from '@habilident/shared/types';
+import { Format } from '@habilident/shared';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('formats')

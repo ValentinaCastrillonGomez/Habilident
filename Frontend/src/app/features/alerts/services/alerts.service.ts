@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { GenericService } from '@shared/classes/generic.service';
-import { Alert, Notification } from '@habilident/shared/types';
+import { Alert, Notification } from '@habilident/shared';
 import { firstValueFrom } from 'rxjs';
 import { ENV } from 'src/app/app.config';
 

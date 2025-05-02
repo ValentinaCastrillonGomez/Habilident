@@ -1,7 +1,7 @@
 import { Document, FilterQuery, Model, PopulateOptions } from 'mongoose';
-import { Page } from '@habilident/shared/types';
+import { Page } from '@habilident/shared';
 import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
-import { ERROR_MESSAGES, DB_ERROR_CODES } from '@habilident/shared/constants';
+import { ERROR_MESSAGES, DB_ERROR_CODES } from '@habilident/shared';
 
 export abstract class GenericService<T extends Document, G> {
 

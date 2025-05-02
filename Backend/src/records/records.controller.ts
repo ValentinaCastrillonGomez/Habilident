@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, Request } from '@nestjs/common';
 import { RecordsService } from './records.service';
-import { Record } from '@habilident/shared/types';
+import { Record } from '@habilident/shared';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('records')

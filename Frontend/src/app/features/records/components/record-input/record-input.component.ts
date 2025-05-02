@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, Input, } f
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ParametersService } from '@shared/services/parameters.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { INPUT_TYPES, InputTypes } from '@habilident/shared/types';
+import { INPUT_TYPES, InputTypes } from '@habilident/shared';
 
 @Component({
   selector: 'app-record-input',

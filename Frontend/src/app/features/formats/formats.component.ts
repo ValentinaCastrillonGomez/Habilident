@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, Injector, OnInit, signal } from '@angular/core';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@shared/services/formats.service';
-import { Format } from '@habilident/shared/types';
+import { Format } from '@habilident/shared';
 import { MatDialog } from '@angular/material/dialog';
 import { RecordsComponent } from '@features/records/records.component';
 import { FormatComponent } from './components/format/format.component';

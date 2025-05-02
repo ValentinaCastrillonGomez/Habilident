@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
-import { Login, Permission } from '@habilident/shared/types';
+import { Login, Permission } from '@habilident/shared';
 import { paths } from 'src/app/app.routes';
 
 @Injectable({

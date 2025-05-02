@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Content, PageOrientation } from 'pdfmake/interfaces';
 import PdfPrinter from 'pdfmake';
 import { RecordsService } from 'src/records/records.service';
-import { FormatField, INPUT_TYPES, ROW_TYPES, Parameter } from '@habilident/shared/types';
+import { FormatField, INPUT_TYPES, ROW_TYPES, Parameter } from '@habilident/shared';
 import { ParametersService } from 'src/parameters/parameters.service';
 import { FormatsService } from 'src/formats/formats.service';
 

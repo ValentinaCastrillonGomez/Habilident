@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { RolesService } from './roles.service';
-import { Role } from '@habilident/shared/types';
+import { Role } from '@habilident/shared';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('roles')

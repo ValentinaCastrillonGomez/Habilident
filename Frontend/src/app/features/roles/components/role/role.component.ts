@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RolesService } from '../../services/roles.service';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Permission, PERMISSIONS, Role } from '@habilident/shared/types';
+import { Permission, PERMISSIONS, Role } from '@habilident/shared';
 import { MaterialModule } from '@shared/modules/material/material.module';
 
 @Component({

@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject, Injector, input, signal, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { Record, Format } from '@habilident/shared/types';
+import { Record, Format } from '@habilident/shared';
 import { debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
 import { RecordsService } from './services/records.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
