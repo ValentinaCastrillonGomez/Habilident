@@ -1,0 +1,40 @@
+[
+    {
+        "name": "Tipo de documentos",
+        "protected": true,
+        "options": [
+            "Registro civil",
+            "Tarjeta de identidad",
+            "Cédula de ciudadanía",
+            "Tarjeta de extranjería",
+            "Cédula de extranjería",
+            "Número de identificación tributaria",
+            "Pasaporte",
+            "Permiso especial de permanencia",
+            "Documento de identificación extranjero",
+            "NUIP",
+            "NIT de otro país"
+        ]
+    },
+    {
+        "name": "Generos",
+        "protected": true,
+        "options": [
+            "Hombre",
+            "Mujer",
+            "Otro"
+        ]
+    },
+    {
+        "name": "Periocidad",
+        "protected": true,
+        "options": [
+            "Diario",
+            "Semanal",
+            "Mensual",
+            "Trimestral",
+            "Semestral",
+            "Anual"
+        ]
+    }
+]
