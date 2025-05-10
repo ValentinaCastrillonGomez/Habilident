@@ -55,8 +55,8 @@ export abstract class GenericService<T extends Document, G> {
             .catch(this.catchDuplicateError);
     }
 
-    async update(id: string, dto: G): Promise<T> {
-        return this._model.findOneAndUpdate({ _id: id }, dto, { new: true, })
+    async update(id: string, dto: Partial<G>): Promise<T> {
+        return this._model.findOneAndUpdate({ _id: id }, { dto }, { new: true, })
             .catch(this.catchDuplicateError);
     }
 

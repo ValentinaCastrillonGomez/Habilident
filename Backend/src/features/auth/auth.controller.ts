@@ -1,14 +1,21 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Login } from '@habilident/types';
+import { Login, User } from '@habilident/types';
+import { AuthGuard } from '@nestjs/passport';
 
-@Controller('login')
+@Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
-  @Post()
-  create(@Body() loginDto: Login) {
+  @Post('login')
+  login(@Body() loginDto: Login) {
     return this.authService.signIn(loginDto);
   }
 
+  @Post('refresh')
+  @UseGuards(AuthGuard("jwt-refresh"))
+  refreshToken(@Req() user: User) {
+    console.log(user);
+    return this.authService.refreshTokens(user);
+  }
 }

@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { AuthGuard } from '@nestjs/passport';
 import { User } from '@habilident/types';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 @UseGuards(AuthGuard("jwt"))
@@ -27,8 +27,8 @@ export class UsersController {
 
     @Patch(':id')
     async update(@Param('id') id: string, @Body() userDto: User) {
-        const u = await this.usersService.encryiptPassword(userDto);
-        return await this.usersService.update(id, u);
+        const user = await this.usersService.encryiptPassword(userDto);
+        return await this.usersService.update(id, user);
     }
 
     @Delete(':id')

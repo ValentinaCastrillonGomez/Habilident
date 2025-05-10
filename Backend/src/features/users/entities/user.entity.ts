@@ -51,6 +51,9 @@ export class UserEntity implements User {
     @Prop({ type: Object })
     signature?: Signature;
 
+    @Prop()
+    refreshToken?: string;
+
     @Prop({ required: true, default: true })
     state: boolean;
 }
