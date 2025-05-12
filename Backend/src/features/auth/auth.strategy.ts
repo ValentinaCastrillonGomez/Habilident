@@ -11,7 +11,7 @@ export class AuthStrategy extends PassportStrategy(Strategy) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            // secretOrKey: process.env.SECRET_KEY_ACCESS,
+            secretOrKey: process.env.SECRET_KEY_ACCESS,
         });
     }
 

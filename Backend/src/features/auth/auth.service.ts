@@ -31,12 +31,22 @@ export class AuthService {
 
     return user;
   }
-  
+
   async logout(_id: string) {
     return this.usersService.update(_id, { refreshToken: null });
   }
 
   async refreshTokens(user: User) {
+    const access_token = await this.jwtService.signAsync({
+      sub: user._id,
+      name: `${user.firstNames} ${user.lastNames}`,
+      role: user.role?.name,
+      permissions: user.role?.permissions
+    }, {
+      secret: process.env.SECRET_KEY_ACCESS,
+      expiresIn: ENCRYPT.EXP_ACCESS
+    });
+
     const refresh_token = await this.jwtService.signAsync({ sub: user._id }, {
       secret: process.env.SECRET_KEY_REFRESH,
       expiresIn: ENCRYPT.EXP_REFRESH
@@ -46,17 +56,6 @@ export class AuthService {
       refreshToken: await hash(refresh_token, ENCRYPT.SALT)
     });
 
-    return {
-      access_token: await this.jwtService.signAsync({
-        sub: user._id,
-        name: `${user.firstNames} ${user.lastNames}`,
-        role: user.role?.name,
-        permissions: user.role?.permissions
-      }, {
-        secret: process.env.SECRET_KEY_ACCESS,
-        expiresIn: ENCRYPT.EXP_ACCESS
-      }),
-      refresh_token
-    };
+    return { access_token, refresh_token };
   }
 }

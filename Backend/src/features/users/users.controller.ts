@@ -28,7 +28,7 @@ export class UsersController {
     @Patch(':id')
     async update(@Param('id') id: string, @Body() userDto: User) {
         const user = await this.usersService.encryiptPassword(userDto);
-        return await this.usersService.update(id, user);
+        return this.usersService.update(id, user);
     }
 
     @Delete(':id')

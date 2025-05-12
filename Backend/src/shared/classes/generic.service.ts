@@ -45,19 +45,19 @@ export abstract class GenericService<T extends Document, G> {
         return this._model.findOne(filter).populate(this._poputale).exec();
     }
 
-    async create(dto: G): Promise<T> {
+    async create(dto: G): Promise<T | void> {
         return this._model.create(dto)
-            .catch(this.catchDuplicateError);
+            .catch(error => this.catchDuplicateError(error));
     }
 
     async createAll(dto: G[]): Promise<any> {
         return this._model.insertMany(dto)
-            .catch(this.catchDuplicateError);
+            .catch(error => this.catchDuplicateError(error));
     }
 
-    async update(id: string, dto: Partial<G>): Promise<T> {
+    async update(id: string, dto: Partial<G>): Promise<T | void> {
         return this._model.findOneAndUpdate({ _id: id }, { dto }, { new: true, })
-            .catch(this.catchDuplicateError);
+            .catch(error => this.catchDuplicateError(error));
     }
 
     async remove(id: string): Promise<T> {
@@ -69,7 +69,11 @@ export abstract class GenericService<T extends Document, G> {
         return true;
     }
 
-    private catchDuplicateError = (error: any) => {
+    async migrate(item: G): Promise<G> {
+        return item;
+    }
+
+    private catchDuplicateError(error: any) {
         if (error.code === ERROR_DB_DUPLICATE_KEY) {
             throw new BadRequestException(ERROR_MESSAGES.REGISTERED);
         }
