@@ -1,7 +1,6 @@
 import { Document, FilterQuery, Model, PopulateOptions } from 'mongoose';
-import { Page } from '@habilident/types';
+import { Page, ERROR_MESSAGES } from '@habilident/types';
 import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
-import { ERROR_MESSAGES } from '../consts/messages.const';
 
 const ERROR_DB_DUPLICATE_KEY = 11000;
 
@@ -55,8 +54,8 @@ export abstract class GenericService<T extends Document, G> {
             .catch(error => this.catchDuplicateError(error));
     }
 
-    async update(id: string, dto: Partial<G>): Promise<T | void> {
-        return this._model.findOneAndUpdate({ _id: id }, { dto }, { new: true, })
+    async update(id: string, dto: Partial<T>): Promise<T | void> {
+        return this._model.findOneAndUpdate({ _id: id }, dto, { new: true, })
             .catch(error => this.catchDuplicateError(error));
     }
 

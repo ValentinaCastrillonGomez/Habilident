@@ -17,7 +17,9 @@ export class RolesService extends GenericService<RoleDocument, RoleEntity> {
   async migrate(role: RoleEntity): Promise<RoleEntity> {
     return {
       ...role,
-      permissions: role.permissions as any === 'ALL' ? Object.values(PERMISSIONS) : role.permissions,
+      permissions: role.permissions as any === 'ALL'
+        ? Object.values(PERMISSIONS)
+        : role.permissions,
     };
   }
 }

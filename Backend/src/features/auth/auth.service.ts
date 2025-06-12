@@ -1,13 +1,15 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/features/users/users.service';
-import { compare, hash } from 'bcrypt';
+import { compare, genSaltSync, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { ERROR_MESSAGES } from '../../shared/consts/messages.const';
-import { Login, User } from '@habilident/types';
-import { ENCRYPT } from 'src/shared/consts/utils.const';
+import { ERROR_MESSAGES, Login, User } from '@habilident/types';
 
 @Injectable()
 export class AuthService {
+  private readonly EXPIRATE_TIME = {
+    ACCESS: '1h',
+    REFRESH: '1d',
+  };
 
   constructor(
     private readonly usersService: UsersService,
@@ -16,44 +18,43 @@ export class AuthService {
 
   async signIn({ email, password }: Login) {
     const user = await this.usersService.findOne({ email });
-    const isValid = await compare(password, user?.password);
+    const isValid = await compare(password, user?.password ?? '');
 
     if (!isValid) throw new BadRequestException(ERROR_MESSAGES.USER_INVALID);
 
-    return this.refreshTokens(user);
+    return this.getTokens(user);
   }
 
-  async refresh(_id: string, refresh_token: string) {
+  async refresh(_id: string, refreshToken: string) {
     const user = await this.usersService.findOne({ _id });
-    const isValid = await compare(refresh_token, user?.refreshToken);
+    const isValid = await compare(refreshToken, user?.refreshToken ?? '');
 
-    if (!isValid) throw new UnauthorizedException(ERROR_MESSAGES.USER_UNAUTHORIZED);
+    if (!isValid) throw new UnauthorizedException(ERROR_MESSAGES.REFRESH_INVALID);
 
     return user;
   }
 
-  async logout(_id: string) {
-    return this.usersService.update(_id, { refreshToken: null });
+  async logout(user: User) {
+    return this.usersService.update(user._id.toString(), { refreshToken: null });
   }
 
-  async refreshTokens(user: User) {
+  async getTokens(user: User) {
     const access_token = await this.jwtService.signAsync({
       sub: user._id,
       name: `${user.firstNames} ${user.lastNames}`,
-      role: user.role?.name,
-      permissions: user.role?.permissions
+      role: user.role?.name
     }, {
       secret: process.env.SECRET_KEY_ACCESS,
-      expiresIn: ENCRYPT.EXP_ACCESS
+      expiresIn: this.EXPIRATE_TIME.ACCESS
     });
 
     const refresh_token = await this.jwtService.signAsync({ sub: user._id }, {
       secret: process.env.SECRET_KEY_REFRESH,
-      expiresIn: ENCRYPT.EXP_REFRESH
+      expiresIn: this.EXPIRATE_TIME.REFRESH
     });
 
     await this.usersService.update(user._id.toString(), {
-      refreshToken: await hash(refresh_token, ENCRYPT.SALT)
+      refreshToken: await hash(refresh_token, genSaltSync())
     });
 
     return { access_token, refresh_token };

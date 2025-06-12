@@ -4,8 +4,7 @@ import { Model } from 'mongoose';
 import { UserDocument, UserEntity } from 'src/features/users/entities/user.entity';
 import { GenericService } from 'src/shared/classes/generic.service';
 import { User } from '@habilident/types';
-import { hash } from 'bcrypt';
-import { ENCRYPT } from 'src/shared/consts/utils.const';
+import { genSaltSync, hash } from 'bcrypt';
 import { RolesService } from '../roles/roles.service';
 
 @Injectable()
@@ -15,13 +14,13 @@ export class UsersService extends GenericService<UserDocument, UserEntity> {
         @InjectModel(UserEntity.name) private readonly userModel: Model<UserDocument>,
         private readonly rolesService: RolesService
     ) {
-        super(userModel, ['email'], [{ path: 'role', select: 'name permissions' }]);
+        super(userModel, ['email'], [{ path: 'role' }]);
     }
 
     async encryiptPassword(userDto: User): Promise<User> {
         if (!userDto.password) return userDto;
 
-        return { ...userDto, password: await hash(userDto.password, ENCRYPT.SALT) };
+        return { ...userDto, password: await hash(userDto.password, genSaltSync()) };
     }
 
     async migrate(user: UserEntity): Promise<UserEntity> {

@@ -1,7 +1,8 @@
 import { Controller, Post, Body, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Login, User } from '@habilident/types';
-import { AuthGuard } from '@nestjs/passport';
+import { Login } from '@habilident/types';
+import { JwtGuard } from './jwt/jwt.guard';
+import { JwtRefreshGuard } from './jwt/jwt-refresh.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -13,9 +14,14 @@ export class AuthController {
   }
 
   @Post('refresh')
-  @UseGuards(AuthGuard("jwt-refresh"))
-  refreshToken(@Req() user: User) {
-    console.log(user);
-    return this.authService.refreshTokens(user);
+  @UseGuards(JwtRefreshGuard)
+  refreshToken(@Req() req) {
+    return this.authService.getTokens(req.user);
+  }
+
+  @Post('logout')
+  @UseGuards(JwtGuard)
+  logout(@Req() req) {
+    this.authService.logout(req.user);
   }
 }

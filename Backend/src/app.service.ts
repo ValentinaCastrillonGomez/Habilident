@@ -13,8 +13,8 @@ export class AppService {
   private readonly serviceMap: Record<string, GenericService<any, any>>;
 
   constructor(
-    private readonly rolesService: RolesService,
     private readonly usersService: UsersService,
+    private readonly rolesService: RolesService,
     private readonly parametersService: ParametersService,
   ) {
     this.serviceMap = {
