@@ -23,8 +23,6 @@ import { MailerModule } from '@nestjs-modules/mailer';
     MongooseModule.forRoot(process.env.MONGO_URI),
     JwtModule.register({
       global: true,
-      secret: process.env.SECRET_KEY,
-      signOptions: { expiresIn: '1h' },
     }),
     MailerModule.forRoot({
       transport: {

@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { FormatsService } from './formats.service';
 import { Format } from '@habilident/types';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from '../auth/jwt/jwt.guard';
 
 @Controller('formats')
-@UseGuards(AuthGuard("jwt"))
+@UseGuards(JwtGuard)
 export class FormatsController {
     constructor(private readonly formatsService: FormatsService) { }
 

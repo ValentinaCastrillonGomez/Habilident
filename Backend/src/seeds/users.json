@@ -12,7 +12,7 @@
         "office": "1",
         "position": "1",
         "role": "admin",
-        "password": "hashSync('admin', 10)",
+        "password": "admin",
         "state": true
     }
 ]

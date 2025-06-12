@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, Request } from '@nestjs/common';
 import { RecordsService } from './records.service';
 import { Record } from '@habilident/types';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from '../auth/jwt/jwt.guard';
 
 @Controller('records')
-@UseGuards(AuthGuard("jwt"))
+@UseGuards(JwtGuard)
 export class RecordsController {
     constructor(private readonly recordsService: RecordsService) { }
 

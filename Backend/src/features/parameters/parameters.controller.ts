@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ParametersService } from './parameters.service';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from '../auth/jwt/jwt.guard';
 import { Parameter } from '@habilident/types';
 
 @Controller('parameters')
-@UseGuards(AuthGuard("jwt"))
+@UseGuards(JwtGuard)
 export class ParametersController {
     constructor(private readonly parametersService: ParametersService) { }
 
