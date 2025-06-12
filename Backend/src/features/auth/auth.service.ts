@@ -42,7 +42,7 @@ export class AuthService {
     const access_token = await this.jwtService.signAsync({
       sub: user._id,
       name: `${user.firstNames} ${user.lastNames}`,
-      role: user.role?.name
+      roleId: user.role?._id
     }, {
       secret: process.env.SECRET_KEY_ACCESS,
       expiresIn: this.EXPIRATE_TIME.ACCESS

@@ -42,7 +42,7 @@ export class NavbarComponent implements OnInit {
   ];
 
   loading = this.loadingService.loading;
-  username = this.authService.getUser().name;
+  username = this.authService.user.name;
   notifications = this.notificationService.notifications;
 
   ngOnInit(): void {

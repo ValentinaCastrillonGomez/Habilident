@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, filter, first, firstValueFrom, map } from 'rxjs';
 import { Router } from '@angular/router';
-import { Login, Permission } from '@habilident/types';
+import { Login, Permission, Role } from '@habilident/types';
 import { paths } from 'src/app/app.routes';
+import { ENV } from 'src/app/app.config';
 
 const ACCESS_TOKEN = 'access_token';
 const REFRESH_TOKEN = 'refresh_token';
@@ -14,12 +15,18 @@ const REFRESH_TOKEN = 'refresh_token';
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
-  private readonly API_AUTH = '/auth';
-  private readonly PATH_REFRESH = `${this.API_AUTH}/refresh`;
-  public refreshToken: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private readonly ENV = inject(ENV);
+  private readonly PATH_REFRESH = `${this.ENV.API_AUTH}/refresh`;
+
+  refreshToken: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  permissions = signal<Permission[]>([]);
 
   get isLoggedIn() {
     return !!this.getTokens()[ACCESS_TOKEN];
+  }
+
+  get user(): { name: string; roleId: string } {
+    return JSON.parse(window.atob(this.getTokens()[ACCESS_TOKEN]!.split('.')[1]));
   }
 
   getTokens() {
@@ -33,17 +40,9 @@ export class AuthService {
     return this.PATH_REFRESH !== url ? this.getTokens()[ACCESS_TOKEN]! : this.getTokens()[REFRESH_TOKEN]!
   }
 
-  getUser(): { name: string; roles: string, permissions: Permission[] } {
-    return JSON.parse(window.atob(this.getTokens()[ACCESS_TOKEN]!.split('.')[1]));
-  }
-
-  hasPermission(permission: Permission): boolean {
-    return this.getUser()?.permissions?.includes(permission);
-  }
-
   async singIn(login: Login) {
     const { access_token, refresh_token } = await firstValueFrom(
-      this.http.post<{ access_token: string, refresh_token: string }>(`${this.API_AUTH}/login`, login)
+      this.http.post<{ access_token: string, refresh_token: string }>(`${this.ENV.API_AUTH}/login`, login)
     );
     localStorage.setItem(ACCESS_TOKEN, access_token);
     localStorage.setItem(REFRESH_TOKEN, refresh_token);
@@ -68,12 +67,22 @@ export class AuthService {
 
   logout() {
     try {
-      firstValueFrom(this.http.post<void>(`${this.API_AUTH}/logout`, {}));
+      firstValueFrom(this.http.post<void>(`${this.ENV.API_AUTH}/logout`, {}));
     } finally {
       localStorage.removeItem(ACCESS_TOKEN);
       localStorage.removeItem(REFRESH_TOKEN);
 
       this.router.navigate([paths.LOGIN]);
     }
+  }
+
+  async loadPermissions(): Promise<boolean> {
+    const { permissions } = await firstValueFrom(this.http.get<Role>(`${this.ENV.API_ROLES}/${this.user.roleId}`));;
+    this.permissions.set(permissions);
+    return true;
+  }
+
+  hasPermission(permission: Permission): boolean {
+    return this.permissions().includes(permission);
   }
 }

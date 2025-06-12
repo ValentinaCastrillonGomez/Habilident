@@ -7,6 +7,7 @@ import { AlertsSocket } from './alerts.socket';
 import { AlertsCron } from './alerts.cron';
 import { RecordsModule } from 'src/features/records/records.module';
 import { UsersModule } from 'src/features/users/users.module';
+import { PermissionsGuard } from '../permissions/permissions.guard';
 
 @Module({
   imports: [RecordsModule, UsersModule,
@@ -14,7 +15,7 @@ import { UsersModule } from 'src/features/users/users.module';
       { name: AlertEntity.name, schema: AlertSchema }
     ])],
   controllers: [AlertsController],
-  providers: [AlertsService, AlertsCron, AlertsSocket],
+  providers: [AlertsService, PermissionsGuard, AlertsCron, AlertsSocket],
   exports: [AlertsService],
 })
 export class AlertsModule { }
