@@ -1,6 +1,6 @@
 export const environment = {
   BASE_URL: 'https://dayanneduque.ig-soft.com/api',
-  SOCKET_URL: 'https://dayanneduque.ig-soft.com',
+  SOCKET_URL: 'https://dayanneduque.ig-soft.com/events',
   API_AUTH: '/auth',
   API_USERS: '/users',
   API_ROLES: '/roles',

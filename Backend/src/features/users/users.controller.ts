@@ -2,8 +2,8 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } f
 import { UsersService } from './users.service';
 import { PERMISSIONS, User } from '@habilident/types';
 import { JwtGuard } from '../auth/jwt/jwt.guard';
-import { PermissionsGuard } from '../permissions/permissions.guard';
-import { Permissions } from '../permissions/permissions.decorator';
+import { PermissionsGuard } from '../roles/permissions/permissions.guard';
+import { Permissions } from '../roles/permissions/permissions.decorator';
 
 @Controller('users')
 @UseGuards(JwtGuard, PermissionsGuard)

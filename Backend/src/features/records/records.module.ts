@@ -3,14 +3,14 @@ import { RecordsService } from './records.service';
 import { RecordsController } from './records.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RecordEntity, RecordSchema } from './entities/record.entity';
-import { PermissionsGuard } from '../permissions/permissions.guard';
+import { RolesModule } from '../roles/roles.module';
 
 @Module({
   imports: [MongooseModule.forFeature([
     { name: RecordEntity.name, schema: RecordSchema },
-  ])],
+  ]), RolesModule],
   controllers: [RecordsController],
-  providers: [RecordsService, PermissionsGuard],
+  providers: [RecordsService],
   exports: [RecordsService],
 })
 export class RecordsModule { }

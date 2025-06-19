@@ -10,7 +10,8 @@ import { AlertsService } from "@features/alerts/services/alerts.service";
 export class NotificationService {
     private readonly alertsService = inject(AlertsService);
     private readonly socketUrl = inject(ENV).SOCKET_URL;
-    private readonly socket = io(this.socketUrl);
+    private readonly socket = io({ path: this.socketUrl, transports: ['websocket'] });
+
     notifications = signal<Alert[]>([]);
     audio = new Audio('alert.mp3');
 
