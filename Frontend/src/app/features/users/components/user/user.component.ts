@@ -56,9 +56,10 @@ export class UserComponent implements OnInit {
     return !this.user?._id;
   }
 
-  async ngOnInit() {
-    const { data } = await this.rolesService.getAll();
-    this.roles = data;
+  ngOnInit() {
+    this.rolesService.getAll().then(({ data }) => {
+      this.roles = data;
+    });
   }
 
   async onFileSelected(event: any) {
