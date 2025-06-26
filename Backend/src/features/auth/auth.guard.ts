@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { TokenExpiredError } from "@nestjs/jwt";
-import { AuthGuard } from "@nestjs/passport";
-import { ERROR_MESSAGES } from "@habilident/types";
+import { AuthGuard } from "@nestjs/passport"; 
+import { ERROR_MESSAGES } from "src/shared/consts/errors.const";
 
 @Injectable()
 export class JwtGuard extends AuthGuard("jwt") {

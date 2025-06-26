@@ -2,7 +2,14 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 import { UsersService } from 'src/features/users/users.service';
 import { compare, genSaltSync, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { ERROR_MESSAGES, Login, User } from '@habilident/types';
+import { Login, User } from '@habilident/types';
+import { Response } from 'express';
+import { ERROR_MESSAGES } from 'src/shared/consts/errors.const';
+
+interface Tokens {
+  access_token: string;
+  refresh_token: string;
+}
 
 @Injectable()
 export class AuthService {
@@ -25,20 +32,24 @@ export class AuthService {
     return this.getTokens(user);
   }
 
-  async refresh(_id: string, refreshToken: string) {
-    const user = await this.usersService.findOne({ _id });
-    const isValid = await compare(refreshToken, user?.refreshToken ?? '');
+  async refresh(refreshToken: string) {
+    const payload = await this.jwtService.verifyAsync(refreshToken, {
+      secret: process.env.SECRET_KEY_REFRESH,
+    });
+
+    const user = await this.usersService.findOne({ _id: payload.sub });
+    const isValid = await compare(refreshToken, user.refreshToken ?? '');
 
     if (!isValid) throw new UnauthorizedException(ERROR_MESSAGES.REFRESH_INVALID);
 
-    return user;
+    return this.getTokens(user);
   }
 
   async logout(user: User) {
     return this.usersService.update(user._id.toString(), { refreshToken: null });
   }
 
-  async getTokens(user: User) {
+  async getTokens(user: User): Promise<Tokens> {
     const access_token = await this.jwtService.signAsync({
       sub: user._id,
       name: `${user.firstNames} ${user.lastNames}`,
@@ -58,5 +69,22 @@ export class AuthService {
     });
 
     return { access_token, refresh_token };
+  }
+
+  async setCookies({ access_token, refresh_token }: Tokens, res: Response) {
+    res.cookie('refresh_token', refresh_token, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 86400000,
+    });
+
+    return { access_token };
+  }
+
+  clearCookies(res: Response) {
+    res.clearCookie('refresh_token', {
+      httpOnly: true,
+      secure: true,
+    });
   }
 }

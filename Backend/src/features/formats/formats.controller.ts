@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { FormatsService } from './formats.service';
 import { Format, PERMISSIONS } from '@habilident/types';
-import { JwtGuard } from '../auth/jwt/jwt.guard';
+import { JwtGuard } from '../auth/auth.guard';
 import { Permissions } from '../roles/permissions/permissions.decorator';
 import { PermissionsGuard } from '../roles/permissions/permissions.guard';
 

@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query, Res, UseGuards } from '@nestjs/common';
 import { ReportsService } from './reports.service';
-import { JwtGuard } from '../auth/jwt/jwt.guard';
+import { JwtGuard } from '../auth/auth.guard';
 import { Response } from 'express';
 import { PERMISSIONS } from '@habilident/types';
 import { Permissions } from '../roles/permissions/permissions.decorator';

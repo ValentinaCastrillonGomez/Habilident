@@ -1,6 +1,7 @@
 import { Document, FilterQuery, Model, PopulateOptions } from 'mongoose';
-import { Page, ERROR_MESSAGES } from '@habilident/types';
+import { Page } from '@habilident/types';
 import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { ERROR_MESSAGES } from '../consts/errors.const';
 
 const ERROR_DB_DUPLICATE_KEY = 11000;
 
