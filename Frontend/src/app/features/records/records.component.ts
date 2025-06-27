@@ -11,6 +11,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { ReportsService } from '@shared/services/reports.service';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import moment from 'moment';
+import { FormatsService } from '@shared/services/formats.service';
 
 @Component({
     selector: 'app-records',
@@ -24,9 +25,10 @@ import moment from 'moment';
     styleUrl: './records.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecordsComponent implements AfterViewInit {
+export default class RecordsComponent implements AfterViewInit {
     private readonly recordsService = inject(RecordsService);
     private readonly reportsService = inject(ReportsService);
+    readonly formatsService = inject(FormatsService);
     private readonly dialog = inject(MatDialog);
     private readonly injector = inject(Injector);
 
@@ -34,7 +36,7 @@ export class RecordsComponent implements AfterViewInit {
     private readonly actions = new Subject<void>();
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;
-    format = input.required<Format>();
+    format = input<Format | null>(null);
     dataSource = signal<Record[]>([]);
     totalRecords = 0;
     pageSize = 10;
@@ -52,7 +54,7 @@ export class RecordsComponent implements AfterViewInit {
             this.paginator.page
         ).subscribe(async () => {
             const { data, totalRecords } = await this.recordsService.getAll(
-                this.paginator.pageIndex, this.paginator.pageSize, this.format()._id,
+                this.paginator.pageIndex, this.paginator.pageSize, this.format()?._id,
                 this.range.controls.start.value ? moment(this.range.controls.start.value).format('YYYY/MM/DD') : undefined,
                 this.range.controls.end.value ? moment(this.range.controls.end.value).format('YYYY/MM/DD') : undefined,
             );

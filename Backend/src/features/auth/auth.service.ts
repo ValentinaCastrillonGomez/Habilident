@@ -16,6 +16,7 @@ export class AuthService {
   private readonly EXPIRATE_TIME = {
     ACCESS: '1h',
     REFRESH: '1d',
+    COOKIE: 86400000,
   };
 
   constructor(
@@ -35,14 +36,16 @@ export class AuthService {
   async refresh(refreshToken: string) {
     const payload = await this.jwtService.verifyAsync(refreshToken, {
       secret: process.env.SECRET_KEY_REFRESH,
+    }).catch(() => {
+      throw new UnauthorizedException(ERROR_MESSAGES.REFRESH_INVALID);
     });
 
     const user = await this.usersService.findOne({ _id: payload.sub });
     const isValid = await compare(refreshToken, user.refreshToken ?? '');
 
-    if (!isValid) throw new UnauthorizedException(ERROR_MESSAGES.REFRESH_INVALID);
+    if (isValid) return this.getTokens(user);
 
-    return this.getTokens(user);
+    throw new UnauthorizedException(ERROR_MESSAGES.REFRESH_INVALID);
   }
 
   async logout(user: User) {
@@ -75,7 +78,7 @@ export class AuthService {
     res.cookie('refresh_token', refresh_token, {
       httpOnly: true,
       secure: true,
-      maxAge: 86400000,
+      maxAge: this.EXPIRATE_TIME.COOKIE,
     });
 
     return { access_token };

@@ -35,11 +35,6 @@ export class NavbarComponent implements OnInit {
     { id: 'users', path: paths.USERS, title: 'Usuarios', icon: 'group', permission: PERMISSIONS.READ_USERS },
     { id: 'parameters', path: paths.PARAMETERS, title: 'Parametros', icon: 'fact_check', permission: PERMISSIONS.READ_PARAMETERS },
   ];
-  readonly management = [
-    { id: 'formats', path: paths.FORMATS, title: 'Formatos', permission: PERMISSIONS.READ_FORMATS },
-    { id: 'reports', path: paths.REPORTS, title: 'Reportes', permission: PERMISSIONS.PRINT_REPORTS },
-    { id: 'alarms', path: paths.ALERTS, title: 'Alarmas', permission: PERMISSIONS.READ_ALERTS },
-  ];
 
   loading = this.loadingService.loading;
   username = this.authService.user.name;

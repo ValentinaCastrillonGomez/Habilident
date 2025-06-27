@@ -7,7 +7,6 @@ import { paths } from 'src/app/app.routes';
 import { ENV } from 'src/app/app.config';
 
 const ACCESS_TOKEN = 'access_token';
-const REFRESH_TOKEN = 'refresh_token';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +15,7 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly ENV = inject(ENV);
+  readonly PATH_LOGOUT = `${this.ENV.API_AUTH}/logout`;
 
   refreshToken: BehaviorSubject<boolean> = new BehaviorSubject(false);
   permissions = signal<Permission[]>([]);
@@ -57,7 +57,7 @@ export class AuthService {
 
   logout() {
     try {
-      firstValueFrom(this.http.post<void>(`${this.ENV.API_AUTH}/logout`, {}));
+      firstValueFrom(this.http.post<void>(this.PATH_LOGOUT, {}));
     } finally {
       localStorage.removeItem(ACCESS_TOKEN);
       this.router.navigate([paths.LOGIN]);

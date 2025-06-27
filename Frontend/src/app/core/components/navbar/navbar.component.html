@@ -1,12 +1,6 @@
 <mat-toolbar class="justify-between sticky top-0 z-[101] border-0 border-solid border-b border-b-slate-400">
     <h3 class="text-sky-600 mb-0">HabiliDent</h3>
 
-    <div>
-        @for (item of management; track item.id) {
-        <button mat-button [routerLink]="item.path" *appPermission="item.permission">{{item.title}}</button>
-        }
-    </div>
-
     <div class="flex items-center gap-x-4">
         <button mat-icon-button [matBadge]="notifications().length" [matBadgeHidden]="!notifications().length"
             [cdkMenuTriggerFor]="menu">
