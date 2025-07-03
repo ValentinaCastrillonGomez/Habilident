@@ -5,11 +5,11 @@ import { PERMISSIONS } from '@habilident/types';
 
 export const paths = {
   HOME: '',
-  DASHBOARD: '',
   LOGIN: 'login',
   USERS: 'users',
   ROLES: 'roles',
   PARAMETERS: 'parameters',
+  FORMATS: 'formats',
   RECORDS: 'records',
   REPORTS: 'reports',
   ALERTS: 'alerts',
@@ -42,6 +42,11 @@ export const routes: Routes = [
         loadComponent: () => import('@features/parameters/parameters.component'),
       },
       {
+        path: `${paths.FORMATS}`,
+        canMatch: [() => permissionGuard(PERMISSIONS.READ_FORMATS)],
+        loadComponent: () => import('@features/formats/formats.component'),
+      },
+      {
         path: `${paths.RECORDS}`,
         canMatch: [() => permissionGuard(PERMISSIONS.READ_RECORDS)],
         loadComponent: () => import('@features/records/records.component'),
@@ -61,7 +66,7 @@ export const routes: Routes = [
         canMatch: [() => permissionGuard(PERMISSIONS.READ_ALERTS)],
         loadComponent: () => import('@features/calendar/calendar.component'),
       },
-      { path: '**', redirectTo: paths.DASHBOARD },
+      { path: '**', redirectTo: paths.HOME },
     ]
   },
   { path: '', redirectTo: paths.HOME, pathMatch: 'full' },

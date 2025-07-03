@@ -2,7 +2,25 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav mode="side" opened [fixedInViewport]="true" fixedTopGap="64"
     class="border-0 border-solid border-r border-r-slate-400 rounded-tr-none rounded-br-none">
-    <app-formats></app-formats>
+    <mat-nav-list class="mx-2">
+      @for (format of formats(); track format._id) {
+      @let isSelected = format._id === formatsService.formatSelected()?._id;
+      <a class="truncate w-full" (click)="formatsService.formatSelected.set(format)" [title]="format.name | titlecase">
+        <mat-list-item [activated]="isSelected">
+          @let folder = isSelected ? 'folder_open' : 'folder';
+          <mat-icon matListItemIcon>{{folder}}</mat-icon>
+          <div class="flex items-center justify-between">
+            {{format.name | titlecase}}
+          </div>
+        </mat-list-item>
+      </a>
+      }
+    </mat-nav-list>
+    <div class="text-center sticky bottom-0 p-4 bg-[#F9F9F9]">
+      <button mat-stroked-button (click)="goToFormats()" *appPermission="permissions.READ_FORMATS">
+        <mat-icon>folder_managed</mat-icon> Gestionar formatos
+      </button>
+    </div>
   </mat-sidenav>
   <mat-sidenav-content class="bg-white">
     <main class="mx-10 my-5">

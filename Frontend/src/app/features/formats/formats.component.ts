@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, inject, Injector, input, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, Injector, OnInit } from '@angular/core';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@shared/services/formats.service';
-import { Format } from '@habilident/types';
+import { Format, PERMISSIONS } from '@habilident/types';
 import { MatDialog } from '@angular/material/dialog';
 import { FormatComponent } from './components/format/format.component';
 import { PermissionDirective } from '@shared/directives/permission.directive';
@@ -19,18 +19,14 @@ import { filter, take } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class FormatsComponent implements OnInit {
+  readonly permissions = PERMISSIONS;
   readonly formatsService = inject(FormatsService);
   private readonly dialog = inject(MatDialog);
-  private readonly injector = inject(Injector);
 
-  formats = computed<Format[]>(() => this.formatsService.formats() || []);
+  formats = computed<Format[]>(() => this.formatsService.formats());
 
   ngOnInit(): void {
-    this.formatsService.loadFormats();
 
-    toObservable(this.formats, { injector: this.injector })
-      .pipe(filter(formats => formats.length > 0), take(1))
-      .subscribe(() => this.formatsService.formatSelected.set(this.formats()[0] || null));
   }
 
   async remove(id: string) {
