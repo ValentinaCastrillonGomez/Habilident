@@ -5,6 +5,7 @@ import { PERMISSIONS } from '@habilident/types';
 
 export const paths = {
   HOME: '',
+  DASHBOARD: '',
   LOGIN: 'login',
   USERS: 'users',
   ROLES: 'roles',
@@ -60,7 +61,7 @@ export const routes: Routes = [
         canMatch: [() => permissionGuard(PERMISSIONS.READ_ALERTS)],
         loadComponent: () => import('@features/calendar/calendar.component'),
       },
-      { path: '**', redirectTo: paths.RECORDS },
+      { path: '**', redirectTo: paths.DASHBOARD },
     ]
   },
   { path: '', redirectTo: paths.HOME, pathMatch: 'full' },

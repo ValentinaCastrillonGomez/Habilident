@@ -14,7 +14,7 @@ export class UsersService extends GenericService<UserDocument, UserEntity> {
         @InjectModel(UserEntity.name) private readonly userModel: Model<UserDocument>,
         private readonly rolesService: RolesService
     ) {
-        super(userModel, ['email'], [{ path: 'role' }]);
+        super(userModel, ['email'], [{ path: 'roles' }]);
     }
 
     async encryiptPassword(userDto: User): Promise<User> {
@@ -26,7 +26,7 @@ export class UsersService extends GenericService<UserDocument, UserEntity> {
     async migrate(user: UserEntity): Promise<UserEntity> {
         return {
             ...(await this.encryiptPassword(user)),
-            role: await this.rolesService.findOne({ name: user.role }),
+            roles: (await this.rolesService.find({ name: { $in: user.roles } })).map(role => role._id) as any,
         };
     }
 }

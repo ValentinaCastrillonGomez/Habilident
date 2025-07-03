@@ -1,11 +1,12 @@
 <app-navbar></app-navbar>
-<mat-sidenav-container class="sidenav-container" [hasBackdrop]="false">
-  <mat-sidenav mode="over" opened class="w-20 hover:w-80 transition-all border-r-slate-400 rounded-tr-none rounded-br-none">
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav mode="side" opened [fixedInViewport]="true" fixedTopGap="64"
+    class="border-0 border-solid border-r border-r-slate-400 rounded-tr-none rounded-br-none">
     <app-formats></app-formats>
   </mat-sidenav>
   <mat-sidenav-content class="bg-white">
-    <main class="mx-40 my-5">hola mundo
-      <!-- <router-outlet></router-outlet> -->
+    <main class="mx-10 my-5">
+      <router-outlet></router-outlet>
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -18,15 +18,16 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(request).pipe(
     catchError((err: HttpErrorResponse) => {
       if (err.status === 401 && req.url !== authService.PATH_LOGOUT) {
-        if (!authService.refreshToken.value) {
-          return authService.refresh().pipe(
-            switchMap((token) => {
-              request = addAuthHeader(request, token);
-              return next(request);
-            }),
-          );
+        if (req.url === authService.PATH_REFRESH) {
+          authService.logout();
         }
-        authService.logout();
+
+        return authService.refresh().pipe(
+          switchMap((token) => {
+            request = addAuthHeader(request, token);
+            return next(request);
+          }),
+        );
       }
       return throwError(() => err);
     })

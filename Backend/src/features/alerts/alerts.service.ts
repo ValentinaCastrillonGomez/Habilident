@@ -3,7 +3,7 @@ import { AlertDocument, AlertEntity } from './entities/alert.entity';
 import { GenericService } from 'src/shared/classes/generic.service';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Alert, PERMISSIONS, Notification } from '@habilident/types';
+import { Alert, Notification } from '@habilident/types';
 import { MailerService } from '@nestjs-modules/mailer';
 import { RecordsService } from 'src/features/records/records.service';
 import { UsersService } from 'src/features/users/users.service';
@@ -91,8 +91,7 @@ export class AlertsService extends GenericService<AlertDocument, AlertEntity> {
   }
 
   async sendEmail(alerts: Alert[]) {
-    const users = (await this.usersService.find({ state: 1 }))
-      .filter((user) => user.role.permissions.includes(PERMISSIONS.EMAIL_NOTIFICATIONS));
+    const users = (await this.usersService.find({ state: 1 }));
     const formats = alerts.map(alert => alert.format.name).join(', ');
     for (const user of users) {
       try {

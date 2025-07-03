@@ -109,12 +109,12 @@
             <div class="flex gap-4">
                 <mat-form-field appearance="outline" class="w-full">
                     <mat-label>Rol</mat-label>
-                    <mat-select id="role" formControlName="role" required>
-                        @for (rol of roles; track $index) {
-                        <mat-option [value]="rol._id">{{rol.name}}</mat-option>
+                    <mat-select id="roles" formControlName="roles" multiple required>
+                        @for (role of roles; track $index) {
+                        <mat-option [value]="role._id">{{role.name}}</mat-option>
                         }
                     </mat-select>
-                    @if (userForm.controls.role.invalid) {
+                    @if (userForm.controls.roles.invalid) {
                     <mat-error>Introduce un rol válido</mat-error>
                     }
                 </mat-form-field>

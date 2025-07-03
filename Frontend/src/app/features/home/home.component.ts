@@ -33,5 +33,4 @@ export default class HomeComponent implements OnInit {
       iframe.onload = () => iframe.contentWindow?.print();
     });
   }
-
 }

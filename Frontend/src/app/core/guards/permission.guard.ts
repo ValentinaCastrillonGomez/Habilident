@@ -4,9 +4,5 @@ import { Router } from '@angular/router';
 import { paths } from 'src/app/app.routes';
 import { Permission } from '@habilident/types';
 
-export const permissionGuard = (permission: Permission) => {
-  const authService = inject(AuthService);
-  const router = inject(Router);
-
-  return authService.hasPermission(permission) || router.parseUrl(paths.HOME);
-};
+export const permissionGuard = (permission: Permission) =>
+  inject(AuthService).hasPermission(permission) || inject(Router).parseUrl(paths.HOME);

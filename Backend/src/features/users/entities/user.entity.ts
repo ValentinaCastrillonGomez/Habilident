@@ -42,8 +42,8 @@ export class UserEntity implements User {
     @Prop({ required: true })
     position: string;
 
-    @Prop({ type: Types.ObjectId, ref: 'RoleEntity', required: true })
-    role: RoleEntity;
+    @Prop({ type: [Types.ObjectId], ref: 'RoleEntity', required: true })
+    roles: RoleEntity[];
 
     @Prop({ required: true })
     password: string;

@@ -12,13 +12,14 @@ import { ReportsService } from '@shared/services/reports.service';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import moment from 'moment';
 import { FormatsService } from '@shared/services/formats.service';
+import { JoinNamesPipe } from '@shared/pipes/joinNames.pipe';
 
 @Component({
     selector: 'app-records',
     imports: [
         MaterialModule,
         ReactiveFormsModule,
-        PermissionDirective,
+        PermissionDirective
     ],
     providers: [RecordsService],
     templateUrl: './records.component.html',

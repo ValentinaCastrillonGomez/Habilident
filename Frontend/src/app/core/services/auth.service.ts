@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, filter, first, firstValueFrom, map } from 'rxjs';
 import { Router } from '@angular/router';
-import { Login, Permission, Role } from '@habilident/types';
+import { Login, Permission } from '@habilident/types';
 import { paths } from 'src/app/app.routes';
 import { ENV } from 'src/app/app.config';
 
@@ -16,15 +16,15 @@ export class AuthService {
   private readonly router = inject(Router);
   private readonly ENV = inject(ENV);
   readonly PATH_LOGOUT = `${this.ENV.API_AUTH}/logout`;
+  readonly PATH_REFRESH = `${this.ENV.API_AUTH}/refresh`;
 
   refreshToken: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  permissions = signal<Permission[]>([]);
 
   get isLoggedIn() {
     return !!this.getToken();
   }
 
-  get user(): { name: string; roleId: string } {
+  get user(): { name: string; roles: string[], permissions: Permission[] } {
     return JSON.parse(window.atob(this.getToken()!.split('.')[1]));
   }
 
@@ -46,7 +46,7 @@ export class AuthService {
     }
 
     this.refreshToken.next(true);
-    return this.http.post<{ access_token: string }>(`${this.ENV.API_AUTH}/refresh`, {}, { withCredentials: true }).pipe(
+    return this.http.post<{ access_token: string }>(this.PATH_REFRESH, {}, { withCredentials: true }).pipe(
       map(({ access_token }) => {
         localStorage.setItem(ACCESS_TOKEN, access_token);
         this.refreshToken.next(false);
@@ -64,13 +64,7 @@ export class AuthService {
     }
   }
 
-  async loadPermissions(): Promise<boolean> {
-    const { permissions } = await firstValueFrom(this.http.get<Role>(`${this.ENV.API_ROLES}/${this.user.roleId}`));;
-    this.permissions.set(permissions);
-    return true;
-  }
-
   hasPermission(permission: Permission): boolean {
-    return this.permissions().includes(permission);
+    return this.user.permissions.includes(permission);
   }
 }

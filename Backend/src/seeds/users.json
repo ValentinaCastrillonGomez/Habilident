@@ -11,7 +11,7 @@
         "phone": "1",
         "office": "1",
         "position": "1",
-        "role": "admin",
+        "roles": ["admin"],
         "password": "admin",
         "state": true
     }

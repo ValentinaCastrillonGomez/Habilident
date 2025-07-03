@@ -23,7 +23,7 @@
             <ng-container matColumnDef="options">
                 <mat-header-cell *matHeaderCellDef> Opciones </mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                    <div class="truncate">{{element.options}}</div>
+                    <div class="truncate">{{element.options | joinNames}}</div>
                 </mat-cell>
             </ng-container>
 

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
@@ -29,6 +29,7 @@ export class NavbarComponent implements OnInit {
   private readonly formatsService = inject(FormatsService);
   private readonly dialog = inject(MatDialog);
   private readonly loadingService = inject(LoadingService);
+  sidenavToggle = output<void>();
 
   readonly administration = [
     { id: 'roles', path: paths.ROLES, title: 'Roles', icon: 'admin_panel_settings', permission: PERMISSIONS.READ_ROLES },

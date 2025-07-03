@@ -40,9 +40,9 @@
                 <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="role">
-                <mat-header-cell *matHeaderCellDef> Rol </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.role?.name}} </mat-cell>
+            <ng-container matColumnDef="roles">
+                <mat-header-cell *matHeaderCellDef> Roles </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.roles | joinNames}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="state">

@@ -1,6 +1,8 @@
-<mat-nav-list>
+<mat-nav-list class="mx-2">
     <div class="flex justify-center my-2">
-        <button mat-stroked-button (click)="open()" *appPermission="'Crear formatos'">Añadir formato</button>
+        <button mat-stroked-button (click)="open()" *appPermission="'Crear formatos'">
+            <mat-icon>add</mat-icon> Añadir formato
+        </button>
     </div>
     @for (format of formats(); track format._id) {
     <mat-list-item [activated]="format._id === formatsService.formatSelected()?._id" class="group">

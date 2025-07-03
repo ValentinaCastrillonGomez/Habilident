@@ -14,8 +14,8 @@ interface Tokens {
 @Injectable()
 export class AuthService {
   private readonly EXPIRATE_TIME = {
-    ACCESS: '1h',
-    REFRESH: '1d',
+    ACCESS: '2h',
+    REFRESH: '7d',
     COOKIE: 86400000,
   };
 
@@ -25,7 +25,7 @@ export class AuthService {
   ) { }
 
   async signIn({ email, password }: Login) {
-    const user = await this.usersService.findOne({ email });
+    const user = await this.usersService.findOne({ email, state: true });
     const isValid = await compare(password, user?.password ?? '');
 
     if (!isValid) throw new BadRequestException(ERROR_MESSAGES.USER_INVALID);
@@ -56,7 +56,8 @@ export class AuthService {
     const access_token = await this.jwtService.signAsync({
       sub: user._id,
       name: `${user.firstNames} ${user.lastNames}`,
-      roleId: user.role?._id
+      roles: user.roles?.map(role => role.name),
+      permissions: Array.from(new Set(user.roles?.flatMap(role => role.permissions)))
     }, {
       secret: process.env.SECRET_KEY_ACCESS,
       expiresIn: this.EXPIRATE_TIME.ACCESS
