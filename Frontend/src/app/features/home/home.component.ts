@@ -54,7 +54,7 @@ export default class HomeComponent implements OnInit {
   }
 
   private async selectFirstFormat() {
-    await this.formatsService.loadFormats();
+    // await this.formatsService.loadFormats();
     this.selectFormat(this.router.url);
 
     if (this.router.url.substring(1) === paths.HOME) this.goToDefault();

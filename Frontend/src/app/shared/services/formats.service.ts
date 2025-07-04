@@ -11,7 +11,7 @@ export class FormatsService extends GenericService<Format> {
   protected http = inject(HttpClient);
   protected api = inject(ENV).API_FORMATS;
   readonly formatSelected = signal<Format | null>(null);
-  readonly formats = signal<Format[]>([]);
+  readonly formats = signal<Format[]>(Array.from({ length: 25 }, () => ({ _id: 1, name: 'hola mundo' } as Format)));
 
   async loadFormats() {
     const { data } = await this.getAll();
