@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, inject, Injector, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@shared/services/formats.service';
 import { Format, PERMISSIONS } from '@habilident/types';
 import { MatDialog } from '@angular/material/dialog';
 import { FormatComponent } from './components/format/format.component';
 import { PermissionDirective } from '@shared/directives/permission.directive';
-import { toObservable } from '@angular/core/rxjs-interop';
-import { filter, take } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-formats',
@@ -18,38 +18,51 @@ import { filter, take } from 'rxjs';
   styleUrl: './formats.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class FormatsComponent implements OnInit {
+export default class FormatsComponent implements AfterViewInit {
   readonly permissions = PERMISSIONS;
-  readonly formatsService = inject(FormatsService);
+  private readonly formatsService = inject(FormatsService);
   private readonly dialog = inject(MatDialog);
 
-  formats = computed<Format[]>(() => this.formatsService.formats());
+  private readonly searchTerms = new BehaviorSubject<string>('');
+  private readonly actions = new Subject<void>();
 
-  ngOnInit(): void {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  dataSource = signal<Format[]>([]);
+  totalRecords = 0;
+  pageSize = 10;
+  displayedColumns: string[] = ['name', 'actions'];
 
+  ngAfterViewInit() {
+    merge(
+      this.searchTerms.pipe(debounceTime(300), distinctUntilChanged()),
+      this.actions,
+      this.paginator.page)
+      .subscribe(async () => {
+        const { data, totalRecords } = await this.formatsService.getAll(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
+        this.dataSource.set(data);
+        this.totalRecords = totalRecords;
+      });
+  }
+
+  search(term: string): void {
+    this.searchTerms.next(term);
   }
 
   async remove(id: string) {
     const result = await this.formatsService.delete(id);
     if (result) {
-      await this.formatsService.loadFormats();
-      this.formatsService.formatSelected.set(this.formats()[0] || null);
-    }
+      this.actions.next();
+      this.formatsService.loadFormats();
+    };
   }
 
   open(data?: Format) {
     const dialogRef = this.dialog.open(FormatComponent, { data });
 
-    dialogRef.afterClosed().subscribe(async (result) => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        await this.formatsService.loadFormats();
-
-        if (!data) {
-          this.formatsService.formatSelected.set(this.formats()[this.formats().length - 1]);
-        } else if (data._id === this.formatsService.formatSelected()?._id) {
-          const index = this.formats().findIndex(format => format._id === data._id);
-          this.formatsService.formatSelected.set(this.formats()[index]);
-        }
+        this.actions.next();
+        this.formatsService.loadFormats();
       }
     });
   }

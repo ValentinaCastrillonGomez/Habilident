@@ -4,8 +4,8 @@
     class="border-0 border-solid border-r border-r-slate-400 rounded-tr-none rounded-br-none">
     <mat-nav-list class="mx-2">
       @for (format of formats(); track format._id) {
-      @let isSelected = format._id === formatsService.formatSelected()?._id;
-      <a class="truncate w-full" (click)="formatsService.formatSelected.set(format)" [title]="format.name | titlecase">
+      @let isSelected = format._id === formatSelected()?._id;
+      <a class="truncate w-full" (click)="goToRecords(format._id)" [title]="format.name | titlecase">
         <mat-list-item [activated]="isSelected">
           @let folder = isSelected ? 'folder_open' : 'folder';
           <mat-icon matListItemIcon>{{folder}}</mat-icon>

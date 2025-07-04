@@ -41,7 +41,7 @@ export class AuthService {
     });
 
     const user = await this.usersService.findOne({ _id: payload.sub });
-    const isValid = await compare(refreshToken, user.refreshToken ?? '');
+    const isValid = await compare(refreshToken, user?.refreshToken ?? '');
 
     if (isValid) return this.getTokens(user);
 
