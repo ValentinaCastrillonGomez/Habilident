@@ -25,8 +25,8 @@ export class ReportsService {
         private readonly parametersService: ParametersService,
     ) { }
 
-    async getRecordReport(_id: string) {
-        const record = await this.recordsService.findOne({ _id });
+    async getRecordReport(id: string) {
+        const record = await this.recordsService.findById(id);
         const parameters = await this.parametersService.findAll();
 
         const data: Content[] = record.rows.map<Content>(row => {
@@ -75,9 +75,9 @@ export class ReportsService {
         return this.createPdf(record.format.name, data);
     }
 
-    async getFormatReport(_id: string, start: string, end: string) {
-        const format = await this.formatsService.findOne({ _id });
-        const { data } = await this.recordsService.findAll(0, 0, _id, start, end);
+    async getFormatReport(id: string, start: string, end: string) {
+        const format = await this.formatsService.findById(id);
+        const { data } = await this.recordsService.findAll(0, 0, id, start, end);
         const parameters = await this.parametersService.findAll();
 
         const head = format.rows

@@ -1,0 +1,26 @@
+<mat-card appearance="outlined" class="shadow-xl min-w-96" cdkMenu>
+    <mat-card-content>
+        <mat-list>
+            <div mat-subheader class="flex items-center justify-between m-0">
+                <b> Notificaciones </b>
+                <a mat-button routerLink="/calendar" tabindex="-1" cdkMenuItem>Ver calendario</a>
+            </div>
+            <mat-divider></mat-divider>
+            @for (alert of notifications(); track alert._id) {
+            <mat-list-item>
+                <div matListItemTitle>
+                    <b>{{alert.format?.name | titlecase}}</b> - {{alert.lastGenerated | date: 'shortTime'}}
+                </div>
+                <div matListItemLine>
+                    Realizar el registro {{alert.frequency | lowercase}} del formato
+                    <button mat-button (click)="open(alert.format?._id)" cdkMenuItem>Ir</button>
+                </div>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            }
+        </mat-list>
+        @if(notifications().length === 0){
+        No hay alarmas para hoy
+        }
+    </mat-card-content>
+</mat-card>

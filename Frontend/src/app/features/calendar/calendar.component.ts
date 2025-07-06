@@ -67,11 +67,11 @@ export default class CalendarComponent {
   }
 
   async open(formatId: string, dateEffective: Date) {
-    const format = await this.formatsService.get(formatId);
-    const dialogRef = this.dialog.open(RecordComponent, { data: { format, dateEffective } });
+  //   const format = await this.formatsService.get(formatId);
+  //   const dialogRef = this.dialog.open(RecordComponent, { data: { format, dateEffective } });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) this.loadCalendar();
-    });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     if (result) this.loadCalendar();
+  //   });
   }
 }

@@ -32,19 +32,19 @@ export class UserComponent implements OnInit {
   maxDate = moment().subtract(18, 'years').toDate();
   nameFile = this.user?.signature?.name ?? null;
   userForm = this.formBuilder.group({
-    firstNames: this.formBuilder.control(this.user?.firstNames ?? '', [Validators.required]),
-    lastNames: this.formBuilder.control(this.user?.lastNames ?? '', [Validators.required]),
-    typeDocument: this.formBuilder.control(this.user?.typeDocument ?? '', [Validators.required]),
-    numberDocument: this.formBuilder.control({ value: this.user?.numberDocument ?? '', disabled: !!this.user }, [Validators.required]),
-    email: this.formBuilder.control({ value: this.user?.email ?? '', disabled: !!this.user }, [Validators.required, Validators.email]),
-    address: this.formBuilder.control(this.user?.address ?? '', [Validators.required]),
-    phone: this.formBuilder.control(this.user?.phone ?? '', [Validators.required]),
-    gender: this.formBuilder.control(this.user?.gender ?? '', [Validators.required]),
-    birthday: this.formBuilder.control<any>(this.user?.birthday ?? null, [Validators.required]),
-    office: this.formBuilder.control(this.user?.office ?? '', [Validators.required]),
-    position: this.formBuilder.control(this.user?.position ?? '', [Validators.required]),
-    role: this.formBuilder.control<string>(this.user?.role?._id ?? '', [Validators.required]),
-    password: this.formBuilder.control<any>(null, this.isNew ? [Validators.required, Validators.minLength(5)] : []),
+    firstNames: this.formBuilder.control('', [Validators.required]),
+    lastNames: this.formBuilder.control('', [Validators.required]),
+    typeDocument: this.formBuilder.control('', [Validators.required]),
+    numberDocument: this.formBuilder.control('', [Validators.required]),
+    email: this.formBuilder.control('', [Validators.required, Validators.email]),
+    address: this.formBuilder.control('', [Validators.required]),
+    phone: this.formBuilder.control('', [Validators.required]),
+    gender: this.formBuilder.control('', [Validators.required]),
+    birthday: this.formBuilder.control<any>(null, [Validators.required]),
+    office: this.formBuilder.control('', [Validators.required]),
+    position: this.formBuilder.control('', [Validators.required]),
+    roles: this.formBuilder.control<string[]>([], [Validators.required]),
+    password: this.formBuilder.control<any>(null, this.isNew ? [Validators.required, Validators.minLength(5)] : [Validators.minLength(5)]),
     signature: this.formBuilder.control<any>(null),
     state: this.formBuilder.control(true),
   });
@@ -59,8 +59,22 @@ export class UserComponent implements OnInit {
   ngOnInit() {
     this.rolesService.getAll().then(({ data }) => {
       this.roles = data;
+      this.setForm();
     });
   }
+
+  setForm() {
+    if (this.user) {
+      this.userForm.patchValue({
+        ...this.user,
+        roles: this.user.roles.map(role => role._id),
+        password: null,
+      });
+      this.userForm.controls.numberDocument.disable();
+      this.userForm.controls.email.disable();
+    }
+  }
+
 
   async onFileSelected(event: any) {
     const file = event.target.files[0];

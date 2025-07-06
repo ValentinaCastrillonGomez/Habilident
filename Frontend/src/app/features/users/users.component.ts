@@ -1,18 +1,20 @@
 import { Component, AfterViewInit, ViewChild, inject, ChangeDetectionStrategy, signal } from '@angular/core';
 import { UsersService } from './services/users.service';
-import { User } from '@habilident/types';
+import { Role, User } from '@habilident/types';
 import { MatPaginator } from '@angular/material/paginator';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { UserComponent } from './components/user/user.component';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { PermissionDirective } from '@shared/directives/permission.directive';
+import { JoinNamesPipe } from '@shared/pipes/joinNames.pipe';
 
 @Component({
   selector: 'app-users',
   imports: [
     MaterialModule,
-    PermissionDirective,
+    PermissionDirective, 
+    JoinNamesPipe
   ],
   providers: [UsersService],
   templateUrl: './users.component.html',
@@ -30,7 +32,7 @@ export default class UsersComponent implements AfterViewInit {
   dataSource = signal<User[]>([]);
   totalRecords = 0;
   pageSize = 10;
-  displayedColumns: string[] = ['firstNames', 'lastNames', 'typeDocument', 'numberDocument', 'email', 'role', 'state', 'actions'];
+  displayedColumns: string[] = ['firstNames', 'lastNames', 'typeDocument', 'numberDocument', 'email', 'roles', 'state', 'actions'];
 
   ngAfterViewInit() {
     merge(
@@ -59,6 +61,10 @@ export default class UsersComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) this.actions.next();
     });
+  }
+
+  getRolesNames(roles: Role[]): string {
+    return roles.map(role => role.name).join(', ');
   }
 
 }

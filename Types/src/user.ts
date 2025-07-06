@@ -11,9 +11,10 @@ export type User = {
     gender: string;
     office: string;
     position: string;
-    role: any;
+    roles: any[];
     password: string;
     signature?: Signature;
+    refreshToken?: string;
     state: boolean;
 }
 

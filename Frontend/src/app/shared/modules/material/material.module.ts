@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AppPaginatorIntl } from './material.paginator';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
+import { MAT_ICON_DEFAULT_OPTIONS, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
@@ -66,6 +66,7 @@ import { APP_FORMATS, AppDateAdapter } from './material-date.adapter';
     { provide: MatPaginatorIntl, useClass: AppPaginatorIntl },
     { provide: MAT_PAGINATOR_DEFAULT_OPTIONS, useValue: { hidePageSize: true, showFirstLastButtons: true } },
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { maxWidth: '90vw', disableClose: true, hasBackdrop: true, } },
+    { provide: MAT_ICON_DEFAULT_OPTIONS, useValue: { fontSet: 'material-symbols-outlined' } },
   ]
 })
 export class MaterialModule { }

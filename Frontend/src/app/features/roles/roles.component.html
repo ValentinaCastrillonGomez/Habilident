@@ -23,7 +23,7 @@
             <ng-container matColumnDef="permissions">
                 <mat-header-cell *matHeaderCellDef> Permisos </mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                    <div class="truncate">{{element.permissions}}</div>
+                    <div class="truncate">{{element.permissions | joinNames}}</div>
                 </mat-cell>
             </ng-container>
 

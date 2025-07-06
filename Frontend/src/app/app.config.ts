@@ -1,16 +1,11 @@
-import { ApplicationConfig, InjectionToken, LOCALE_ID, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import { environment } from '../environments/environment';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { loadingInterceptor } from '@core/interceptors/loading.interceptor';
 import { authInterceptor } from '@core/interceptors/auth.interceptor';
-
-export const ENV = new InjectionToken<typeof environment>('ENV');
-
-const LOCAL_COL = 'es-CO';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,7 +16,6 @@ export const appConfig: ApplicationConfig = {
       withFetch()
     ),
     provideAnimationsAsync(),
-    { provide: ENV, useValue: environment },
-    { provide: LOCALE_ID, useValue: LOCAL_COL }
+    { provide: LOCALE_ID, useValue: 'es-CO' }
   ],
 };

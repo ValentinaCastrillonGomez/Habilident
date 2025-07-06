@@ -1,8 +1,10 @@
 import { Document, FilterQuery, Model, PopulateOptions } from 'mongoose';
-import { Page, ERROR_MESSAGES } from '@habilident/types';
-import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { Page } from '@habilident/types';
+import { BadRequestException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { ERROR_MESSAGES } from '../consts/errors.const';
 
 const ERROR_DB_DUPLICATE_KEY = 11000;
+const ERROR_CAST_ID = 'CastError';
 
 export abstract class GenericService<T extends Document, G> {
 
@@ -44,6 +46,11 @@ export abstract class GenericService<T extends Document, G> {
         return this._model.findOne(filter).populate(this._poputale).exec();
     }
 
+    async findById(id: string): Promise<T | null> {
+        return this._model.findById(id).populate(this._poputale).exec()
+            .catch(error => this.catchCastError(error));
+    }
+
     async create(dto: G): Promise<T | void> {
         return this._model.create(dto)
             .catch(error => this.catchDuplicateError(error));
@@ -75,6 +82,14 @@ export abstract class GenericService<T extends Document, G> {
     private catchDuplicateError(error: any) {
         if (error.code === ERROR_DB_DUPLICATE_KEY) {
             throw new BadRequestException(ERROR_MESSAGES.REGISTERED);
+        }
+
+        throw new InternalServerErrorException(error);
+    }
+
+    private catchCastError(error: any): null {
+        if (error.name === ERROR_CAST_ID) {
+            throw new NotFoundException(ERROR_MESSAGES.NOT_FOUND);
         }
 
         throw new InternalServerErrorException(error);

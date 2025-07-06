@@ -3,14 +3,14 @@ import { ParametersService } from './parameters.service';
 import { ParametersController } from './parameters.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ParameterEntity, ParameterSchema } from './entities/parameter.entity';
-import { RolesModule } from '../roles/roles.module';
+import { PermissionsGuard } from '../permissions/permissions.guard';
 
 @Module({
   imports: [MongooseModule.forFeature([
     { name: ParameterEntity.name, schema: ParameterSchema }
-  ]), RolesModule],
+  ])],
   controllers: [ParametersController],
-  providers: [ParametersService],
+  providers: [ParametersService, PermissionsGuard],
   exports: [ParametersService]
 })
 export class ParametersModule { }

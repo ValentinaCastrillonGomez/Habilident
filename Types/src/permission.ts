@@ -30,9 +30,7 @@ export const PERMISSIONS = {
     UPDATE_ALERTS: 'Actualizar alarmas',
     DELETE_ALERTS: 'Eliminar alarmas',
     //reports
-    PRINT_REPORTS: 'Imprimir reportes',
-    //notifications
-    EMAIL_NOTIFICATIONS: 'Recibir notificaciones por correo',
+    PRINT_REPORTS: 'Imprimir reportes'
 } as const;
 
 export type Permission = typeof PERMISSIONS[keyof typeof PERMISSIONS];

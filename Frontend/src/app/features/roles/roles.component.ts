@@ -7,12 +7,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { RoleComponent } from './components/role/role.component';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { PermissionDirective } from '@shared/directives/permission.directive';
+import { JoinNamesPipe } from '@shared/pipes/joinNames.pipe';
 
 @Component({
   selector: 'app-roles',
   imports: [
     MaterialModule,
     PermissionDirective,
+    JoinNamesPipe
   ],
   providers: [RolesService],
   templateUrl: './roles.component.html',

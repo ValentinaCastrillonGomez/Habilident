@@ -1,45 +1,69 @@
-<mat-sidenav-container class="sidenav-container">
-    <mat-sidenav mode="side" opened class="w-80 border-r-slate-400 rounded-tr-none rounded-br-none">
-        <mat-nav-list>
-            <div class="flex justify-center my-2">
-                <button mat-stroked-button (click)="open()" *appPermission="'Crear formatos'">Añadir formato</button>
-            </div>
-            @for (format of formats(); track format._id) {
-            <mat-list-item [activated]="format._id === formatSelected()?._id" class="group">
-                <mat-icon matListItemIcon>folder</mat-icon>
-                <div class="flex items-center justify-between">
-                    <a class="truncate w-full" (click)="formatSelected.set(format)" [title]="format.name | titlecase">
-                        {{format.name | titlecase}}
-                    </a>
-                    <button mat-icon-button [matMenuTriggerFor]="formatsMenu" #menu="matMenuTrigger"
-                        [matMenuTriggerData]="{data: format}"
+<div class="flex items-center justify-between mb-3">
+    <div class="flex items-center gap-x-2">
+        <h6 class="mb-0">Listado de formatos</h6>
+        <button mat-stroked-button (click)="open()" *appPermission="'Crear formatos'">
+            <mat-icon>add</mat-icon>Añadir formato
+        </button>
+    </div>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Filtrar formatos</mat-label>
+        <input matInput #filter id="filterRoles" (input)="search(filter.value)">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+</div>
+<mat-card appearance="outlined">
+    <mat-card-content>
+        <mat-table [dataSource]="dataSource()">
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Alarma </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Estado </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            </ng-container> -->
+
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="justify-end">
+                    <button mat-icon-button [matMenuTriggerFor]="actions" [matMenuTriggerData]="{data: element}"
+                        #menu="matMenuTrigger"
                         [ngClass]="{'invisible group-hover:visible': !menu.menuOpen, 'visible': menu.menuOpen}">
-                        <mat-icon>more_vert</mat-icon>
+                        <mat-icon>more_horiz</mat-icon>
                     </button>
-                </div>
-            </mat-list-item>
-            }
-        </mat-nav-list>
-        <mat-menu #formatsMenu="matMenu">
-            <ng-template matMenuContent let-format="data">
-                <button mat-menu-item (click)="open(format)" *appPermission="'Actualizar formatos'">
-                    <mat-icon>edit</mat-icon>
-                    <span>Actualizar</span>
-                </button>
-                <button mat-menu-item (click)="remove(format._id)" *appPermission="'Eliminar formatos'">
-                    <mat-icon class="text-red-600">delete</mat-icon>
-                    <span class="text-red-600">Eliminar</span>
-                </button>
-            </ng-template>
-        </mat-menu>
-    </mat-sidenav>
-    <mat-sidenav-content class="bg-white">
-        <main class="m-5" *appPermission="'Listar registros'">
-            @if(formatSelected()){
-            <app-records [format]="formatSelected()!"></app-records>
-            }@else{
-            Crea un formato para continuar...
-            }
-        </main>
-    </mat-sidenav-content>
-</mat-sidenav-container>
+                </mat-cell>
+            </ng-container>
+
+            <div *matNoDataRow class="text-center">
+                No hay datos que coincidan con el filtro.
+            </div>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" class="group"></mat-row>
+        </mat-table>
+        <mat-divider></mat-divider>
+        <mat-paginator [length]="totalRecords" [pageSize]="pageSize"></mat-paginator>
+    </mat-card-content>
+</mat-card>
+
+<mat-menu #actions="matMenu">
+    <ng-template matMenuContent let-element="data">
+        <button mat-menu-item (click)="open(element)" *appPermission="'Actualizar formatos'">
+            <mat-icon>edit</mat-icon>
+            <span>Actualizar</span>
+        </button>
+        @if (!element.protected) {
+        <button mat-menu-item (click)="remove(element._id)" *appPermission="'Eliminar formatos'">
+            <mat-icon class="text-red-600">delete</mat-icon>
+            <span class="text-red-600">Eliminar</span>
+        </button>
+        }
+    </ng-template>
+</mat-menu>

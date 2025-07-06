@@ -7,8 +7,8 @@
     </div>
 
     <mat-form-field appearance="outline" subscriptSizing="dynamic">
-        <mat-label>Filtrar parametro</mat-label>
-        <input matInput #filter id="filterRoles" (input)="search(filter.value)">
+        <mat-label>Filtrar parametros</mat-label>
+        <input matInput #filter id="filterParametro" (input)="search(filter.value)">
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 </div>
@@ -23,7 +23,7 @@
             <ng-container matColumnDef="options">
                 <mat-header-cell *matHeaderCellDef> Opciones </mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                    <div class="truncate">{{element.options}}</div>
+                    <div class="truncate">{{element.options | joinNames}}</div>
                 </mat-cell>
             </ng-container>
 

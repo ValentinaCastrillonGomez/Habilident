@@ -7,14 +7,14 @@ import { AlertsSocket } from './alerts.socket';
 import { AlertsCron } from './alerts.cron';
 import { RecordsModule } from 'src/features/records/records.module';
 import { UsersModule } from 'src/features/users/users.module';
-import { RolesModule } from '../roles/roles.module';
+import { PermissionsGuard } from '../permissions/permissions.guard';
 
 @Module({
   imports: [MongooseModule.forFeature([
     { name: AlertEntity.name, schema: AlertSchema }
-  ]), RecordsModule, UsersModule, RolesModule],
+  ]), RecordsModule, UsersModule],
   controllers: [AlertsController],
-  providers: [AlertsService, AlertsCron, AlertsSocket],
+  providers: [AlertsService, AlertsCron, AlertsSocket, PermissionsGuard],
   exports: [AlertsService],
 })
 export class AlertsModule { }
