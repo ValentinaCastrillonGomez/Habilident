@@ -1,15 +1,15 @@
 import { inject, Injectable, signal } from "@angular/core";
-import { ENV } from "src/app/app.config";
 import { io } from 'socket.io-client';
 import { Alert } from "@habilident/types";
 import { AlertsService } from "@features/alerts/services/alerts.service";
+import { environment } from "src/environments/environment";
 
 @Injectable({
     providedIn: 'root',
 })
 export class NotificationService {
     private readonly alertsService = inject(AlertsService);
-    private readonly socketUrl = inject(ENV).SOCKET_URL;
+    private readonly socketUrl = environment.SOCKET_URL;
     private readonly socket = io({ path: this.socketUrl, transports: ['websocket'] });
 
     notifications = signal<Alert[]>([]);

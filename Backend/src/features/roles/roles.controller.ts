@@ -24,8 +24,8 @@ export class RolesController {
 
     @Get(':id')
     @ValidPermission(PERMISSIONS.READ_ROLES)
-    findOne(@Param('id') _id: string) {
-        return this.rolesService.findOne({ _id });
+    findById(@Param('id') id: string) {
+        return this.rolesService.findById(id);
     }
 
     @Patch(':id')

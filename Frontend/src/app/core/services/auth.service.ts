@@ -4,7 +4,7 @@ import { BehaviorSubject, filter, first, firstValueFrom, map } from 'rxjs';
 import { Router } from '@angular/router';
 import { Login, Permission } from '@habilident/types';
 import { paths } from 'src/app/app.routes';
-import { ENV } from 'src/app/app.config';
+import { environment } from 'src/environments/environment';
 
 const ACCESS_TOKEN = 'access_token';
 
@@ -14,7 +14,7 @@ const ACCESS_TOKEN = 'access_token';
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
-  private readonly ENV = inject(ENV);
+  private readonly ENV = environment;
   readonly PATH_LOGOUT = `${this.ENV.API_AUTH}/logout`;
   readonly PATH_REFRESH = `${this.ENV.API_AUTH}/refresh`;
 

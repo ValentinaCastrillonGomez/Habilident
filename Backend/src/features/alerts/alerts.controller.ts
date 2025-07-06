@@ -36,8 +36,8 @@ export class AlertsController {
 
   @Get(':id')
   @ValidPermission(PERMISSIONS.READ_ALERTS)
-  findOne(@Param('id') _id: string) {
-    return this.alertsService.findOne({ _id });
+  findById(@Param('id') id: string) {
+    return this.alertsService.findById(id);
   }
 
   @Patch(':id')

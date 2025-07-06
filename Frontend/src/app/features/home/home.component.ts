@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '@core/components/navbar/navbar.component';
 import { PERMISSIONS } from '@habilident/types';
 import { PermissionDirective } from '@shared/directives/permission.directive';
@@ -7,10 +7,7 @@ import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@shared/services/formats.service';
 import { ParametersService } from '@shared/services/parameters.service';
 import { ReportsService } from '@shared/services/reports.service';
-import { filter } from 'rxjs';
 import { paths } from 'src/app/app.routes';
-
-const urlRecords = `/${paths.RECORDS}/`;
 
 @Component({
   selector: 'app-home',
@@ -44,38 +41,12 @@ export default class HomeComponent implements OnInit {
       iframe.src = pdfUrl;
       iframe.onload = () => iframe.contentWindow?.print();
     });
-
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        const url = event.urlAfterRedirects;
-        this.selectFormat(url);
-      });
   }
 
   private async selectFirstFormat() {
-    // await this.formatsService.loadFormats();
-    this.selectFormat(this.router.url);
+    await this.formatsService.loadFormats();
 
-    if (this.router.url.substring(1) === paths.HOME) this.goToDefault();
-  }
-
-  private selectFormat(url: string) {
-    if (!url.startsWith(urlRecords)) {
-      this.formatSelected.set(null);
-      return;
-    }
-
-    const format = this.formats()
-      .find(format => format._id === url.replace(urlRecords, '')) || null;
-
-    (format)
-      ? this.formatSelected.set(format)
-      : this.goToDefault();
-  }
-
-  private goToDefault() {
-    (this.formats().length > 0)
+    if (this.router.url.substring(1) === paths.HOME) (this.formats().length > 0)
       ? this.goToRecords(this.formats()[0]._id)
       : this.goToFormats();
   }

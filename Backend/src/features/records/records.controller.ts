@@ -24,8 +24,8 @@ export class RecordsController {
 
     @Get(':id')
     @ValidPermission(PERMISSIONS.READ_RECORDS)
-    findOne(@Param('id') _id: string) {
-        return this.recordsService.findOne({ _id });
+    findById(@Param('id') id: string) {
+        return this.recordsService.findById(id);
     }
 
     @Patch(':id')

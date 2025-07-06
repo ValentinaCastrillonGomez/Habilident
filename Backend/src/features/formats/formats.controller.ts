@@ -24,8 +24,8 @@ export class FormatsController {
 
     @Get(':id')
     @ValidPermission(PERMISSIONS.READ_FORMATS)
-    findOne(@Param('id') _id: string) {
-        return this.formatsService.findOne({ _id });
+    findById(@Param('id') id: string) {
+        return this.formatsService.findById(id);
     }
 
     @Patch(':id')

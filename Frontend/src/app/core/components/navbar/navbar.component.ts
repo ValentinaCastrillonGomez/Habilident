@@ -4,13 +4,12 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { LoadingService } from '@core/services/loading.service';
 import { NotificationService } from '@core/services/notification.service';
-import { RecordComponent } from '@features/records/components/record/record.component';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@shared/services/formats.service';
 import { PERMISSIONS } from '@habilident/types';
 import { paths } from 'src/app/app.routes';
-import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
+import { CdkMenuTrigger } from '@angular/cdk/menu';
 
 @Component({
   selector: 'app-navbar',
@@ -18,7 +17,7 @@ import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
     RouterLink,
     MaterialModule,
     PermissionDirective,
-    CdkMenuTrigger, CdkMenu, CdkMenuItem
+    CdkMenuTrigger,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
@@ -43,15 +42,6 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.notificationService.loadNotifications();
-  }
-
-  async open(formatId: string) {
-    const format = await this.formatsService.get(formatId);
-    const dialogRef = this.dialog.open(RecordComponent, { data: { format } });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) this.notificationService.loadNotifications();
-    });
   }
 
   logout() {

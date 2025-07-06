@@ -2,14 +2,14 @@ import { HttpErrorResponse, HttpInterceptorFn, HttpRequest } from '@angular/comm
 import { inject } from '@angular/core';
 import { AuthService } from '@core/services/auth.service';
 import { catchError, switchMap, throwError } from 'rxjs';
-import { ENV } from 'src/app/app.config';
+import { environment } from 'src/environments/environment';
 
 function addAuthHeader(req: HttpRequest<any>, token: string): HttpRequest<any> {
   return req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
 }
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const baseUrl = inject(ENV).BASE_URL;
+  const baseUrl = environment.BASE_URL;
   const authService = inject(AuthService);
 
   let request = req.clone({ url: `${baseUrl}${req.url}` });

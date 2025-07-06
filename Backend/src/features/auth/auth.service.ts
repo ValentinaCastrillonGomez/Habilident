@@ -40,7 +40,7 @@ export class AuthService {
       throw new UnauthorizedException(ERROR_MESSAGES.REFRESH_INVALID);
     });
 
-    const user = await this.usersService.findOne({ _id: payload.sub });
+    const user = await this.usersService.findById(payload.sub);
     const isValid = await compare(refreshToken, user?.refreshToken ?? '');
 
     if (isValid) return this.getTokens(user);

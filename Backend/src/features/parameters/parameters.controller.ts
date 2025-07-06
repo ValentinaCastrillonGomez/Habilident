@@ -24,8 +24,8 @@ export class ParametersController {
 
     @Get(':id')
     @ValidPermission(PERMISSIONS.READ_PARAMETERS)
-    findOne(@Param('id') _id: string) {
-        return this.parametersService.findOne({ _id });
+    findById(@Param('id') id: string) {
+        return this.parametersService.findById(id);
     }
 
     @Patch(':id')

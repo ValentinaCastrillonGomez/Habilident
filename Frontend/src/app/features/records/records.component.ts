@@ -1,16 +1,16 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject, Injector, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, OnDestroy, signal, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Record, PERMISSIONS } from '@habilident/types';
-import { debounceTime, distinctUntilChanged, filter, merge, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, merge, Subject } from 'rxjs';
 import { RecordsService } from './services/records.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { RecordComponent } from './components/record/record.component';
-import { toObservable } from '@angular/core/rxjs-interop';
 import { ReportsService } from '@shared/services/reports.service';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { FormatsService } from '@shared/services/formats.service';
+import { ActivatedRoute } from '@angular/router';
 import moment from 'moment';
 
 @Component({
@@ -25,13 +25,13 @@ import moment from 'moment';
     styleUrl: './records.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class RecordsComponent implements AfterViewInit {
+export default class RecordsComponent implements AfterViewInit, OnDestroy {
     readonly permissions = PERMISSIONS;
     private readonly recordsService = inject(RecordsService);
     private readonly reportsService = inject(ReportsService);
     private readonly formatsService = inject(FormatsService);
     private readonly dialog = inject(MatDialog);
-    private readonly injector = inject(Injector);
+    private readonly router = inject(ActivatedRoute);
 
     private readonly searchTerms = new Subject<any>();
     private readonly actions = new Subject<void>();
@@ -49,7 +49,7 @@ export default class RecordsComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         merge(
-            toObservable(this.formatsService.formatSelected, { injector: this.injector }).pipe(filter(format => !!format)),
+            this.router.params.pipe(map(params => params['formatId'])),
             this.searchTerms.pipe(debounceTime(900), distinctUntilChanged()),
             this.actions,
             this.paginator.page
@@ -85,6 +85,10 @@ export default class RecordsComponent implements AfterViewInit {
 
     print(id: string) {
         this.reportsService.print(`records/${id}`,);
+    }
+
+    ngOnDestroy(): void {
+        this.formatsService.formatSelected.set(null);
     }
 
 }

@@ -26,8 +26,8 @@ export class UsersController {
 
     @Get(':id')
     @ValidPermission(PERMISSIONS.READ_USERS)
-    findOne(@Param('id') _id: string) {
-        return this.usersService.findOne({ _id });
+    findById(@Param('id') id: string) {
+        return this.usersService.findById(id);
     }
 
     @Patch(':id')

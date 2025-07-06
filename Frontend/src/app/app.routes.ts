@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from '@core/guards/auth.guard';
+import { formatGuard } from '@core/guards/format.guard';
 import { permissionGuard } from '@core/guards/permission.guard';
 import { PERMISSIONS } from '@habilident/types';
 
@@ -23,7 +24,7 @@ export const routes: Routes = [
   },
   {
     path: paths.HOME,
-    canMatch: [authGuard],
+    canMatch: [() => authGuard()],
     loadComponent: () => import('@features/home/home.component'),
     children: [
       {
@@ -48,7 +49,7 @@ export const routes: Routes = [
       },
       {
         path: `${paths.RECORDS}/:formatId`,
-        canMatch: [() => permissionGuard(PERMISSIONS.READ_RECORDS)],
+        canMatch: [() => permissionGuard(PERMISSIONS.READ_RECORDS), formatGuard],
         loadComponent: () => import('@features/records/records.component'),
       },
       {
