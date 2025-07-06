@@ -53,18 +53,8 @@ export const routes: Routes = [
         loadComponent: () => import('@features/records/records.component'),
       },
       {
-        path: `${paths.REPORTS}`,
-        canMatch: [() => permissionGuard(PERMISSIONS.PRINT_REPORTS)],
-        loadComponent: () => import('@features/reports/reports.component'),
-      },
-      {
-        path: `${paths.ALERTS}`,
-        canMatch: [() => permissionGuard(PERMISSIONS.READ_ALERTS)],
-        loadComponent: () => import('@features/alerts/alerts.component'),
-      },
-      {
         path: `${paths.CALENDAR}`,
-        canMatch: [() => permissionGuard(PERMISSIONS.READ_ALERTS)],
+        canMatch: [() => permissionGuard(PERMISSIONS.READ_RECORDS)],
         loadComponent: () => import('@features/calendar/calendar.component'),
       },
       { path: '**', redirectTo: paths.HOME },

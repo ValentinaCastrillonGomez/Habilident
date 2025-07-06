@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './features/users/users.module';
-import { AlertsModule } from './features/alerts/alerts.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './features/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
@@ -36,7 +35,6 @@ import { MailerModule } from '@nestjs-modules/mailer';
     }),
     ScheduleModule.forRoot(),
     UsersModule,
-    AlertsModule,
     AuthModule,
     RolesModule,
     FormatsModule,

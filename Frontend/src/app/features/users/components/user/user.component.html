@@ -132,10 +132,17 @@
                     Estado
                 </mat-slide-toggle>
 
-                <div class="self-center w-full mb-4">
-                    <button type="button" mat-button (click)="fileInput.click()">Elegir firma</button>
+                <div class="flex items-center w-full mb-4">
                     <input hidden #fileInput (change)="onFileSelected($event)" type="file" id="file" accept="image/*">
-                    <span>{{nameFile || 'Sin firma'}}</span>
+                    <button type="button" mat-button (click)="fileInput.click()">Elegir firma</button>
+                    @if (signaturefile()) {
+                    <span class="truncate w-20"> {{signaturefile()?.name}} </span>
+                    <button mat-icon-button type="button" (click)="clearSignature(fileInput)" matTooltip="Borrar firma">
+                        <mat-icon class="text-red-600">close</mat-icon>
+                    </button>
+                    }@else{
+                    <span> Sin firma </span>
+                    }
                 </div>
             </div>
         </div>

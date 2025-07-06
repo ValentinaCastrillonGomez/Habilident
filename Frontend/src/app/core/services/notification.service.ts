@@ -1,14 +1,12 @@
-import { inject, Injectable, signal } from "@angular/core";
+import { Injectable, signal } from "@angular/core";
 import { io } from 'socket.io-client';
 import { Alert } from "@habilident/types";
-import { AlertsService } from "@features/alerts/services/alerts.service";
 import { environment } from "src/environments/environment";
 
 @Injectable({
     providedIn: 'root',
 })
 export class NotificationService {
-    private readonly alertsService = inject(AlertsService);
     private readonly socketUrl = environment.SOCKET_URL;
     private readonly socket = io({ path: this.socketUrl, transports: ['websocket'] });
 
@@ -17,15 +15,15 @@ export class NotificationService {
 
     constructor() {
         this.socket.on('notifications', (message: Alert[]) => {
-            this.audio.play();
-            this.notifications.update(value => [...value, ...message]);
+            // this.audio.play();
+            // this.notifications.update(value => [...value, ...message]);
         });
     }
 
     async loadNotifications() {
-        const message = await this.alertsService.getNotifications();
-        if (this.notifications().length < message.length) this.audio.play();
-        this.notifications.set(message);
+        // const message = await this.alertsService.getNotifications();
+        // if (this.notifications().length < message.length) this.audio.play();
+        // this.notifications.set(message);
     }
 
 }

@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AlertsService } from '@features/alerts/services/alerts.service';
-import { RecordComponent } from '@features/records/components/record/record.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core/index.js';
 import esLocale from '@fullcalendar/core/locales/es-us';
@@ -22,7 +20,6 @@ import moment from 'moment';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class CalendarComponent {
-  private readonly alertsService = inject(AlertsService);
   private readonly formatsService = inject(FormatsService);
   private readonly dialog = inject(MatDialog);
 
@@ -50,15 +47,13 @@ export default class CalendarComponent {
   }
 
   async loadCalendar() {
-    const data = await this.alertsService.getCalendar(this.startDate, this.endDate);
-    
-    this.notifications.set(data.map(alert => ({
-      title: alert.format.name,
-      start: alert.dateGenerated,
-      url: !alert.registered && new Date(alert.dateGenerated) <= new Date() ? alert.format._id : '',
-      allDay: true,
-      backgroundColor: alert.registered ? '#0284c7' : 'gray',
-    })));
+    // this.notifications.set(data.map(alert => ({
+    //   title: alert.format.name,
+    //   start: alert.dateGenerated,
+    //   url: !alert.registered && new Date(alert.dateGenerated) <= new Date() ? alert.format._id : '',
+    //   allDay: true,
+    //   backgroundColor: alert.registered ? '#0284c7' : 'gray',
+    // })));
   }
 
   handleFormatClick(info: any) {
@@ -67,11 +62,11 @@ export default class CalendarComponent {
   }
 
   async open(formatId: string, dateEffective: Date) {
-  //   const format = await this.formatsService.get(formatId);
-  //   const dialogRef = this.dialog.open(RecordComponent, { data: { format, dateEffective } });
+    //   const format = await this.formatsService.get(formatId);
+    //   const dialogRef = this.dialog.open(RecordComponent, { data: { format, dateEffective } });
 
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result) this.loadCalendar();
-  //   });
+    //   dialogRef.afterClosed().subscribe(result => {
+    //     if (result) this.loadCalendar();
+    //   });
   }
 }

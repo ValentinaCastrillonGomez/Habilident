@@ -1,3 +1,5 @@
+import { Role } from "./role";
+
 export type User = {
     _id?: any;
     firstNames: string;
@@ -11,7 +13,7 @@ export type User = {
     gender: string;
     office: string;
     position: string;
-    roles: any[];
+    roles: Role[];
     password: string;
     signature?: Signature;
     refreshToken?: string;

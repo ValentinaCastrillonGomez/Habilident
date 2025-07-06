@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export const ROW_TYPES = {
     SINGLE: 'single',
     AREA: 'area',
@@ -7,17 +9,23 @@ export const ROW_TYPES = {
 export type RowTypes = typeof ROW_TYPES[keyof typeof ROW_TYPES];
 
 export const INPUT_TYPES = {
+    LABEL: 'label',
     TEXT: 'text',
     NUMBER: 'number',
     SELECT: 'select',
     DATE: 'date',
+    IMAGE: 'image',
+    SIGNATURE: 'signature',
 } as const;
 
 export const TYPES_NAMES = {
-    [INPUT_TYPES.TEXT]: 'Texto',
-    [INPUT_TYPES.NUMBER]: 'Numero',
-    [INPUT_TYPES.SELECT]: 'Selección',
+    [INPUT_TYPES.LABEL]: 'Texto',
+    [INPUT_TYPES.TEXT]: 'Campo',
+    [INPUT_TYPES.NUMBER]: 'Numerico',
+    [INPUT_TYPES.SELECT]: 'Seleccionable',
     [INPUT_TYPES.DATE]: 'Fecha',
+    [INPUT_TYPES.IMAGE]: 'Imagen',
+    [INPUT_TYPES.SIGNATURE]: 'Firma',
 } as const;
 
 export type InputTypes = typeof INPUT_TYPES[keyof typeof INPUT_TYPES];
@@ -34,8 +42,17 @@ export type FormatRow = {
     fields: FormatField[];
 };
 
+export type Alert = {
+    frequency: string;
+    dateStart: Date;
+    responsibleUser: User;
+    lastGenerated?: Date;
+};
+
 export type Format = {
     _id?: any;
     name: string;
+    state: boolean;
     rows: FormatRow[];
+    alert?: Alert;
 };

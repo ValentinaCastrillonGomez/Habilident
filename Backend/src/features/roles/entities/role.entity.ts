@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { Role, Permission } from '@habilident/types';
+import { Role, Permission, PERMISSIONS } from '@habilident/types';
 
 export type RoleDocument = HydratedDocument<RoleEntity>;
 
@@ -11,7 +11,7 @@ export class RoleEntity implements Role {
     @Prop({ required: true, unique: true })
     name: string;
 
-    @Prop({ required: true })
+    @Prop({ type: [String], enum: Object.values(PERMISSIONS), required: true })
     permissions: Permission[];
 }
 

@@ -1,4 +1,3 @@
-export * from './alert'; 
 export * from './format';
 export * from './login';
 export * from './notification';

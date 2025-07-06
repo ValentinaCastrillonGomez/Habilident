@@ -48,7 +48,7 @@ export class UserEntity implements User {
     @Prop({ required: true })
     password: string;
 
-    @Prop({ type: Object })
+    @Prop({ type: { name: String, image: String } })
     signature?: Signature;
 
     @Prop()

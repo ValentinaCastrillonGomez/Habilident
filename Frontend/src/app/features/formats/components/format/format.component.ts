@@ -43,6 +43,7 @@ export class FormatComponent {
 
   formatForm = this.formBuilder.group({
     name: this.formBuilder.control(this.format?.name ?? '', [Validators.required]),
+    state: this.formBuilder.control(this.format?.state ?? true, [Validators.required]),
     rows: this.formBuilder.array<FormGroup<RowsFormType>>(
       this.format?.rows.map((row) => this.formBuilder.group<RowsFormType>({
         type: this.formBuilder.control(row.type),

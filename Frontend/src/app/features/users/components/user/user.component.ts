@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { User, Signature, Role, Parameter, TYPE_PARAMETERS } from '@habilident/types';
 import { UsersService } from '../../services/users.service';
@@ -30,7 +30,8 @@ export class UserComponent implements OnInit {
   options: Parameter[] = [];
   roles: Role[] = [];
   maxDate = moment().subtract(18, 'years').toDate();
-  nameFile = this.user?.signature?.name ?? null;
+  signaturefile = signal<Signature | null>(this.user?.signature ?? null);
+
   userForm = this.formBuilder.group({
     firstNames: this.formBuilder.control('', [Validators.required]),
     lastNames: this.formBuilder.control('', [Validators.required]),
@@ -43,7 +44,7 @@ export class UserComponent implements OnInit {
     birthday: this.formBuilder.control<any>(null, [Validators.required]),
     office: this.formBuilder.control('', [Validators.required]),
     position: this.formBuilder.control('', [Validators.required]),
-    roles: this.formBuilder.control<string[]>([], [Validators.required]),
+    roles: this.formBuilder.control<any[]>([], [Validators.required]),
     password: this.formBuilder.control<any>(null, this.isNew ? [Validators.required, Validators.minLength(5)] : [Validators.minLength(5)]),
     signature: this.formBuilder.control<any>(null),
     state: this.formBuilder.control(true),
@@ -75,26 +76,33 @@ export class UserComponent implements OnInit {
     }
   }
 
-
   async onFileSelected(event: any) {
     const file = event.target.files[0];
 
     if (file) {
-      this.nameFile = file.name;
-      this.userForm.controls.signature.setValue({
+      const signature: Signature = {
         name: file.name,
         image: await this.toBase64(file),
-      } as Signature);
+      };
+
+      this.signaturefile.set(signature);
+      this.userForm.controls.signature.setValue(signature);
     }
   }
 
   private toBase64(file: any) {
-    return new Promise((resolve, reject) => {
+    return new Promise<any>((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
       reader.onerror = reject;
     });
+  }
+
+  clearSignature(fileInput: HTMLInputElement) {
+    this.signaturefile.set(null);
+    this.userForm.controls.signature.setValue(null);
+    fileInput.value = '';
   }
 
   async save() {
