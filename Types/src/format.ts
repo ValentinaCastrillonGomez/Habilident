@@ -43,9 +43,10 @@ export type FormatRow = {
 };
 
 export type Alert = {
-    frequency: string;
-    dateStart: Date;
-    responsibleUser: User;
+    state: boolean;
+    frequency?: string;
+    dateStart?: Date;
+    responsibleUser?: User;
     lastGenerated?: Date;
 };
 
@@ -54,5 +55,5 @@ export type Format = {
     name: string;
     state: boolean;
     rows: FormatRow[];
-    alert?: Alert;
+    alert: Alert;
 };

@@ -7,8 +7,12 @@ export abstract class GenericService<T> {
     protected abstract http: HttpClient;
     protected abstract api: string;
 
-    getAll(skip = 0, limit = 0, query = '', start = '', end = '') {
-        return firstValueFrom(this.http.get<Page<T>>(this.api, { params: { skip, limit, query, start, end } }));
+    getAll() {
+        return firstValueFrom(this.http.get<T[]>(this.api));
+    }
+
+    getPage(skip = 0, limit = 0, query = '', start = '', end = '') {
+        return firstValueFrom(this.http.get<Page<T>>(`${this.api}/page`, { params: { skip, limit, query, start, end } }));
     }
 
     get(id: string) {

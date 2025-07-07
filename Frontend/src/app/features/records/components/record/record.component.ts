@@ -32,11 +32,10 @@ type ValuesFormType = {
     styleUrl: './record.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecordComponent implements OnInit {
+export default class RecordComponent implements OnInit {
     private readonly recordsService = inject(RecordsService);
-    private readonly dialog = inject(MatDialogRef<RecordComponent>);
     private readonly formBuilder = inject(NonNullableFormBuilder);
-    data = inject<{ record: Record | null, format: Format, dateEffective: Date }>(MAT_DIALOG_DATA);
+    data: any = { record: null, format: null };
 
     recordForm = this.formBuilder.group({
         format: this.formBuilder.control(this.data.record?.format._id || this.data.format._id),
@@ -49,38 +48,38 @@ export class RecordComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        (this.isNew)
-            ? this.buildFormNewRecord()
-            : this.buildFormUpdateRecord();
+    //     (this.isNew)
+    //         ? this.buildFormNewRecord()
+    //         : this.buildFormUpdateRecord();
     }
 
-    buildFormNewRecord() {
-        this.data.format.rows.forEach((row) =>
-            this.recordForm.controls.rows.push(this.formBuilder.group<ValuesFormType>({
-                type: this.formBuilder.control(row.type),
-                fields: this.formBuilder.array([this.formBuilder.array(row.fields.map(input => this.formBuilder.group({
-                    name: this.formBuilder.control(input.name),
-                    type: this.formBuilder.control(input.type),
-                    required: this.formBuilder.control(input.required),
-                    value: this.formBuilder.control('', input.required ? [Validators.required] : []),
-                })))]),
-            }))
-        );
-    }
+    // buildFormNewRecord() {
+    //     this.data.format.rows.forEach((row) =>
+    //         this.recordForm.controls.rows.push(this.formBuilder.group<ValuesFormType>({
+    //             type: this.formBuilder.control(row.type),
+    //             fields: this.formBuilder.array([this.formBuilder.array(row.fields.map(input => this.formBuilder.group({
+    //                 name: this.formBuilder.control(input.name),
+    //                 type: this.formBuilder.control(input.type),
+    //                 required: this.formBuilder.control(input.required),
+    //                 value: this.formBuilder.control('', input.required ? [Validators.required] : []),
+    //             })))]),
+    //         }))
+    //     );
+    // }
 
-    buildFormUpdateRecord() {
-        this.data.record!.rows.forEach((row) =>
-            this.recordForm.controls.rows.push(this.formBuilder.group<ValuesFormType>({
-                type: this.formBuilder.control(row.type),
-                fields: this.formBuilder.array(row.fields.map(fields => this.formBuilder.array(fields.map(input => this.formBuilder.group({
-                    name: this.formBuilder.control(input.name),
-                    type: this.formBuilder.control(input.type),
-                    required: this.formBuilder.control(input.required),
-                    value: this.formBuilder.control(input.value ?? '', input.required ? [Validators.required] : []),
-                }))))),
-            }))
-        );
-    }
+    // buildFormUpdateRecord() {
+    //     this.data.record!.rows.forEach((row) =>
+    //         this.recordForm.controls.rows.push(this.formBuilder.group<ValuesFormType>({
+    //             type: this.formBuilder.control(row.type),
+    //             fields: this.formBuilder.array(row.fields.map(fields => this.formBuilder.array(fields.map(input => this.formBuilder.group({
+    //                 name: this.formBuilder.control(input.name),
+    //                 type: this.formBuilder.control(input.type),
+    //                 required: this.formBuilder.control(input.required),
+    //                 value: this.formBuilder.control(input.value ?? '', input.required ? [Validators.required] : []),
+    //             }))))),
+    //         }))
+    //     );
+    // }
 
     async save() {
         if (this.recordForm.invalid) return;
@@ -88,7 +87,6 @@ export class RecordComponent implements OnInit {
         const record = this.recordForm.getRawValue();
 
         const resp = await this.recordsService.save(record as any, this.data.record?._id)
-        if (resp) this.dialog.close(true);
     }
 
 }

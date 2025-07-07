@@ -58,13 +58,12 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.rolesService.getAll().then(({ data }) => {
-      this.roles = data;
-      this.setForm();
-    });
+    this.setForm();
   }
 
-  setForm() {
+  private async setForm() {
+    this.roles = await this.rolesService.getAll();
+
     if (this.user) {
       this.userForm.patchValue({
         ...this.user,

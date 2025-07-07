@@ -5,13 +5,16 @@ import moment from "moment";
 
 export const APP_FORMATS = {
     parse: {
-        dateInput: 'DD/MM/YYYY'
+        dateInput: 'DD/MM/YYYY',
+        timeInput: 'HH:mm',
     },
     display: {
         dateInput: 'dd/MM/YYYY',
         monthYearLabel: 'MMM YYYY',
         dateA11yLabel: 'fullDate',
-        monthYearA11yLabel: 'MMM YYYY'
+        monthYearA11yLabel: 'MMM YYYY',
+        timeInput: 'HH:mm',
+        timeOptionLabel: 'HH:mm'
     }
 };
 

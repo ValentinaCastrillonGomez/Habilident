@@ -13,7 +13,7 @@ export class ParametersService extends GenericService<Parameter> {
   parameters = signal<Parameter[]>([]);
 
   async loadParameters() {
-    const { data } = await this.getAll();
+    const data = await this.getAll();
     this.parameters.set(data);
   }
 

@@ -16,9 +16,9 @@ export class RecordsController {
         return this.recordsService.create({ ...recordDto, userCreate: user._id, dateCreate: new Date() });
     }
 
-    @Get()
+    @Get('/page')
     @ValidPermission(PERMISSIONS.READ_RECORDS)
-    findAll(@Query() { skip, limit, query, start, end }) {
+    findPage(@Query() { skip, limit, query, start, end }) {
         return this.recordsService.findAll(skip, limit, query, start, end);
     }
 

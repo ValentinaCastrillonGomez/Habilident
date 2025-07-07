@@ -1,7 +1,7 @@
 <div class="flex items-center justify-between mb-3">
     <div class="flex items-center gap-x-2">
         <h6 class="mb-0">Listado de registros</h6>
-        <button mat-stroked-button (click)="open()" *appPermission="'Crear registros'">
+        <button mat-stroked-button [routerLink]="[paths.HOME, paths.RECORD]" *appPermission="'Crear registros'">
             <mat-icon>add</mat-icon>Añadir registro
         </button>
     </div>
@@ -61,10 +61,9 @@
             <ng-container matColumnDef="actions">
                 <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
                 <mat-cell *matCellDef="let element" class="justify-end">
-                    <button mat-icon-button [matMenuTriggerFor]="actions" [matMenuTriggerData]="{data: element}"
-                        #menu="matMenuTrigger"
-                        [ngClass]="{'invisible group-hover:visible': !menu.menuOpen, 'visible': menu.menuOpen}">
-                        <mat-icon class="">more_horiz</mat-icon>
+                    <button mat-icon-button class="invisible group-hover:visible" matTooltip="Ver registro"
+                        [routerLink]="[paths.HOME, paths.RECORD, element._id]">
+                        <mat-icon>visibility</mat-icon>
                     </button>
                 </mat-cell>
             </ng-container>
@@ -80,16 +79,3 @@
         <mat-paginator [length]="totalRecords" [pageSize]="pageSize"></mat-paginator>
     </mat-card-content>
 </mat-card>
-
-<mat-menu #actions="matMenu">
-    <ng-template matMenuContent let-element="data">
-        <button mat-menu-item (click)="open(element)" *appPermission="'Actualizar registros'">
-            <mat-icon>edit</mat-icon>
-            <span>Actualizar</span>
-        </button>
-        <button mat-menu-item (click)="remove(element._id)" *appPermission="'Eliminar registros'">
-            <mat-icon class="text-red-600">delete</mat-icon>
-            <span class="text-red-600">Eliminar</span>
-        </button>
-    </ng-template>
-</mat-menu>

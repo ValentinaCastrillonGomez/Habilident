@@ -13,7 +13,7 @@ import { JoinNamesPipe } from '@shared/pipes/joinNames.pipe';
   selector: 'app-users',
   imports: [
     MaterialModule,
-    PermissionDirective, 
+    PermissionDirective,
     JoinNamesPipe
   ],
   providers: [UsersService],
@@ -40,7 +40,7 @@ export default class UsersComponent implements AfterViewInit {
       this.actions,
       this.paginator.page)
       .subscribe(async () => {
-        const { data, totalRecords } = await this.usersService.getAll(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
+        const { data, totalRecords } = await this.usersService.getPage(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
         this.dataSource.set(data);
         this.totalRecords = totalRecords;
       });

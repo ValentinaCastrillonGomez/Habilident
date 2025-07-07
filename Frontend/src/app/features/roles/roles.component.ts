@@ -40,7 +40,7 @@ export default class RolesComponent implements AfterViewInit {
       this.actions,
       this.paginator.page)
       .subscribe(async () => {
-        const { data, totalRecords } = await this.rolesService.getAll(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
+        const { data, totalRecords } = await this.rolesService.getPage(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
         this.dataSource.set(data);
         this.totalRecords = totalRecords;
       });

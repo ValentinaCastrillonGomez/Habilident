@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { authGuard } from '@core/guards/auth.guard';
-import { formatGuard } from '@core/guards/format.guard';
 import { permissionGuard } from '@core/guards/permission.guard';
 import { PERMISSIONS } from '@habilident/types';
 
@@ -10,7 +9,9 @@ export const paths = {
   USERS: 'users',
   ROLES: 'roles',
   PARAMETERS: 'parameters',
+  FORMAT: 'format',
   FORMATS: 'formats',
+  RECORD: 'record',
   RECORDS: 'records',
   REPORTS: 'reports',
   ALERTS: 'alerts',
@@ -43,14 +44,34 @@ export const routes: Routes = [
         loadComponent: () => import('@features/parameters/parameters.component'),
       },
       {
+        path: `${paths.FORMAT}`,
+        canMatch: [() => permissionGuard(PERMISSIONS.CREATE_FORMATS)],
+        loadComponent: () => import('@features/formats/components/format/format.component'),
+      },
+      {
         path: `${paths.FORMATS}`,
         canMatch: [() => permissionGuard(PERMISSIONS.READ_FORMATS)],
         loadComponent: () => import('@features/formats/formats.component'),
       },
       {
-        path: `${paths.RECORDS}/:formatId`,
-        canMatch: [() => permissionGuard(PERMISSIONS.READ_RECORDS), formatGuard],
+        path: `${paths.FORMAT}/:formatId`,
+        canMatch: [() => permissionGuard(PERMISSIONS.READ_FORMATS)],
+        loadComponent: () => import('@features/formats/components/format/format.component'),
+      },
+      {
+        path: `${paths.RECORDS}`,
+        canMatch: [() => permissionGuard(PERMISSIONS.READ_RECORDS)],
         loadComponent: () => import('@features/records/records.component'),
+      },
+      {
+        path: `${paths.RECORD}`,
+        canMatch: [() => permissionGuard(PERMISSIONS.CREATE_RECORDS)],
+        loadComponent: () => import('@features/records/components/record/record.component'),
+      },
+      {
+        path: `${paths.RECORD}/:recordId`,
+        canMatch: [() => permissionGuard(PERMISSIONS.READ_RECORDS)],
+        loadComponent: () => import('@features/records/components/record/record.component'),
       },
       {
         path: `${paths.CALENDAR}`,

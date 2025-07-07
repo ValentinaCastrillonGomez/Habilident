@@ -5,14 +5,17 @@ import { UserEntity } from 'src/features/users/entities/user.entity';
 
 @Schema({ _id: false })
 export class AlertEntity {
-    @Prop({ required: true })
-    frequency: string;
+    @Prop({ required: true, default: false })
+    state: boolean;
 
-    @Prop({ required: true })
-    dateStart: Date;
+    @Prop()
+    frequency?: string;
 
-    @Prop({ type: Types.ObjectId, ref: 'UserEntity', required: true })
-    responsibleUser: UserEntity;
+    @Prop()
+    dateStart?: Date;
+
+    @Prop({ type: Types.ObjectId, ref: 'UserEntity' })
+    responsibleUser?: UserEntity;
 
     @Prop()
     lastGenerated?: Date;

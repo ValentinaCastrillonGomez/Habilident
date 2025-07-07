@@ -10,15 +10,20 @@ import { ValidPermission } from '../permissions/permissions.decorator';
 export class ParametersController {
     constructor(private readonly parametersService: ParametersService) { }
 
+    @Get()
+    findAll() {
+        return this.parametersService.find({});
+    }
+
     @Post()
     @ValidPermission(PERMISSIONS.CREATE_PARAMETERS)
     create(@Body() parameterDto: Parameter) {
         return this.parametersService.create(parameterDto);
     }
 
-    @Get()
+    @Get('/page')
     @ValidPermission(PERMISSIONS.READ_PARAMETERS)
-    findAll(@Query() { skip, limit, query }) {
+    findPage(@Query() { skip, limit, query }) {
         return this.parametersService.findAll(skip, limit, query);
     }
 

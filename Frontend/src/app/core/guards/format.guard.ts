@@ -11,7 +11,7 @@ export const formatGuard: CanMatchFn = async (route: Route, segments: UrlSegment
     if (!formatId) return router.parseUrl(paths.FORMATS);
 
     return formatsService.get(formatId).then((format) => {
-        formatsService.formatSelected.set(format);
+        formatsService.formatSelected.next(format);
         return true;
     }).catch(_ => router.parseUrl(paths.FORMATS));
 }

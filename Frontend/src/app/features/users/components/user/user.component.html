@@ -110,7 +110,7 @@
                 <mat-form-field appearance="outline" class="w-full">
                     <mat-label>Rol</mat-label>
                     <mat-select id="roles" formControlName="roles" multiple required>
-                        @for (role of roles; track $index) {
+                        @for (role of roles; track role._id) {
                         <mat-option [value]="role._id">{{role.name}}</mat-option>
                         }
                     </mat-select>

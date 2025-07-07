@@ -39,7 +39,7 @@ export default class ParametersComponent implements AfterViewInit {
       this.actions,
       this.paginator.page)
       .subscribe(async () => {
-        const { data, totalRecords } = await this.parametersService.getAll(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
+        const { data, totalRecords } = await this.parametersService.getPage(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
         this.dataSource.set(data);
         this.totalRecords = totalRecords;
       });

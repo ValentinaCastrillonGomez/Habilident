@@ -10,20 +10,24 @@ import { PermissionsGuard } from '../permissions/permissions.guard';
 export class FormatsController {
     constructor(private readonly formatsService: FormatsService) { }
 
+    @Get()
+    findAll() {
+        return this.formatsService.find({ state: true });
+    }
+
     @Post()
     @ValidPermission(PERMISSIONS.CREATE_FORMATS)
     create(@Body() formatDto: Format) {
         return this.formatsService.create(formatDto);
     }
 
-    @Get()
+    @Get('/page')
     @ValidPermission(PERMISSIONS.READ_FORMATS)
-    findAll(@Query() { skip, limit, query }) {
+    findPage(@Query() { skip, limit, query }) {
         return this.formatsService.findAll(skip, limit, query);
     }
 
     @Get(':id')
-    @ValidPermission(PERMISSIONS.READ_FORMATS)
     findById(@Param('id') id: string) {
         return this.formatsService.findById(id);
     }

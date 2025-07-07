@@ -10,15 +10,20 @@ import { PermissionsGuard } from '../permissions/permissions.guard';
 export class RolesController {
     constructor(private readonly rolesService: RolesService) { }
 
+    @Get()
+    findAll() {
+        return this.rolesService.find({});
+    }
+
     @Post()
     @ValidPermission(PERMISSIONS.CREATE_ROLES)
     create(@Body() roleDto: Role) {
         return this.rolesService.create(roleDto);
     }
 
-    @Get()
+    @Get('/page')
     @ValidPermission(PERMISSIONS.READ_ROLES)
-    findAll(@Query() { skip, limit, query }) {
+    findPage(@Query() { skip, limit, query }) {
         return this.rolesService.findAll(skip, limit, query);
     }
 

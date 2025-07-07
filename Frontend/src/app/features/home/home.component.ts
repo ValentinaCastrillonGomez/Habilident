@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '@core/components/navbar/navbar.component';
-import { PERMISSIONS } from '@habilident/types';
+import { Format, PERMISSIONS } from '@habilident/types';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@shared/services/formats.service';
@@ -13,6 +13,7 @@ import { paths } from 'src/app/app.routes';
   selector: 'app-home',
   imports: [
     RouterOutlet,
+    RouterLink,
     NavbarComponent,
     MaterialModule,
     PermissionDirective,
@@ -23,18 +24,20 @@ import { paths } from 'src/app/app.routes';
 })
 export default class HomeComponent implements OnInit {
   readonly permissions = PERMISSIONS;
+  readonly paths = paths;
   private readonly router = inject(Router);
   private readonly formatsService = inject(FormatsService);
   private readonly reportsService = inject(ReportsService);
   private readonly parametersService = inject(ParametersService);
 
+  readonly isReady = signal<boolean>(false);
+
   formats = this.formatsService.formats;
-  formatSelected = this.formatsService.formatSelected;
+  formatSelected = this.formatsService.formatIdSelected;
   @ViewChild('pdfIframe', { static: false }) pdfIframe!: ElementRef;
 
   ngOnInit(): void {
-    this.selectFirstFormat();
-    this.parametersService.loadParameters();
+    this.loadData();
 
     this.reportsService.pdf$.subscribe(pdfUrl => {
       const iframe = this.pdfIframe.nativeElement as HTMLIFrameElement;
@@ -43,19 +46,16 @@ export default class HomeComponent implements OnInit {
     });
   }
 
-  private async selectFirstFormat() {
+  async loadData() {
     await this.formatsService.loadFormats();
+    await this.parametersService.loadParameters();
 
-    if (this.router.url.substring(1) === paths.HOME) (this.formats().length > 0)
-      ? this.goToRecords(this.formats()[0]._id)
-      : this.goToFormats();
+    this.isReady.set(true);
   }
 
   goToRecords(formatId: string) {
-    this.router.navigate([paths.RECORDS, formatId]);
+    this.formatsService.formatIdSelected.next(formatId);
+    this.router.navigate([paths.RECORDS]);
   }
 
-  goToFormats() {
-    this.router.navigate([paths.FORMATS]);
-  }
 }

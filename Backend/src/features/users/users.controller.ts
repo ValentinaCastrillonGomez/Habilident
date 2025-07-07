@@ -8,8 +8,12 @@ import { ValidPermission } from '../permissions/permissions.decorator';
 @Controller('users')
 @UseGuards(JwtGuard, PermissionsGuard)
 export class UsersController {
-
     constructor(private readonly usersService: UsersService) { }
+
+    @Get()
+    findAll() {
+        return this.usersService.find({ state: true });
+    }
 
     @Post()
     @ValidPermission(PERMISSIONS.CREATE_USERS)
@@ -18,9 +22,9 @@ export class UsersController {
         return this.usersService.create(dto);
     }
 
-    @Get()
+    @Get('/page')
     @ValidPermission(PERMISSIONS.READ_USERS)
-    findAll(@Query() { skip, limit, query }) {
+    findPage(@Query() { skip, limit, query }) {
         return this.usersService.findAll(skip, limit, query);
     }
 

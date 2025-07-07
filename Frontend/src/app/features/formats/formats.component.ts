@@ -2,15 +2,16 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, View
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@shared/services/formats.service';
 import { Format, PERMISSIONS } from '@habilident/types';
-import { MatDialog } from '@angular/material/dialog';
-import { FormatComponent } from './components/format/format.component';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
+import { RouterLink } from '@angular/router';
+import { paths } from 'src/app/app.routes';
 
 @Component({
   selector: 'app-formats',
   imports: [
+    RouterLink,
     MaterialModule,
     PermissionDirective,
   ],
@@ -20,8 +21,8 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export default class FormatsComponent implements AfterViewInit {
   readonly permissions = PERMISSIONS;
+  readonly paths = paths;
   private readonly formatsService = inject(FormatsService);
-  private readonly dialog = inject(MatDialog);
 
   private readonly searchTerms = new BehaviorSubject<string>('');
   private readonly actions = new Subject<void>();
@@ -30,7 +31,7 @@ export default class FormatsComponent implements AfterViewInit {
   dataSource = signal<Format[]>([]);
   totalRecords = 0;
   pageSize = 10;
-  displayedColumns: string[] = ['name', 'actions'];
+  displayedColumns: string[] = ['name', 'state', 'actions'];
 
   ngAfterViewInit() {
     merge(
@@ -38,7 +39,7 @@ export default class FormatsComponent implements AfterViewInit {
       this.actions,
       this.paginator.page)
       .subscribe(async () => {
-        const { data, totalRecords } = await this.formatsService.getAll(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
+        const { data, totalRecords } = await this.formatsService.getPage(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
         this.dataSource.set(data);
         this.totalRecords = totalRecords;
       });
@@ -48,22 +49,4 @@ export default class FormatsComponent implements AfterViewInit {
     this.searchTerms.next(term);
   }
 
-  async remove(id: string) {
-    const result = await this.formatsService.delete(id);
-    if (result) {
-      this.actions.next();
-      this.formatsService.loadFormats();
-    };
-  }
-
-  open(data?: Format) {
-    const dialogRef = this.dialog.open(FormatComponent, { data });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.actions.next();
-        this.formatsService.loadFormats();
-      }
-    });
-  }
 }
