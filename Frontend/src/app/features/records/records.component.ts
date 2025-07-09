@@ -1,16 +1,16 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject, OnDestroy, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Record, PERMISSIONS } from '@habilident/types';
 import { filter, merge, Subject } from 'rxjs';
 import { RecordsService } from './services/records.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ReportsService } from '@shared/services/reports.service';
 import { PermissionDirective } from '@shared/directives/permission.directive';
-import { FormatsService } from '@shared/services/formats.service';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PATHS } from 'src/app/app.routes';
 import moment from 'moment';
+
+const PARAM_ID = 'formatId';
 
 @Component({
     selector: 'app-records',
@@ -25,12 +25,11 @@ import moment from 'moment';
     styleUrl: './records.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class RecordsComponent implements AfterViewInit, OnDestroy {
+export default class RecordsComponent implements AfterViewInit {
     readonly permissions = PERMISSIONS;
     readonly paths = PATHS;
     private readonly recordsService = inject(RecordsService);
-    private readonly reportsService = inject(ReportsService);
-    private readonly formatsService = inject(FormatsService);
+    private readonly route = inject(ActivatedRoute);
 
     private readonly searchTerms = new Subject<any>();
 
@@ -44,24 +43,21 @@ export default class RecordsComponent implements AfterViewInit, OnDestroy {
         start: new FormControl<Date | null>(null),
         end: new FormControl<Date | null>(null),
     });
+    formatId: string = '';
 
     ngAfterViewInit() {
-        const formats = this.formatsService.data();
-
-        if (!this.formatsService.formatIdSelected.getValue() && formats.length > 0) {
-            this.formatsService.formatIdSelected.next(formats[0]._id);
-        }
-
         merge(
-            this.formatsService.formatIdSelected.pipe(filter(format => !!format)),
+            this.route.params.pipe(filter(param => param[PARAM_ID])),
             this.searchTerms,
             this.paginator.page
         ).subscribe(() => this.loadRecords());
     }
 
     private async loadRecords() {
+        this.formatId = this.route.snapshot.paramMap.get(PARAM_ID)!;
+
         const { data, totalRecords } = await this.recordsService.getPage(
-            this.paginator.pageIndex, this.paginator.pageSize, this.formatsService.formatIdSelected.getValue()!,
+            this.paginator.pageIndex, this.paginator.pageSize, this.formatId,
             this.range.controls.start.value ? moment(this.range.controls.start.value).format('YYYY/MM/DD') : undefined,
             this.range.controls.end.value ? moment(this.range.controls.end.value).format('YYYY/MM/DD') : undefined,
         );
@@ -71,19 +67,6 @@ export default class RecordsComponent implements AfterViewInit, OnDestroy {
 
     search() {
         this.searchTerms.next(this.range.value);
-    }
-
-    async remove(id: string) {
-        const result = await this.recordsService.delete(id);
-        if (result) this.loadRecords();
-    }
-
-    print(id: string) {
-        this.reportsService.print(`records/${id}`,);
-    }
-
-    ngOnDestroy(): void {
-        this.formatsService.formatIdSelected.next(null);
     }
 
 }

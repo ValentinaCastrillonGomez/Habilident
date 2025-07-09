@@ -159,7 +159,7 @@ export default class FormatComponent implements OnInit {
     if (result) this.goToFormats();
   }
 
-  private goToFormats() {
+  goToFormats() {
     this.router.navigate([PATHS.FORMATS]);
   }
 }

@@ -21,14 +21,16 @@ import { CdkMenuTrigger } from '@angular/cdk/menu';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent implements OnInit {
+  readonly permissions = PERMISSIONS;
+  readonly paths = PATHS;
   private readonly authService = inject(AuthService);
   private readonly notificationService = inject(NotificationService);
   private readonly loadingService = inject(LoadingService);
 
   readonly administration = [
-    { id: 'roles', path: PATHS.ROLES, title: 'Roles', icon: 'admin_panel_settings', permission: PERMISSIONS.READ_ROLES },
-    { id: 'users', path: PATHS.USERS, title: 'Usuarios', icon: 'group', permission: PERMISSIONS.READ_USERS },
-    { id: 'parameters', path: PATHS.PARAMETERS, title: 'Parametros', icon: 'fact_check', permission: PERMISSIONS.READ_PARAMETERS },
+    { id: 'roles', path: this.paths.ROLES, title: 'Roles', icon: 'admin_panel_settings', permission: this.permissions.READ_ROLES },
+    { id: 'users', path: this.paths.USERS, title: 'Usuarios', icon: 'group', permission: this.permissions.READ_USERS },
+    { id: 'parameters', path: this.paths.PARAMETERS, title: 'Parametros', icon: 'fact_check', permission: this.permissions.READ_PARAMETERS },
   ];
 
   username = this.authService.user.name;

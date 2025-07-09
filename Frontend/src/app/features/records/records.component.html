@@ -1,7 +1,8 @@
 <div class="flex items-center justify-between mb-3">
     <div class="flex items-center gap-x-2">
         <h6 class="mb-0">Listado de registros</h6>
-        <button mat-stroked-button [routerLink]="[paths.HOME, paths.RECORD]" *appPermission="'Crear registros'">
+        <button mat-stroked-button [routerLink]="[paths.HOME, paths.FORMATS, formatId, paths.RECORD]"
+            *appPermission="'Crear registros'">
             <mat-icon>add</mat-icon>Añadir registro
         </button>
     </div>
@@ -62,7 +63,7 @@
                 <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
                 <mat-cell *matCellDef="let element" class="justify-end">
                     <button mat-icon-button class="invisible group-hover:visible" matTooltip="Ver registro"
-                        [routerLink]="[paths.HOME, paths.RECORD, element._id]">
+                        [routerLink]="[paths.HOME, paths.FORMATS, formatId, paths.RECORD, element._id]">
                         <mat-icon>visibility</mat-icon>
                     </button>
                 </mat-cell>

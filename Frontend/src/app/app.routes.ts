@@ -42,9 +42,19 @@ export const routes: Routes = [
         loadComponent: () => import('@features/parameters/parameters.component'),
       },
       {
-        path: `${PATHS.FORMAT}`,
-        canMatch: [() => permissionGuard(PERMISSIONS.CREATE_FORMATS)],
-        loadComponent: () => import('@features/formats/components/format/format.component'),
+        path: `${PATHS.FORMATS}/:formatId/${PATHS.RECORDS}`,
+        canMatch: [() => permissionGuard(PERMISSIONS.READ_RECORDS)],
+        loadComponent: () => import('@features/records/records.component'),
+      },
+      {
+        path: `${PATHS.FORMATS}/:formatId/${PATHS.RECORD}/:recordId`,
+        canMatch: [() => permissionGuard(PERMISSIONS.READ_RECORDS)],
+        loadComponent: () => import('@features/records/components/record/record.component'),
+      },
+      {
+        path: `${PATHS.FORMATS}/:formatId/${PATHS.RECORD}`,
+        canMatch: [() => permissionGuard(PERMISSIONS.CREATE_RECORDS)],
+        loadComponent: () => import('@features/records/components/record/record.component'),
       },
       {
         path: `${PATHS.FORMATS}`,
@@ -57,19 +67,9 @@ export const routes: Routes = [
         loadComponent: () => import('@features/formats/components/format/format.component'),
       },
       {
-        path: `${PATHS.RECORDS}`,
-        canMatch: [() => permissionGuard(PERMISSIONS.READ_RECORDS)],
-        loadComponent: () => import('@features/records/records.component'),
-      },
-      {
-        path: `${PATHS.RECORD}`,
-        canMatch: [() => permissionGuard(PERMISSIONS.CREATE_RECORDS)],
-        loadComponent: () => import('@features/records/components/record/record.component'),
-      },
-      {
-        path: `${PATHS.RECORD}/:recordId`,
-        canMatch: [() => permissionGuard(PERMISSIONS.READ_RECORDS)],
-        loadComponent: () => import('@features/records/components/record/record.component'),
+        path: `${PATHS.FORMAT}`,
+        canMatch: [() => permissionGuard(PERMISSIONS.CREATE_FORMATS)],
+        loadComponent: () => import('@features/formats/components/format/format.component'),
       },
       {
         path: `${PATHS.DASHBOARD}`,

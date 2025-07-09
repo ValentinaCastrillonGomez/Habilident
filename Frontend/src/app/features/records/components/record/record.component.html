@@ -1,6 +1,27 @@
 <form [formGroup]="recordForm" (ngSubmit)="save()">
-    <h6 mat-dialog-title>Guardar Registro - <span>{{data.format.name | titlecase}}</span></h6>
-    <mat-dialog-content class="mat-typography">
+    <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-x-2">
+            <button mat-icon-button type="button" (click)="goToRecords()"
+                matTooltip="Atras"><mat-icon>arrow_back</mat-icon>
+            </button>
+            <h6 class="mb-0">Guardar Registro - <span>{{format()?.name | titlecase}}</span></h6>
+        </div>
+        <div class="flex items-center gap-x-2">
+            @let recordSelected = recordId();
+            <button mat-stroked-button type="submit"
+                *appPermission="[permissions.CREATE_RECORDS, permissions.UPDATE_RECORDS]">
+                <mat-icon>save</mat-icon> Guardar
+            </button>
+            @if(recordSelected){
+            <button mat-stroked-button class="text-red-600" type="button" (click)="remove(recordSelected)"
+                *appPermission="permissions.DELETE_RECORDS">
+                <mat-icon>delete</mat-icon> Eliminar
+            </button>
+            }
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="my-7">
         <mat-form-field appearance="outline" class="w-full mt-5 hidden">
             <mat-label>Fecha de vigencia</mat-label>
             <input matInput [matDatepicker]="picker" id="dateEffective" formControlName="dateEffective" required>
@@ -37,9 +58,5 @@
         <app-record-table [fields]="row.controls.fields"></app-record-table>
         }
         }
-    </mat-dialog-content>
-    <mat-dialog-actions>
-        <button mat-stroked-button mat-dialog-close>Cancelar</button>
-        <button mat-flat-button cdkFocusInitial type="submit">Guardar</button>
-    </mat-dialog-actions>
+    </div>
 </form>

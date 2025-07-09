@@ -1,5 +1,5 @@
 <mat-toolbar class="justify-between sticky top-0 z-[101] border-0 border-solid border-b border-b-slate-400">
-    <h4 class="text-sky-600 mb-0" routerLink="/">HabiliDent</h4>
+    <h4 class="text-sky-600 mb-0 cursor-pointer" [routerLink]="paths.DASHBOARD">HabiliDent</h4>
 
     <div class="flex items-center gap-x-4">
         <button mat-icon-button [matBadge]="notifications().length" [matBadgeHidden]="!notifications().length"

@@ -1,10 +1,14 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit } from '@angular/core';
+import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { InputTypes, RowTypes } from '@habilident/types';
+import { Format, InputTypes, PERMISSIONS, Record, RowTypes } from '@habilident/types';
 import { RecordsService } from '@features/records/services/records.service';
 import { RecordTableComponent } from '../record-table/record-table.component';
 import { RecordInputComponent } from '../record-input/record-input.component';
+import { FormatsService } from '@shared/services/formats.service';
+import { PATHS } from 'src/app/app.routes';
+import { PermissionDirective } from '@shared/directives/permission.directive';
+import { Router } from '@angular/router';
 
 export type ValueFormType = {
     name: FormControl<string>;
@@ -25,6 +29,7 @@ type ValuesFormType = {
         ReactiveFormsModule,
         RecordTableComponent,
         RecordInputComponent,
+        PermissionDirective,
     ],
     providers: [RecordsService],
     templateUrl: './record.component.html',
@@ -32,60 +37,88 @@ type ValuesFormType = {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class RecordComponent implements OnInit {
+    readonly permissions = PERMISSIONS;
+    readonly paths = PATHS;
     private readonly recordsService = inject(RecordsService);
+    private readonly formatsService = inject(FormatsService);
     private readonly formBuilder = inject(NonNullableFormBuilder);
-    data: any = { record: null, format: null };
+    private readonly router = inject(Router);
+
+    formatId = input<string>();
+    format = computed<Format | null>(() => this.formatsService.data().find(format => format._id === this.formatId()) ?? null);
+
+    recordId = input<string>();
+    record: Record | null = null;
 
     recordForm = this.formBuilder.group({
-        format: this.formBuilder.control(this.data.record?.format._id || this.data.format._id),
-        dateEffective: this.formBuilder.control(this.data.record?.dateEffective || this.data.dateEffective || new Date()),
+        dateEffective: this.formBuilder.control<Date | null>(null),
         rows: this.formBuilder.array<FormGroup<ValuesFormType>>([]),
     });
 
-    get isNew() {
-        return !this.data.record?._id;
-    }
-
     ngOnInit(): void {
-        //     (this.isNew)
-        //         ? this.buildFormNewRecord()
-        //         : this.buildFormUpdateRecord();
+        this.setForm();
     }
 
-    // buildFormNewRecord() {
-    //     this.data.format.rows.forEach((row) =>
-    //         this.recordForm.controls.rows.push(this.formBuilder.group<ValuesFormType>({
-    //             type: this.formBuilder.control(row.type),
-    //             fields: this.formBuilder.array([this.formBuilder.array(row.fields.map(input => this.formBuilder.group({
-    //                 name: this.formBuilder.control(input.name),
-    //                 type: this.formBuilder.control(input.type),
-    //                 required: this.formBuilder.control(input.required),
-    //                 value: this.formBuilder.control('', input.required ? [Validators.required] : []),
-    //             })))]),
-    //         }))
-    //     );
-    // }
+    private async setForm() {
+        await this.formatsService.load();
 
-    // buildFormUpdateRecord() {
-    //     this.data.record!.rows.forEach((row) =>
-    //         this.recordForm.controls.rows.push(this.formBuilder.group<ValuesFormType>({
-    //             type: this.formBuilder.control(row.type),
-    //             fields: this.formBuilder.array(row.fields.map(fields => this.formBuilder.array(fields.map(input => this.formBuilder.group({
-    //                 name: this.formBuilder.control(input.name),
-    //                 type: this.formBuilder.control(input.type),
-    //                 required: this.formBuilder.control(input.required),
-    //                 value: this.formBuilder.control(input.value ?? '', input.required ? [Validators.required] : []),
-    //             }))))),
-    //         }))
-    //     );
-    // }
+        this.recordForm.reset();
+        this.recordForm.controls.dateEffective.setValue(new Date());
+
+        const recordId = this.recordId();
+        if (!recordId) {
+            this.buildFormNewRecord();
+            return;
+        }
+
+        this.record = await this.recordsService.get(recordId) ?? null;
+        this.buildFormUpdateRecord();
+    }
+
+    buildFormNewRecord() {
+        this.format()?.rows.forEach((row) =>
+            this.recordForm.controls.rows.push(this.formBuilder.group<ValuesFormType>({
+                type: this.formBuilder.control(row.type),
+                fields: this.formBuilder.array([this.formBuilder.array(row.fields.map(input => this.formBuilder.group({
+                    name: this.formBuilder.control(input.name),
+                    type: this.formBuilder.control(input.type),
+                    required: this.formBuilder.control(input.required),
+                    value: this.formBuilder.control('', input.required ? [Validators.required] : []),
+                })))]),
+            }))
+        );
+    }
+
+    buildFormUpdateRecord() {
+        this.record!.rows.forEach((row) =>
+            this.recordForm.controls.rows.push(this.formBuilder.group<ValuesFormType>({
+                type: this.formBuilder.control(row.type),
+                fields: this.formBuilder.array(row.fields.map(fields => this.formBuilder.array(fields.map(input => this.formBuilder.group({
+                    name: this.formBuilder.control(input.name),
+                    type: this.formBuilder.control(input.type),
+                    required: this.formBuilder.control(input.required),
+                    value: this.formBuilder.control(input.value ?? '', input.required ? [Validators.required] : []),
+                }))))),
+            }))
+        );
+    }
 
     async save() {
         if (this.recordForm.invalid) return;
 
-        const record = this.recordForm.getRawValue();
+        const record = { ...this.recordForm.getRawValue(), format: this.formatId() } as any;
 
-        const resp = await this.recordsService.save(record as any, this.data.record?._id)
+        const result = await this.recordsService.save(record, this.recordId());
+        if (result) this.goToRecords();
+    }
+
+    async remove(id: string) {
+        const result = await this.recordsService.delete(id);
+        if (result) this.goToRecords();
+    }
+
+    goToRecords() {
+        this.router.navigate([PATHS.FORMATS, this.formatId(), this.paths.RECORDS]);
     }
 
 }

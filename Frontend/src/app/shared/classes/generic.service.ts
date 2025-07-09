@@ -1,21 +1,23 @@
 import { HttpClient } from "@angular/common/http";
+import { signal } from "@angular/core";
 import { Page } from "@habilident/types";
-import { StoreService } from "@shared/services/store.service";
 import { firstValueFrom } from "rxjs";
 import Swal from "sweetalert2";
 
 export abstract class GenericService<T> {
     protected abstract http: HttpClient;
     protected abstract api: string;
-    protected store?: StoreService;
+    data = signal<T[]>([]);
 
     async load() {
-        return this.store!.load<T>(this.api, await firstValueFrom(this.http.get<T[]>(this.api)));
+        if (this.data().length) return;
+        const data = await firstValueFrom(this.http.get<T[]>(this.api));
+        this.data.set(data);
     }
 
-    get data() {
-        return this.store!.get<T>(this.api);
-    };
+    getAll() {
+        return firstValueFrom(this.http.get<T[]>(`${this.api}`));
+    }
 
     getPage(skip = 0, limit = 0, query = '', start = '', end = '') {
         return firstValueFrom(this.http.get<Page<T>>(`${this.api}/page`, { params: { skip, limit, query, start, end } }));
