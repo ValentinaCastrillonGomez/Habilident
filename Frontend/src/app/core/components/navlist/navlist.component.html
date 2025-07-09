@@ -1,0 +1,14 @@
+<mat-nav-list>
+    @for (format of formats(); track format._id) {
+    @let isSelected = format._id === (formatSelected | async);
+    <a class="truncate w-full" (click)="goToRecords(format._id)" [title]="format.name | titlecase">
+        <mat-list-item [activated]="isSelected">
+            @let folder = isSelected ? 'folder_open' : 'folder';
+            <mat-icon matListItemIcon>{{folder}}</mat-icon>
+            <div class="flex items-center justify-between">
+                {{format.name | titlecase}}
+            </div>
+        </mat-list-item>
+    </a>
+    }
+</mat-nav-list>

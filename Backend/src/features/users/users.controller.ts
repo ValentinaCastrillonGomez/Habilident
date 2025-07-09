@@ -11,6 +11,7 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
     @Get()
+    @ValidPermission([PERMISSIONS.READ_FORMATS, PERMISSIONS.READ_RECORDS])
     findAll() {
         return this.usersService.find({ state: true });
     }

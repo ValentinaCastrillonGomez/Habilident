@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { User, Signature, Role, Parameter, TYPE_PARAMETERS } from '@habilident/types';
+import { User, Signature, Role, TYPE_PARAMETERS } from '@habilident/types';
 import { UsersService } from '../../services/users.service';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
@@ -27,8 +27,6 @@ export class UserComponent implements OnInit {
   private readonly parametersService = inject(ParametersService);
   user = inject<User | null>(MAT_DIALOG_DATA);
 
-  options: Parameter[] = [];
-  roles: Role[] = [];
   maxDate = moment().subtract(18, 'years').toDate();
   signaturefile = signal<Signature | null>(this.user?.signature ?? null);
 
@@ -50,8 +48,9 @@ export class UserComponent implements OnInit {
     state: this.formBuilder.control(true),
   });
 
-  typesDocuments = computed<string[]>(() => this.parametersService.parameters().find(option => option.name === TYPE_PARAMETERS.TYPE_DOCUMENTS)?.options || []);
-  genders = computed<string[]>(() => this.parametersService.parameters().find(option => option.name === TYPE_PARAMETERS.GENDERS)?.options || []);
+  typesDocuments = computed<string[]>(() => this.parametersService.data().find(option => option.name === TYPE_PARAMETERS.TYPE_DOCUMENTS)?.options || []);
+  genders = computed<string[]>(() => this.parametersService.data().find(option => option.name === TYPE_PARAMETERS.GENDERS)?.options || []);
+  roles = computed<Role[]>(() => this.rolesService.data() || []);
 
   get isNew() {
     return !this.user?._id;
@@ -62,7 +61,8 @@ export class UserComponent implements OnInit {
   }
 
   private async setForm() {
-    this.roles = await this.rolesService.getAll();
+    await this.parametersService.load();
+    await this.rolesService.load();
 
     if (this.user) {
       this.userForm.patchValue({

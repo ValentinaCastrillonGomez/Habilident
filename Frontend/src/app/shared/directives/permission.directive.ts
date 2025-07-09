@@ -10,11 +10,11 @@ export class PermissionDirective {
   private readonly templateRef = inject(TemplateRef<any>);
   private readonly viewContainer = inject(ViewContainerRef);
 
-  @Input() set appPermission(permission: Permission) {
-    this.updateView(permission);
+  @Input() set appPermission(permissions: Permission[] | Permission) {
+    this.updateView(Array.isArray(permissions) ? permissions : [permissions]);
   }
 
-  private updateView(permission: Permission) {
+  private updateView(permission: Permission[]) {
     (this.authService.hasPermission(permission))
       ? this.viewContainer.createEmbeddedView(this.templateRef)
       : this.viewContainer.clear();

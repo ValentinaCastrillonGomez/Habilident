@@ -24,7 +24,7 @@ export class RowTableComponent implements OnInit {
   @Input({ required: true }) row!: FormGroup<RowsFormType>;
   isUnique = input<boolean>(false);
   remove = output<void>();
-  options = computed<Parameter[]>(() => this.parametersService.parameters());
+  options = computed<Parameter[]>(() => this.parametersService.data());
 
   typeInputs = [
     { type: INPUT_TYPES.TEXT, name: 'Texto' },

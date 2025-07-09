@@ -1,13 +1,12 @@
-import { ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '@core/components/navbar/navbar.component';
-import { Format, PERMISSIONS } from '@habilident/types';
+import { NavlistComponent } from '@core/components/navlist/navlist.component';
+import { PERMISSIONS } from '@habilident/types';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { FormatsService } from '@shared/services/formats.service';
-import { ParametersService } from '@shared/services/parameters.service';
 import { ReportsService } from '@shared/services/reports.service';
-import { paths } from 'src/app/app.routes';
+import { PATHS } from 'src/app/app.routes';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +14,7 @@ import { paths } from 'src/app/app.routes';
     RouterOutlet,
     RouterLink,
     NavbarComponent,
+    NavlistComponent,
     MaterialModule,
     PermissionDirective,
   ],
@@ -24,38 +24,16 @@ import { paths } from 'src/app/app.routes';
 })
 export default class HomeComponent implements OnInit {
   readonly permissions = PERMISSIONS;
-  readonly paths = paths;
-  private readonly router = inject(Router);
-  private readonly formatsService = inject(FormatsService);
+  readonly paths = PATHS;
   private readonly reportsService = inject(ReportsService);
-  private readonly parametersService = inject(ParametersService);
-
-  readonly isReady = signal<boolean>(false);
-
-  formats = this.formatsService.formats;
-  formatSelected = this.formatsService.formatIdSelected;
   @ViewChild('pdfIframe', { static: false }) pdfIframe!: ElementRef;
 
   ngOnInit(): void {
-    this.loadData();
-
     this.reportsService.pdf$.subscribe(pdfUrl => {
       const iframe = this.pdfIframe.nativeElement as HTMLIFrameElement;
       iframe.src = pdfUrl;
       iframe.onload = () => iframe.contentWindow?.print();
     });
-  }
-
-  async loadData() {
-    await this.formatsService.loadFormats();
-    await this.parametersService.loadParameters();
-
-    this.isReady.set(true);
-  }
-
-  goToRecords(formatId: string) {
-    this.formatsService.formatIdSelected.next(formatId);
-    this.router.navigate([paths.RECORDS]);
   }
 
 }

@@ -6,7 +6,7 @@ import { PermissionDirective } from '@shared/directives/permission.directive';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { RouterLink } from '@angular/router';
-import { paths } from 'src/app/app.routes';
+import { PATHS } from 'src/app/app.routes';
 
 @Component({
   selector: 'app-formats',
@@ -21,7 +21,7 @@ import { paths } from 'src/app/app.routes';
 })
 export default class FormatsComponent implements AfterViewInit {
   readonly permissions = PERMISSIONS;
-  readonly paths = paths;
+  readonly paths = PATHS;
   private readonly formatsService = inject(FormatsService);
 
   private readonly searchTerms = new BehaviorSubject<string>('');

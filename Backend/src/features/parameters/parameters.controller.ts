@@ -11,6 +11,7 @@ export class ParametersController {
     constructor(private readonly parametersService: ParametersService) { }
 
     @Get()
+    @ValidPermission([PERMISSIONS.READ_RECORDS, PERMISSIONS.READ_USERS])
     findAll() {
         return this.parametersService.find({});
     }

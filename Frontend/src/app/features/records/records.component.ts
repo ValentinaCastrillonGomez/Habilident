@@ -9,7 +9,7 @@ import { ReportsService } from '@shared/services/reports.service';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { FormatsService } from '@shared/services/formats.service';
 import { RouterLink } from '@angular/router';
-import { paths } from 'src/app/app.routes';
+import { PATHS } from 'src/app/app.routes';
 import moment from 'moment';
 
 @Component({
@@ -27,7 +27,7 @@ import moment from 'moment';
 })
 export default class RecordsComponent implements AfterViewInit, OnDestroy {
     readonly permissions = PERMISSIONS;
-    readonly paths = paths;
+    readonly paths = PATHS;
     private readonly recordsService = inject(RecordsService);
     private readonly reportsService = inject(ReportsService);
     private readonly formatsService = inject(FormatsService);
@@ -46,7 +46,7 @@ export default class RecordsComponent implements AfterViewInit, OnDestroy {
     });
 
     ngAfterViewInit() {
-        const formats = this.formatsService.formats();
+        const formats = this.formatsService.data();
 
         if (!this.formatsService.formatIdSelected.getValue() && formats.length > 0) {
             this.formatsService.formatIdSelected.next(formats[0]._id);

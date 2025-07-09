@@ -9,7 +9,7 @@ import { RowAreaComponent } from '../row-area/row-area.component';
 import { RowTableComponent } from '../row-table/row-table.component';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { Router } from '@angular/router';
-import { paths } from 'src/app/app.routes';
+import { PATHS } from 'src/app/app.routes';
 import { ParametersService } from '@shared/services/parameters.service';
 import { UsersService } from '@features/users/services/users.service';
 
@@ -49,9 +49,9 @@ export default class FormatComponent implements OnInit {
   private readonly router = inject(Router);
 
   formatId = input<string>();
-  format = computed<Format | null>(() => this.formatsService.formats().find(format => format._id === this.formatId()) ?? null);
-  periodicity = computed<string[]>(() => this.parametersService.parameters().find(option => option.name === TYPE_PARAMETERS.PERIODICITY)?.options || []);
-  users: User[] = [];
+  format = computed<Format | null>(() => this.formatsService.data().find(format => format._id === this.formatId()) ?? null);
+  periodicity = computed<string[]>(() => this.parametersService.data().find(option => option.name === TYPE_PARAMETERS.PERIODICITY)?.options || []);
+  users = computed<User[]>(() => this.usersService.data() || []);
 
   formatForm = this.formBuilder.group({
     name: this.formBuilder.control('', [Validators.required]),
@@ -76,7 +76,9 @@ export default class FormatComponent implements OnInit {
   }
 
   private async setForm() {
-    this.users = await this.usersService.getAll();
+    await this.formatsService.load();
+    await this.parametersService.load();
+    await this.usersService.load();
 
     const format = this.format();
 
@@ -158,7 +160,6 @@ export default class FormatComponent implements OnInit {
   }
 
   private goToFormats() {
-    this.router.navigate([paths.FORMATS]);
-    this.formatsService.loadFormats();
+    this.router.navigate([PATHS.FORMATS]);
   }
 }

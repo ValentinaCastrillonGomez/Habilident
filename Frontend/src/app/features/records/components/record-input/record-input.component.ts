@@ -25,7 +25,7 @@ export class RecordInputComponent {
   }>;
   isTable = input<boolean>(false);
   select = computed(() => (this.input.controls.type.value === INPUT_TYPES.SELECT) ?
-    this.parametersService.parameters().find(parameter => parameter._id === this.input.controls.name.value)
+    this.parametersService.data().find(parameter => parameter._id === this.input.controls.name.value)
     : undefined);
 
 }

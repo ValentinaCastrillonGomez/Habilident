@@ -29,7 +29,7 @@ export class RecordTableComponent {
 
   displayedColumns = computed(() => this.fields.controls[0].controls.map(control =>
     (control.controls.type.value === INPUT_TYPES.SELECT)
-      ? this.parametersService.parameters().find(parameter => parameter._id === control.controls.name.value)?.name
+      ? this.parametersService.data().find(parameter => parameter._id === control.controls.name.value)?.name
       : control.controls.name.value
   ));
 

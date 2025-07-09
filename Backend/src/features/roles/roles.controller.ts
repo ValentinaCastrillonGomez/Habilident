@@ -11,6 +11,7 @@ export class RolesController {
     constructor(private readonly rolesService: RolesService) { }
 
     @Get()
+    @ValidPermission([PERMISSIONS.CREATE_USERS, PERMISSIONS.UPDATE_USERS])
     findAll() {
         return this.rolesService.find({});
     }

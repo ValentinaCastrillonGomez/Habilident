@@ -5,7 +5,7 @@
         <div class="flex items-center gap-x-2">
             @let formatSelected = formatId();
             <button mat-stroked-button type="submit"
-                *appPermission="formatSelected ? permissions.CREATE_FORMATS : permissions.UPDATE_FORMATS">
+                *appPermission="[permissions.CREATE_FORMATS, permissions.UPDATE_FORMATS]">
                 <mat-icon>save</mat-icon> Guardar
             </button>
             @if(formatSelected){
@@ -54,7 +54,7 @@
             <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Responsable</mat-label>
                 <mat-select id="responsibleUser" formControlName="responsibleUser">
-                    @for (user of users; track user._id) {
+                    @for (user of users(); track user._id) {
                     <mat-option [value]="user._id">{{user.firstNames}} {{user.lastNames}}</mat-option>
                     }
                 </mat-select>

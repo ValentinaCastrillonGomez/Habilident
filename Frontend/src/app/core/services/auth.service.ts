@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, filter, first, firstValueFrom, map } from 'rxjs';
 import { Router } from '@angular/router';
 import { Login, Permission } from '@habilident/types';
-import { paths } from 'src/app/app.routes';
+import { PATHS } from 'src/app/app.routes';
 import { environment } from 'src/environments/environment';
 
 const ACCESS_TOKEN = 'access_token';
@@ -37,7 +37,7 @@ export class AuthService {
       this.http.post<{ access_token: string }>(`${this.ENV.API_AUTH}/login`, login)
     );
     localStorage.setItem(ACCESS_TOKEN, access_token);
-    this.router.navigate([paths.HOME]);
+    this.router.navigate([PATHS.DASHBOARD]);
   }
 
   refresh() {
@@ -60,11 +60,11 @@ export class AuthService {
       firstValueFrom(this.http.post<void>(this.PATH_LOGOUT, {}));
     } finally {
       localStorage.removeItem(ACCESS_TOKEN);
-      this.router.navigate([paths.LOGIN]);
+      this.router.navigate([PATHS.LOGIN]);
     }
   }
 
-  hasPermission(permission: Permission): boolean {
-    return this.user.permissions.includes(permission);
+  hasPermission(permissions: Permission[]): boolean {
+    return permissions.some(permission => this.user.permissions.includes(permission));
   }
 }

@@ -51,20 +51,14 @@ export default class ParametersComponent implements AfterViewInit {
 
   async remove(id: string) {
     const result = await this.parametersService.delete(id);
-    if (result) {
-      this.actions.next();
-      this.parametersService.loadParameters();
-    };
+    if (result) this.actions.next();
   }
 
   open(data?: Parameter) {
     const dialogRef = this.dialog.open(ParameterComponent, { data });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.actions.next();
-        this.parametersService.loadParameters();
-      }
+      if (result) this.actions.next();
     });
   }
 

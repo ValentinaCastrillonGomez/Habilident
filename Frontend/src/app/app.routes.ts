@@ -3,84 +3,82 @@ import { authGuard } from '@core/guards/auth.guard';
 import { permissionGuard } from '@core/guards/permission.guard';
 import { PERMISSIONS } from '@habilident/types';
 
-export const paths = {
-  HOME: '',
-  LOGIN: 'login',
-  USERS: 'users',
-  ROLES: 'roles',
-  PARAMETERS: 'parameters',
-  FORMAT: 'format',
-  FORMATS: 'formats',
-  RECORD: 'record',
-  RECORDS: 'records',
-  REPORTS: 'reports',
-  ALERTS: 'alerts',
-  CALENDAR: 'calendar',
+export enum PATHS {
+  HOME = '',
+  LOGIN = 'login',
+  DASHBOARD = 'calendar',
+  USERS = 'users',
+  ROLES = 'roles',
+  PARAMETERS = 'parameters',
+  FORMAT = 'format',
+  FORMATS = 'formats',
+  RECORD = 'record',
+  RECORDS = 'records',
 };
 
 export const routes: Routes = [
   {
-    path: paths.LOGIN,
+    path: PATHS.LOGIN,
     loadComponent: () => import('@features/login/login.component'),
   },
   {
-    path: paths.HOME,
+    path: PATHS.HOME,
     canMatch: [() => authGuard()],
     loadComponent: () => import('@features/home/home.component'),
     children: [
       {
-        path: paths.USERS,
+        path: PATHS.USERS,
         canMatch: [() => permissionGuard(PERMISSIONS.READ_USERS)],
         loadComponent: () => import('@features/users/users.component'),
       },
       {
-        path: paths.ROLES,
+        path: PATHS.ROLES,
         canMatch: [() => permissionGuard(PERMISSIONS.READ_ROLES)],
         loadComponent: () => import('@features/roles/roles.component'),
       },
       {
-        path: paths.PARAMETERS,
+        path: PATHS.PARAMETERS,
         canMatch: [() => permissionGuard(PERMISSIONS.READ_PARAMETERS)],
         loadComponent: () => import('@features/parameters/parameters.component'),
       },
       {
-        path: `${paths.FORMAT}`,
+        path: `${PATHS.FORMAT}`,
         canMatch: [() => permissionGuard(PERMISSIONS.CREATE_FORMATS)],
         loadComponent: () => import('@features/formats/components/format/format.component'),
       },
       {
-        path: `${paths.FORMATS}`,
+        path: `${PATHS.FORMATS}`,
         canMatch: [() => permissionGuard(PERMISSIONS.READ_FORMATS)],
         loadComponent: () => import('@features/formats/formats.component'),
       },
       {
-        path: `${paths.FORMAT}/:formatId`,
+        path: `${PATHS.FORMAT}/:formatId`,
         canMatch: [() => permissionGuard(PERMISSIONS.READ_FORMATS)],
         loadComponent: () => import('@features/formats/components/format/format.component'),
       },
       {
-        path: `${paths.RECORDS}`,
+        path: `${PATHS.RECORDS}`,
         canMatch: [() => permissionGuard(PERMISSIONS.READ_RECORDS)],
         loadComponent: () => import('@features/records/records.component'),
       },
       {
-        path: `${paths.RECORD}`,
+        path: `${PATHS.RECORD}`,
         canMatch: [() => permissionGuard(PERMISSIONS.CREATE_RECORDS)],
         loadComponent: () => import('@features/records/components/record/record.component'),
       },
       {
-        path: `${paths.RECORD}/:recordId`,
+        path: `${PATHS.RECORD}/:recordId`,
         canMatch: [() => permissionGuard(PERMISSIONS.READ_RECORDS)],
         loadComponent: () => import('@features/records/components/record/record.component'),
       },
       {
-        path: `${paths.CALENDAR}`,
-        canMatch: [() => permissionGuard(PERMISSIONS.READ_RECORDS)],
+        path: `${PATHS.DASHBOARD}`,
+        canActivate: [() => permissionGuard(PERMISSIONS.READ_RECORDS)],
         loadComponent: () => import('@features/calendar/calendar.component'),
       },
-      { path: '**', redirectTo: paths.HOME },
+      { path: '', redirectTo: PATHS.HOME, pathMatch: 'full' },
+      { path: '**', redirectTo: PATHS.DASHBOARD },
     ]
   },
-  { path: '', redirectTo: paths.HOME, pathMatch: 'full' },
-  { path: '**', redirectTo: paths.HOME },
+  { path: '**', redirectTo: PATHS.HOME },
 ];
