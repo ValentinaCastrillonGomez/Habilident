@@ -1,27 +1,35 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { Format, InputTypes, PERMISSIONS, ROW_TYPES, RowTypes, TYPE_PARAMETERS, User } from '@habilident/types';
+import { Format, PERMISSIONS, ROW_TYPES, TYPE_PARAMETERS, User } from '@habilident/types';
 import { CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { RowSingleComponent } from '../row-single/row-single.component';
+import { RowSingleComponent, SingleRowFormType } from '../row-single/row-single.component';
 import { FormatsService } from '@shared/services/formats.service';
-import { RowAreaComponent } from '../row-area/row-area.component';
-import { RowTableComponent } from '../row-table/row-table.component';
+import { AreaRowFormType, RowAreaComponent } from '../row-area/row-area.component';
+import { RowTableComponent, TableRowFormType } from '../row-table/row-table.component';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { Router } from '@angular/router';
 import { PATHS } from 'src/app/app.routes';
 import { ParametersService } from '@shared/services/parameters.service';
 import { UsersService } from '@features/users/services/users.service';
 
-export type RowsFormType = {
-  type: FormControl<RowTypes>;
-  fields: FormArray<FormGroup<FieldsFormType>>;
+export type FormatRowFormType =
+  | FormGroup<SingleRowFormType>
+  | FormGroup<AreaRowFormType>
+  | FormGroup<TableRowFormType>;
+
+export type AlertFormType = {
+  state: FormControl<boolean>;
+  frequency: FormControl<string | null>;
+  dateStart: FormControl<Date | null>;
+  responsibleUser: FormControl<any>;
 };
 
-export type FieldsFormType = {
+export type FormatFormType = {
   name: FormControl<string>;
-  type: FormControl<InputTypes>;
-  required: FormControl<boolean>;
+  state: FormControl<boolean>;
+  alert: FormGroup<AlertFormType>;
+  rows: FormArray<FormatRowFormType>;
 };
 
 @Component({
@@ -42,7 +50,7 @@ export type FieldsFormType = {
 })
 export default class FormatComponent implements OnInit {
   readonly permissions = PERMISSIONS;
-  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
   private readonly formatsService = inject(FormatsService);
   private readonly parametersService = inject(ParametersService);
   private readonly usersService = inject(UsersService);
@@ -54,22 +62,16 @@ export default class FormatComponent implements OnInit {
   users = computed<User[]>(() => this.usersService.data() || []);
 
   formatForm = this.formBuilder.group({
-    name: this.formBuilder.control('', [Validators.required]),
-    state: this.formBuilder.control(true),
+    name: this.formBuilder.nonNullable.control('', [Validators.required]),
+    state: this.formBuilder.nonNullable.control(true),
     alert: this.formBuilder.group({
-      state: this.formBuilder.control(false),
+      state: this.formBuilder.nonNullable.control(false),
       frequency: this.formBuilder.control(''),
-      dateStart: this.formBuilder.control<any>(null),
-      responsibleUser: this.formBuilder.control<any>(null),
+      dateStart: this.formBuilder.control(new Date()),
+      responsibleUser: this.formBuilder.control(null),
     }),
-    rows: this.formBuilder.array<FormGroup<RowsFormType>>([]),
+    rows: this.formBuilder.array<FormatRowFormType>([]),
   });
-
-  typeRows = [
-    { type: ROW_TYPES.SINGLE, name: 'De campos' },
-    { type: ROW_TYPES.AREA, name: 'Texto en area' },
-    { type: ROW_TYPES.TABLE, name: 'Tabla' },
-  ];
 
   ngOnInit(): void {
     this.setForm();
@@ -99,15 +101,8 @@ export default class FormatComponent implements OnInit {
 
     format.rows.forEach((row) => {
       this.formatForm.controls.rows.push(
-        this.formBuilder.group<RowsFormType>({
-          type: this.formBuilder.control(row.type),
-          fields: this.formBuilder.array(row.fields.map(field =>
-            this.formBuilder.group<FieldsFormType>({
-              name: this.formBuilder.control(field.name, Validators.required),
-              type: this.formBuilder.control(field.type),
-              required: this.formBuilder.control(field.required),
-            })
-          )),
+        this.formBuilder.group({
+          type: this.formBuilder.control(row.type)
         })
       );
     });
@@ -128,10 +123,9 @@ export default class FormatComponent implements OnInit {
     }
   }
 
-  addRow(type: RowTypes): void {
-    this.formatForm.controls.rows.push(this.formBuilder.group<RowsFormType>({
+  addRow(type: ROW_TYPES): void {
+    this.formatForm.controls.rows.push(this.formBuilder.group({
       type: this.formBuilder.control(type),
-      fields: this.formBuilder.array<FormGroup<FieldsFormType>>([]),
     }));
   }
 
@@ -150,7 +144,7 @@ export default class FormatComponent implements OnInit {
 
     const format = this.formatForm.getRawValue();
 
-    const result = await this.formatsService.save(format, this.formatId());
+    const result = await this.formatsService.save(format as any, this.formatId());
     if (result) this.goToFormats();
   }
 

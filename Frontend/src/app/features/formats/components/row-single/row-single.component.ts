@@ -1,10 +1,15 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, Input, OnInit, output } from '@angular/core';
-import { FormArray, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, computed, inject, Input, OnInit, output } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { INPUT_TYPES, InputTypes, TYPES_NAMES, Parameter } from '@habilident/types';
+import { INPUT_TYPES, TYPES_NAMES, Parameter, ROW_TYPES } from '@habilident/types';
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { FieldsFormType, RowsFormType } from '../format/format.component';
-import { ParametersService } from '@shared/services/parameters.service'; 
+import { ParametersService } from '@shared/services/parameters.service';
+import { FieldsConfigFormType } from '../fields-config/fields-config.component';
+
+export type SingleRowFormType = {
+  type: FormControl<ROW_TYPES.SINGLE>;
+  fields: FormArray<FormGroup<FieldsConfigFormType>>;
+};
 
 @Component({
   selector: 'app-row-single',
@@ -18,30 +23,26 @@ import { ParametersService } from '@shared/services/parameters.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RowSingleComponent implements OnInit {
-  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
   private readonly parametersService = inject(ParametersService);
+  readonly typeNames = TYPES_NAMES;
+  readonly typeInputs = Object.keys(TYPES_NAMES);
 
-  @Input({ required: true }) row!: FormGroup<RowsFormType>;
-  isUnique = input<boolean>(false);
+  @Input({ required: true }) row!: FormGroup<SingleRowFormType>;
   remove = output<void>();
   options = computed<Parameter[]>(() => this.parametersService.data());
 
-  typeInputs = [
-    { type: INPUT_TYPES.TEXT, name: 'Texto' },
-    { type: INPUT_TYPES.NUMBER, name: 'Numero' },
-    { type: INPUT_TYPES.SELECT, name: 'Selección' },
-    { type: INPUT_TYPES.DATE, name: 'Fecha' },
-  ];
-
   ngOnInit() {
-    if (!this.row.controls.fields.length) this.addColumn(INPUT_TYPES.TEXT);
+    if (!this.row.controls.fields.length) this.addColumn();
   }
 
-  addColumn(type: InputTypes): void {
-    this.row.controls.fields.push(this.formBuilder.group({
-      name: this.formBuilder.control('', Validators.required),
-      type: this.formBuilder.control<InputTypes>(type),
-      required: this.formBuilder.control(true)
+  addColumn(): void {
+    this.row.controls.fields.push(this.formBuilder.group<FieldsConfigFormType>({
+      name: this.formBuilder.nonNullable.control('', Validators.required),
+      type: this.formBuilder.nonNullable.control(INPUT_TYPES.TEXT),
+      required: this.formBuilder.nonNullable.control(true),
+      value: this.formBuilder.nonNullable.control(''),
+      reference: this.formBuilder.control(null)
     }));
   }
 
@@ -55,10 +56,6 @@ export class RowSingleComponent implements OnInit {
 
   drop(event: CdkDragDrop<FormArray>) {
     moveItemInArray(this.row.controls.fields.controls, event.previousIndex, event.currentIndex);
-  }
-
-  getType(input: FormGroup<FieldsFormType>) {
-    return TYPES_NAMES[input.controls.type.value];
   }
 
 }

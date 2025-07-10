@@ -15,11 +15,11 @@ export class FormatEntity implements Format {
     @Prop({ required: true, default: true })
     state: boolean;
 
-    @Prop({ type: [Object], required: true })
-    rows: FormatRow[];
-
     @Prop({ type: AlertSchema, required: true })
     alert: Alert;
+
+    @Prop({ type: [Object], required: true })
+    rows: FormatRow[];
 }
 
 export const FormatSchema = SchemaFactory.createForClass(FormatEntity);

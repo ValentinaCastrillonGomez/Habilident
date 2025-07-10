@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { Format, InputTypes, PERMISSIONS, Record, RowTypes } from '@habilident/types';
+import { Format, PERMISSIONS, Record } from '@habilident/types';
 import { RecordsService } from '@features/records/services/records.service';
 import { RecordTableComponent } from '../record-table/record-table.component';
 import { RecordInputComponent } from '../record-input/record-input.component';
@@ -9,18 +9,6 @@ import { FormatsService } from '@shared/services/formats.service';
 import { PATHS } from 'src/app/app.routes';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { Router } from '@angular/router';
-
-export type ValueFormType = {
-    name: FormControl<string>;
-    type: FormControl<InputTypes>;
-    required: FormControl<boolean>;
-    value: FormControl<string>;
-}
-
-type ValuesFormType = {
-    type: FormControl<RowTypes>;
-    fields: FormArray<FormArray<FormGroup<ValueFormType>>>;
-};
 
 @Component({
     selector: 'app-record',
@@ -41,7 +29,7 @@ export default class RecordComponent implements OnInit {
     readonly paths = PATHS;
     private readonly recordsService = inject(RecordsService);
     private readonly formatsService = inject(FormatsService);
-    private readonly formBuilder = inject(NonNullableFormBuilder);
+    private readonly formBuilder = inject(FormBuilder);
     private readonly router = inject(Router);
 
     formatId = input<string>();
@@ -52,7 +40,7 @@ export default class RecordComponent implements OnInit {
 
     recordForm = this.formBuilder.group({
         dateEffective: this.formBuilder.control<Date | null>(null),
-        rows: this.formBuilder.array<FormGroup<ValuesFormType>>([]),
+        rows: this.formBuilder.array<FormGroup>([]),
     });
 
     ngOnInit(): void {
@@ -77,7 +65,7 @@ export default class RecordComponent implements OnInit {
 
     buildFormNewRecord() {
         this.format()?.rows.forEach((row) =>
-            this.recordForm.controls.rows.push(this.formBuilder.group<ValuesFormType>({
+            this.recordForm.controls.rows.push(this.formBuilder.group({
                 type: this.formBuilder.control(row.type),
                 fields: this.formBuilder.array([this.formBuilder.array(row.fields.map(input => this.formBuilder.group({
                     name: this.formBuilder.control(input.name),
@@ -91,7 +79,7 @@ export default class RecordComponent implements OnInit {
 
     buildFormUpdateRecord() {
         this.record!.rows.forEach((row) =>
-            this.recordForm.controls.rows.push(this.formBuilder.group<ValuesFormType>({
+            this.recordForm.controls.rows.push(this.formBuilder.group({
                 type: this.formBuilder.control(row.type),
                 fields: this.formBuilder.array(row.fields.map(fields => this.formBuilder.array(fields.map(input => this.formBuilder.group({
                     name: this.formBuilder.control(input.name),

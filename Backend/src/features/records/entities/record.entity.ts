@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument, Types } from "mongoose";
 import { FormatEntity } from "src/features/formats/entities/format.entity";
-import { Record, RecordRow } from "@habilident/types";
+import { Record, FormatRow } from "@habilident/types";
 import { UserEntity } from "src/features/users/entities/user.entity";
 
 export type RecordDocument = HydratedDocument<RecordEntity>;
@@ -9,6 +9,9 @@ export type RecordDocument = HydratedDocument<RecordEntity>;
 @Schema({ collection: 'records' })
 export class RecordEntity implements Record {
     _id?: Types.ObjectId;
+
+    @Prop({ type: Types.ObjectId, ref: 'FormatEntity', required: true })
+    format: FormatEntity;
 
     @Prop({ required: true })
     dateEffective: Date;
@@ -19,17 +22,14 @@ export class RecordEntity implements Record {
     @Prop({ type: Types.ObjectId, ref: 'UserEntity', required: true })
     userCreate: UserEntity;
 
-    @Prop()
-    dateLastUpdate: Date;
+    @Prop({ required: false, default: null })
+    dateLastUpdate: Date | null;
 
-    @Prop({ type: Types.ObjectId, ref: 'UserEntity' })
-    userLastUpdate: UserEntity;
+    @Prop({ type: Types.ObjectId, ref: 'UserEntity', required: false, default: null })
+    userLastUpdate: UserEntity | null;
 
-    @Prop({ type: Types.ObjectId, ref: 'FormatEntity', required: true })
-    format: FormatEntity;
-
-    @Prop({ type: [Object] })
-    rows: RecordRow[];
+    @Prop({ type: [Object], required: true })
+    rows: FormatRow[];
 }
 
 export const RecordSchema = SchemaFactory.createForClass(RecordEntity);

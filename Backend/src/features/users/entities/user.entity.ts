@@ -48,11 +48,11 @@ export class UserEntity implements User {
     @Prop({ required: true })
     password: string;
 
-    @Prop({ type: { name: String, image: String } })
-    signature?: Signature;
+    @Prop({ type: { name: String, image: String }, required: false, default: null })
+    signature: Signature | null;
 
-    @Prop()
-    refreshToken?: string;
+    @Prop({ required: false, default: null })
+    refreshToken: string | null;
 
     @Prop({ required: true, default: true })
     state: boolean;

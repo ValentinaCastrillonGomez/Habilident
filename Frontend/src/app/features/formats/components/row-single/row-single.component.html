@@ -7,33 +7,10 @@
     <div cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)"
         class="flex gap-x-3 w-full overflow-hidden">
         @for (input of row.controls.fields.controls; track input; let columnIndex = $index) {
-        @switch(input.controls.type.value){
-        @case ('select') {
         <mat-form-field appearance="outline" class="w-full mt-5 horizontal" [formGroup]="input" cdkDrag>
             <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?">
             </mat-checkbox>
-            <mat-label> Selección</mat-label>
-            <mat-select formControlName="name" required>
-                @for (option of options(); track option._id) {
-                <mat-option [value]="option._id">{{option.name}}</mat-option>
-                }
-            </mat-select>
-            @if(row.controls.fields.controls.length > 1){
-            <button matSuffix mat-icon-button type="button" matTooltip="Eliminar campo" (click)="removeColumn($index)">
-                <mat-icon>delete</mat-icon>
-            </button>
-            }
-            @if (input.controls.name.invalid) {
-            <mat-error class="truncate">Introduce una parametro válido</mat-error>
-            }
-        </mat-form-field>
-
-        }
-        @default {
-        <mat-form-field appearance="outline" class="w-full mt-5 horizontal" [formGroup]="input" cdkDrag>
-            <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?">
-            </mat-checkbox>
-            <mat-label>Campo {{getType(input)}}</mat-label>
+            <mat-label>Campo {{typeNames[input.controls.type.value]}}</mat-label>
             <input matInput type="text" formControlName="name" required>
             @if(row.controls.fields.controls.length > 1){
             <button matSuffix mat-icon-button type="button" matTooltip="Eliminar campo" (click)="removeColumn($index)">
@@ -45,8 +22,6 @@
             }
         </mat-form-field>
         }
-        }
-        }
     </div>
     <button mat-icon-button type="button" [matMenuTriggerFor]="rowInputs" class="self-center">
         <mat-icon>more_vert</mat-icon>
@@ -57,20 +32,16 @@
                 <mat-icon>add</mat-icon>
                 <span>Añadir campo</span>
             </button>
-            @if(!isUnique()){
             <button mat-menu-item (click)="removeRow()">
                 <mat-icon class="text-red-600">delete</mat-icon>
                 <span class="text-red-600">Eliminar fila</span>
             </button>
-            }
         </ng-template>
     </mat-menu>
 
     <mat-menu #inputsMenu="matMenu">
-        @for (item of typeInputs; track $index) {
-        <button mat-menu-item (click)="addColumn(item.type)">
-            <span>{{item.name}}</span>
+        <button mat-menu-item (click)="addColumn()">
+            <span>Nuevo</span>
         </button>
-        }
     </mat-menu>
 </div>

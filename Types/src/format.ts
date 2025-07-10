@@ -1,22 +1,22 @@
 import { User } from "./user";
 
-export const ROW_TYPES = {
-    SINGLE: 'single',
-    AREA: 'area',
-    TABLE: 'table',
-} as const;
+export enum ROW_TYPES {
+    SINGLE,
+    AREA,
+    TABLE,
+};
 
-export type RowTypes = typeof ROW_TYPES[keyof typeof ROW_TYPES];
-
-export const INPUT_TYPES = {
-    LABEL: 'label',
-    TEXT: 'text',
-    NUMBER: 'number',
-    SELECT: 'select',
-    DATE: 'date',
-    IMAGE: 'image',
-    SIGNATURE: 'signature',
-} as const;
+export enum INPUT_TYPES {
+    LABEL,
+    TEXT,
+    NUMBER,
+    SELECT,
+    DATE,
+    IMAGE,
+    SIGNATURE,
+    USER,
+    RECORD,
+};
 
 export const TYPES_NAMES = {
     [INPUT_TYPES.LABEL]: 'Texto',
@@ -26,34 +26,46 @@ export const TYPES_NAMES = {
     [INPUT_TYPES.DATE]: 'Fecha',
     [INPUT_TYPES.IMAGE]: 'Imagen',
     [INPUT_TYPES.SIGNATURE]: 'Firma',
+    [INPUT_TYPES.USER]: 'Usuario',
+    [INPUT_TYPES.RECORD]: 'Registro',
 } as const;
 
-export type InputTypes = typeof INPUT_TYPES[keyof typeof INPUT_TYPES];
-
-export type FormatField = {
+export type FieldsConfig = {
     name: string;
-    type: InputTypes;
+    type: INPUT_TYPES;
     required: boolean;
-    value?: string;
+    value: string;
+    reference: string | null;
 };
 
-export type FormatRow = {
-    type: RowTypes;
-    fields: FormatField[];
+export type SingleRow = {
+    type: ROW_TYPES.SINGLE;
+    fields: FieldsConfig[];
+};
+
+export type AreaRow = {
+    type: ROW_TYPES.AREA;
+    fields: FieldsConfig;
+};
+
+export type TableRow = {
+    type: ROW_TYPES.TABLE;
+    fields: FieldsConfig[][];
 };
 
 export type Alert = {
     state: boolean;
-    frequency?: string;
-    dateStart?: Date;
-    responsibleUser?: User;
-    lastGenerated?: Date;
+    frequency: string | null;
+    dateStart: Date | null;
+    responsibleUser: User | null;
 };
 
 export type Format = {
     _id?: any;
     name: string;
     state: boolean;
-    rows: FormatRow[];
     alert: Alert;
+    rows: FormatRow[];
 };
+
+export type FormatRow = SingleRow | AreaRow | TableRow;

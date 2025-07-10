@@ -15,7 +15,7 @@ export type User = {
     position: string;
     roles: Role[];
     password: string;
-    signature?: Signature;
+    signature: Signature | null;
     refreshToken?: string;
     state: boolean;
 }

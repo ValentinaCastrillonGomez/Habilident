@@ -97,29 +97,28 @@
         }
 
         <section formArrayName="rows">
-            <div class="flex items-center justify-between">
-                <span class="font-bold">Campos</span>
+            <span class="font-bold">Campos</span>
 
-                <button mat-button type="button" [matMenuTriggerFor]="formInputs">
-                    <mat-icon>add</mat-icon>Añadir fila
-                </button>
-            </div>
             <div cdkDropList (cdkDropListDropped)="drop($event)">
                 @for (row of formatForm.controls.rows.controls; track row) {
-                @if (row.controls.type.value === 'single') {
+                @if (row.controls['type'].value === 'single') {
                 <app-row-single [row]="row" (remove)="removeRow($index)"
                     [isUnique]="formatForm.controls.rows.controls.length===1"></app-row-single>
                 }
-                @if (row.controls.type.value === 'area') {
+                @if (row.controls['type'].value === 'area') {
                 <app-row-area [row]="row" (remove)="removeRow($index)"
                     [isUnique]="formatForm.controls.rows.controls.length===1"></app-row-area>
                 }
-                @if (row.controls.type.value === 'table') {
+                @if (row.controls['type'].value === 'table') {
                 <app-row-table [row]="row" (remove)="removeRow($index)"
                     [isUnique]="formatForm.controls.rows.controls.length===1"></app-row-table>
                 }
                 }
             </div>
+
+            <button mat-button type="button" class="text-center" [matMenuTriggerFor]="formInputs">
+                <mat-icon>add</mat-icon>Añadir fila
+            </button>
         </section>
     </div>
 

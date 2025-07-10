@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Content, PageOrientation } from 'pdfmake/interfaces';
 import PdfPrinter from 'pdfmake';
 import { RecordsService } from 'src/features/records/records.service';
-import { FormatField, INPUT_TYPES, ROW_TYPES, Parameter } from '@habilident/types';
+import { FieldsConfig, INPUT_TYPES, ROW_TYPES, Parameter } from '@habilident/types';
 import { ParametersService } from 'src/features/parameters/parameters.service';
 import { FormatsService } from 'src/features/formats/formats.service';
 
@@ -33,7 +33,7 @@ export class ReportsService {
             if (row.type === ROW_TYPES.SINGLE) {
                 return [
                     {
-                        columns: row.fields[0].map(field => ({
+                        columns: row.fields.map(field => ({
                             text: [
                                 { text: `${this.getNameField(field, parameters.data)}: `, bold: true },
                                 { text: field.type === INPUT_TYPES.DATE ? new Date(field.value).toLocaleDateString() : field.value, decoration: 'underline' }
@@ -93,7 +93,7 @@ export class ReportsService {
 
         body = data.map(record => record.rows
             .filter(row => row.type === ROW_TYPES.SINGLE)
-            .flatMap(row => row.fields[0].map(field => field)))
+            .flatMap(row => row.fields.map(field => field)))
             .map(row => head.map(column => {
                 const field = row.find(field => column.text === this.getNameField(field, parameters.data));
                 return field?.type === INPUT_TYPES.DATE ? new Date(field.value).toLocaleDateString() : field?.value || '[No registrado]';
@@ -116,7 +116,7 @@ export class ReportsService {
         return this.createPdf(format.name, content, 'landscape');
     }
 
-    getNameField(field: FormatField, parameters: Parameter[]) {
+    getNameField(field: FieldsConfig, parameters: Parameter[]) {
         if (field.type === INPUT_TYPES.SELECT) {
             return parameters.find(parameter => parameter._id.equals(field.name)).name;
         }
