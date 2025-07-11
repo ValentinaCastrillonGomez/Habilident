@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, inject, Input, OnInit, output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { INPUT_TYPES, TYPES_NAMES, Parameter, ROW_TYPES } from '@habilident/types';
+import { INPUT_TYPES, Parameter, ROW_TYPES } from '@habilident/types';
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ParametersService } from '@shared/services/parameters.service';
 import { FieldsConfigFormType } from '../fields-config/fields-config.component';
 
 export type SingleRowFormType = {
-  type: FormControl<ROW_TYPES.SINGLE>;
+  type: FormControl<typeof ROW_TYPES.SINGLE>;
   fields: FormArray<FormGroup<FieldsConfigFormType>>;
 };
 
@@ -25,8 +25,7 @@ export type SingleRowFormType = {
 export class RowSingleComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly parametersService = inject(ParametersService);
-  readonly typeNames = TYPES_NAMES;
-  readonly typeInputs = Object.keys(TYPES_NAMES);
+  readonly inputTypes = INPUT_TYPES;
 
   @Input({ required: true }) row!: FormGroup<SingleRowFormType>;
   remove = output<void>();

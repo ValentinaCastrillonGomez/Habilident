@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { Format, PERMISSIONS, Record } from '@habilident/types';
+import { Format, PERMISSIONS, Record, ROW_TYPES } from '@habilident/types';
 import { RecordsService } from '@features/records/services/records.service';
 import { RecordTableComponent } from '../record-table/record-table.component';
 import { RecordInputComponent } from '../record-input/record-input.component';
@@ -27,6 +27,7 @@ import { Router } from '@angular/router';
 export default class RecordComponent implements OnInit {
     readonly permissions = PERMISSIONS;
     readonly paths = PATHS;
+    readonly rowTypes = ROW_TYPES;
     private readonly recordsService = inject(RecordsService);
     private readonly formatsService = inject(FormatsService);
     private readonly formBuilder = inject(FormBuilder);
@@ -64,31 +65,31 @@ export default class RecordComponent implements OnInit {
     }
 
     buildFormNewRecord() {
-        this.format()?.rows.forEach((row) =>
-            this.recordForm.controls.rows.push(this.formBuilder.group({
-                type: this.formBuilder.control(row.type),
-                fields: this.formBuilder.array([this.formBuilder.array(row.fields.map(input => this.formBuilder.group({
-                    name: this.formBuilder.control(input.name),
-                    type: this.formBuilder.control(input.type),
-                    required: this.formBuilder.control(input.required),
-                    value: this.formBuilder.control('', input.required ? [Validators.required] : []),
-                })))]),
-            }))
-        );
+        // this.format()?.rows.forEach((row) =>
+        //     this.recordForm.controls.rows.push(this.formBuilder.group({
+        //         type: this.formBuilder.control(row.type),
+        //         fields: this.formBuilder.array([this.formBuilder.array(row.fields.map(input => this.formBuilder.group({
+        //             name: this.formBuilder.control(input.name),
+        //             type: this.formBuilder.control(input.type),
+        //             required: this.formBuilder.control(input.required),
+        //             value: this.formBuilder.control('', input.required ? [Validators.required] : []),
+        //         })))]),
+        //     }))
+        // );
     }
 
     buildFormUpdateRecord() {
-        this.record!.rows.forEach((row) =>
-            this.recordForm.controls.rows.push(this.formBuilder.group({
-                type: this.formBuilder.control(row.type),
-                fields: this.formBuilder.array(row.fields.map(fields => this.formBuilder.array(fields.map(input => this.formBuilder.group({
-                    name: this.formBuilder.control(input.name),
-                    type: this.formBuilder.control(input.type),
-                    required: this.formBuilder.control(input.required),
-                    value: this.formBuilder.control(input.value ?? '', input.required ? [Validators.required] : []),
-                }))))),
-            }))
-        );
+        // this.record!.rows.forEach((row) =>
+        //     this.recordForm.controls.rows.push(this.formBuilder.group({
+        //         type: this.formBuilder.control(row.type),
+        //         fields: this.formBuilder.array(row.fields.map(fields => this.formBuilder.array(fields.map(input => this.formBuilder.group({
+        //             name: this.formBuilder.control(input.name),
+        //             type: this.formBuilder.control(input.type),
+        //             required: this.formBuilder.control(input.required),
+        //             value: this.formBuilder.control(input.value ?? '', input.required ? [Validators.required] : []),
+        //         }))))),
+        //     }))
+        // );
     }
 
     async save() {

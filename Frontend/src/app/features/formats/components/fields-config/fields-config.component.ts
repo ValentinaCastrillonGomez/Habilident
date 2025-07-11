@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { INPUT_TYPES } from '@habilident/types';
+import { InputType } from '@habilident/types';
 
 export type FieldsConfigFormType = {
   name: FormControl<string>;
-  type: FormControl<INPUT_TYPES>;
+  type: FormControl<InputType>;
   required: FormControl<boolean>;
   value: FormControl<string>;
   reference: FormControl<string | null>;

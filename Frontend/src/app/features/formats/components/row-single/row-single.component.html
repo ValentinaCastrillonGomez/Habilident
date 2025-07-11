@@ -10,7 +10,7 @@
         <mat-form-field appearance="outline" class="w-full mt-5 horizontal" [formGroup]="input" cdkDrag>
             <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?">
             </mat-checkbox>
-            <mat-label>Campo {{typeNames[input.controls.type.value]}}</mat-label>
+            <mat-label>Campo </mat-label>
             <input matInput type="text" formControlName="name" required>
             @if(row.controls.fields.controls.length > 1){
             <button matSuffix mat-icon-button type="button" matTooltip="Eliminar campo" (click)="removeColumn($index)">

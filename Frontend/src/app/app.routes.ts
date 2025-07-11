@@ -3,18 +3,18 @@ import { authGuard } from '@core/guards/auth.guard';
 import { permissionGuard } from '@core/guards/permission.guard';
 import { PERMISSIONS } from '@habilident/types';
 
-export enum PATHS {
-  HOME = '',
-  LOGIN = 'login',
-  DASHBOARD = 'calendar',
-  USERS = 'users',
-  ROLES = 'roles',
-  PARAMETERS = 'parameters',
-  FORMAT = 'format',
-  FORMATS = 'formats',
-  RECORD = 'record',
-  RECORDS = 'records',
-};
+export const PATHS = {
+  HOME: '',
+  LOGIN: 'login',
+  DASHBOARD: 'calendar',
+  USERS: 'users',
+  ROLES: 'roles',
+  PARAMETERS: 'parameters',
+  FORMAT: 'format',
+  FORMATS: 'formats',
+  RECORD: 'record',
+  RECORDS: 'records',
+} as const;
 
 export const routes: Routes = [
   {

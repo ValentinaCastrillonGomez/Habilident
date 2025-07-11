@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, inject, Input, OnInit, output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { INPUT_TYPES, TYPES_NAMES, Parameter, ROW_TYPES } from '@habilident/types';
+import { INPUT_TYPES, InputType, Parameter, ROW_TYPES } from '@habilident/types';
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ParametersService } from '@shared/services/parameters.service';
 import { FieldsConfigFormType } from '../fields-config/fields-config.component';
 
 export type TableRowFormType = {
-  type: FormControl<ROW_TYPES.TABLE>;
+  type: FormControl<typeof ROW_TYPES.TABLE>;
   fields: FormArray<FormArray<FormGroup<FieldsConfigFormType>>>;
 };
 
@@ -25,8 +25,7 @@ export type TableRowFormType = {
 export class RowTableComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly parametersService = inject(ParametersService);
-  readonly typeNames = TYPES_NAMES;
-  readonly typeInputs = Object.keys(TYPES_NAMES);
+  readonly inputTypes = INPUT_TYPES;
 
   @Input({ required: true }) row!: FormGroup<TableRowFormType>;
   remove = output<void>();
@@ -39,7 +38,7 @@ export class RowTableComponent implements OnInit {
     };
   }
 
-  addInput(index: number, type: INPUT_TYPES): void {
+  addInput(index: number, type: InputType): void {
     this.row.controls.fields.controls[index].push(this.formBuilder.group<FieldsConfigFormType>({
       name: this.formBuilder.nonNullable.control('', Validators.required),
       type: this.formBuilder.nonNullable.control(type),

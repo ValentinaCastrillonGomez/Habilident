@@ -12,10 +12,15 @@ export class AlertEntity {
     frequency: string | null;
 
     @Prop({ required: false, default: null })
-    dateStart: Date | null;
+    often: string | null;
+
+    @Prop({ required: false, default: null })
+    startAt: Date | null;
+
+    @Prop({ required: false, default: null })
+    hours: string[] | null;
 
     @Prop({ type: Types.ObjectId, ref: 'UserEntity', required: false, default: null })
     responsibleUser: UserEntity | null;
 }
-
 export const AlertSchema = SchemaFactory.createForClass(AlertEntity);

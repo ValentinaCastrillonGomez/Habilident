@@ -52,7 +52,7 @@ export class UserEntity implements User {
     signature: Signature | null;
 
     @Prop({ required: false, default: null })
-    refreshToken: string | null;
+    refreshToken?: string;
 
     @Prop({ required: true, default: true })
     state: boolean;

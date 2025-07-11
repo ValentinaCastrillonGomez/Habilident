@@ -24,17 +24,5 @@
             "Mujer",
             "Otro"
         ]
-    },
-    {
-        "name": "Periocidad",
-        "protected": true,
-        "options": [
-            "Diario",
-            "Semanal",
-            "Mensual",
-            "Trimestral",
-            "Semestral",
-            "Anual"
-        ]
     }
 ]

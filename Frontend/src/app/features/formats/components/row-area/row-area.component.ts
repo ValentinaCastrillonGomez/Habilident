@@ -6,7 +6,7 @@ import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { FieldsConfigFormType } from '../fields-config/fields-config.component';
 
 export type AreaRowFormType = {
-  type: FormControl<ROW_TYPES.AREA>;
+  type: FormControl<typeof ROW_TYPES.AREA>;
   fields: FormGroup<FieldsConfigFormType>;
 };
 

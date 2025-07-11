@@ -17,16 +17,16 @@ export class RecordEntity implements Record {
     dateEffective: Date;
 
     @Prop({ required: true })
-    dateCreate: Date;
+    dateCreate?: Date;
 
     @Prop({ type: Types.ObjectId, ref: 'UserEntity', required: true })
-    userCreate: UserEntity;
+    userCreate?: UserEntity;
 
     @Prop({ required: false, default: null })
-    dateLastUpdate: Date | null;
+    dateLastUpdate?: Date;
 
     @Prop({ type: Types.ObjectId, ref: 'UserEntity', required: false, default: null })
-    userLastUpdate: UserEntity | null;
+    userLastUpdate?: UserEntity;
 
     @Prop({ type: [Object], required: true })
     rows: FormatRow[];

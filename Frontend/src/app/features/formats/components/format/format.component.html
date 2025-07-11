@@ -47,7 +47,7 @@
             <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Peridiocidad</mat-label>
                 <mat-select id="frequency" formControlName="frequency">
-                    @for (option of periodicity(); track option) {
+                    @for (option of frequencies; track option) {
                     <mat-option [value]="option">{{option}}</mat-option>
                     }
                 </mat-select>
@@ -70,26 +70,26 @@
 
             <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Fecha de inicio</mat-label>
-                <input matInput [matDatepicker]="picker" id="dateStart" formControlName="dateStart"
-                    [value]="formatForm.controls.alert.controls.dateStart.value" />
+                <input matInput [matDatepicker]="picker" id="startAt" formControlName="startAt"
+                    [value]="formatForm.controls.alert.controls.startAt.value" />
 
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
 
-                @if (formatForm.controls.alert.controls.dateStart.invalid) {
+                @if (formatForm.controls.alert.controls.startAt.invalid) {
                 <mat-error>Introduce una fecha de inicio válida</mat-error>
                 }
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Hora de notificación</mat-label>
-                <input matInput [matTimepicker]="timepicker" id="timeStart" formControlName="dateStart"
-                    [value]="formatForm.controls.alert.controls.dateStart.value" />
+                <input matInput [matTimepicker]="timepicker" id="timeStart" formControlName="startAt"
+                    [value]="formatForm.controls.alert.controls.startAt.value" />
 
                 <mat-timepicker-toggle matSuffix [for]="timepicker"></mat-timepicker-toggle>
                 <mat-timepicker #timepicker />
 
-                @if (formatForm.controls.alert.controls.dateStart.invalid) {
+                @if (formatForm.controls.alert.controls.startAt.invalid) {
                 <mat-error>Introduce una hora de notificación válida</mat-error>
                 }
             </mat-form-field>
@@ -101,34 +101,21 @@
 
             <div cdkDropList (cdkDropListDropped)="drop($event)">
                 @for (row of formatForm.controls.rows.controls; track row) {
-                @if (row.controls['type'].value === 'single') {
-                <app-row-single [row]="row" (remove)="removeRow($index)"
-                    [isUnique]="formatForm.controls.rows.controls.length===1"></app-row-single>
+                @if (row.controls.type.value === rowTypes.SINGLE) {
+                <app-row-single [row]="row" (remove)="removeRow($index)"></app-row-single>
                 }
-                @if (row.controls['type'].value === 'area') {
-                <app-row-area [row]="row" (remove)="removeRow($index)"
-                    [isUnique]="formatForm.controls.rows.controls.length===1"></app-row-area>
+                @if (row.controls.type.value === rowTypes.AREA) {
+                <app-row-area [row]="row" (remove)="removeRow($index)"></app-row-area>
                 }
-                @if (row.controls['type'].value === 'table') {
-                <app-row-table [row]="row" (remove)="removeRow($index)"
-                    [isUnique]="formatForm.controls.rows.controls.length===1"></app-row-table>
+                @if (row.controls.type.value === rowTypes.TABLE) {
+                <app-row-table [row]="row" (remove)="removeRow($index)"></app-row-table>
                 }
                 }
             </div>
 
-            <button mat-button type="button" class="text-center" [matMenuTriggerFor]="formInputs">
+            <button mat-button type="button" class="text-center">
                 <mat-icon>add</mat-icon>Añadir fila
             </button>
         </section>
     </div>
-
-    <mat-menu #formInputs="matMenu">
-        <ng-template matMenuContent>
-            @for (item of typeRows; track $index) {
-            <button mat-menu-item (click)="addRow(item.type)">
-                <span>{{item.name}}</span>
-            </button>
-            }
-        </ng-template>
-    </mat-menu>
 </form>
