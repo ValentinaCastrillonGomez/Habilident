@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { InputType } from '@habilident/types';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FieldsConfig, INPUT_TYPES, InputType } from '@habilident/types';
 
 export type FieldsConfigFormType = {
   name: FormControl<string>;
@@ -8,6 +8,16 @@ export type FieldsConfigFormType = {
   required: FormControl<boolean>;
   value: FormControl<string>;
   reference: FormControl<string | null>;
+};
+
+export function createFieldFormGroup(fb: FormBuilder, field?: FieldsConfig): FormGroup<FieldsConfigFormType> {
+  return fb.group<FieldsConfigFormType>({
+    name: fb.nonNullable.control(field?.name ?? ''),
+    type: fb.nonNullable.control(field?.type ?? INPUT_TYPES.TEXT),
+    required: fb.nonNullable.control(field?.required ?? false),
+    value: fb.nonNullable.control(field?.value ?? ''),
+    reference: fb.control(field?.reference ?? null),
+  });
 };
 
 @Component({

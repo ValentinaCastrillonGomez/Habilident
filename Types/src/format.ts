@@ -2,7 +2,7 @@ import { Alert } from "./alert";
 
 export const ROW_TYPES = {
     SINGLE: 'Campos',
-    AREA: 'Texto en area',
+    AREA: 'Area',
     TABLE: 'Tabla',
 } as const;
 

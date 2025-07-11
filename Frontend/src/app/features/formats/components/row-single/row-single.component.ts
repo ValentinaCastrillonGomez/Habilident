@@ -1,28 +1,35 @@
-import { ChangeDetectionStrategy, Component, computed, inject, Input, OnInit, output } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, computed, inject, Input, output } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { INPUT_TYPES, Parameter, ROW_TYPES } from '@habilident/types';
-import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { FieldsConfig, INPUT_TYPES, Parameter, ROW_TYPES } from '@habilident/types';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ParametersService } from '@shared/services/parameters.service';
-import { FieldsConfigFormType } from '../fields-config/fields-config.component';
+import { createFieldFormGroup, FieldsConfigFormType } from '../fields-config/fields-config.component';
 
 export type SingleRowFormType = {
   type: FormControl<typeof ROW_TYPES.SINGLE>;
   fields: FormArray<FormGroup<FieldsConfigFormType>>;
 };
 
+export function createSingleRow(fb: FormBuilder, fields: FieldsConfig[] = []): FormGroup<SingleRowFormType> {
+  return fb.group<SingleRowFormType>({
+    type: fb.nonNullable.control(ROW_TYPES.SINGLE),
+    fields: fb.array(fields.map(field => createFieldFormGroup(fb, field))),
+  });
+};
+
 @Component({
   selector: 'app-row-single',
   imports: [
     MaterialModule,
-    CdkDrag, CdkDragHandle, CdkDropList,
+    CdkDrag, CdkDropList,
     ReactiveFormsModule,
   ],
   templateUrl: './row-single.component.html',
   styleUrl: './row-single.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RowSingleComponent implements OnInit {
+export class RowSingleComponent {
   private readonly formBuilder = inject(FormBuilder);
   private readonly parametersService = inject(ParametersService);
   readonly inputTypes = INPUT_TYPES;
@@ -31,18 +38,8 @@ export class RowSingleComponent implements OnInit {
   remove = output<void>();
   options = computed<Parameter[]>(() => this.parametersService.data());
 
-  ngOnInit() {
-    if (!this.row.controls.fields.length) this.addColumn();
-  }
-
   addColumn(): void {
-    this.row.controls.fields.push(this.formBuilder.group<FieldsConfigFormType>({
-      name: this.formBuilder.nonNullable.control('', Validators.required),
-      type: this.formBuilder.nonNullable.control(INPUT_TYPES.TEXT),
-      required: this.formBuilder.nonNullable.control(true),
-      value: this.formBuilder.nonNullable.control(''),
-      reference: this.formBuilder.control(null)
-    }));
+    this.row.controls.fields.push(createFieldFormGroup(this.formBuilder));
   }
 
   removeColumn(columnIndex: number): void {

@@ -100,20 +100,24 @@
             <span class="font-bold">Campos</span>
 
             <div cdkDropList (cdkDropListDropped)="drop($event)">
-                @for (row of formatForm.controls.rows.controls; track row) {
-                @if (row.controls.type.value === rowTypes.SINGLE) {
-                <app-row-single [row]="row" (remove)="removeRow($index)"></app-row-single>
-                }
-                @if (row.controls.type.value === rowTypes.AREA) {
-                <app-row-area [row]="row" (remove)="removeRow($index)"></app-row-area>
-                }
-                @if (row.controls.type.value === rowTypes.TABLE) {
-                <app-row-table [row]="row" (remove)="removeRow($index)"></app-row-table>
-                }
+                @for (row of formatForm.controls.rows.controls; track row; let i = $index) {
+                <div class="flex border-dashed border-black/50 bg-sky-300/20" cdkDrag>
+                    <button mat-icon-button type="button" matTooltip="Arrastrar" matTooltipPosition="before"
+                        class="self-center" cdkDragHandle>
+                        <mat-icon>drag_indicator</mat-icon>
+                    </button>
+
+                    <ng-container *ngComponentOutlet="componentMap[row.controls.type.value]; inputs: {row}" />
+
+                    <button mat-icon-button type="button" (click)="removeRow(i)" class="self-center">
+                        <mat-icon class="text-red-600">delete</mat-icon>
+                        <span class="text-red-600">Eliminar fila</span>
+                    </button>
+                </div>
                 }
             </div>
 
-            <button mat-button type="button" class="text-center">
+            <button mat-button type="button" class="text-center" (click)="addRow(rowTypes.SINGLE)">
                 <mat-icon>add</mat-icon>Añadir fila
             </button>
         </section>

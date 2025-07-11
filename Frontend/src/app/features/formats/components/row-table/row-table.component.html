@@ -1,40 +1,22 @@
-<div class="flex border-dashed border-black/50 bg-sky-300/20" cdkDrag>
-    <button mat-icon-button type="button" matTooltip="Arrastrar" matTooltipPosition="before" class="self-center"
-        cdkDragHandle>
-        <mat-icon>drag_indicator</mat-icon>
-    </button>
-
-    <div cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)"
-        class="flex gap-x-3 w-full overflow-hidden">
-        @for (rowInputs of row.controls.fields.controls; track rowInputs; let rowIndex = $index) {
-        @for (input of rowInputs.controls; track input; let columnIndex = $index) {
-        <mat-form-field appearance="outline" class="w-full mt-5 horizontal" [formGroup]="input" cdkDrag>
-            <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?">
-            </mat-checkbox>
-            <mat-label>Columna </mat-label>
-            <input matInput type="text" formControlName="name" required>
-            @if(row.controls.fields.controls.length > 1){
-            <button matSuffix mat-icon-button type="button" matTooltip="Eliminar columna"
-                (click)="removeInput(rowIndex, columnIndex)">
-                <mat-icon>delete</mat-icon>
-            </button>
-            }
-            @if (input.controls.name.invalid) {
-            <mat-error class="truncate">Introduce un nombre válido</mat-error>
-            }
-        </mat-form-field>
+<div cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)"
+    class="flex gap-x-3 w-full overflow-hidden">
+    @for (rowInputs of row.controls.fields.controls; track rowInputs; let rowIndex = $index) {
+    @for (input of rowInputs.controls; track input; let columnIndex = $index) {
+    <mat-form-field appearance="outline" class="w-full mt-5 horizontal" [formGroup]="input" cdkDrag>
+        <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?">
+        </mat-checkbox>
+        <mat-label>Columna </mat-label>
+        <input matInput type="text" formControlName="name" required>
+        @if(row.controls.fields.controls.length > 1){
+        <button matSuffix mat-icon-button type="button" matTooltip="Eliminar columna"
+            (click)="removeInput(rowIndex, columnIndex)">
+            <mat-icon>delete</mat-icon>
+        </button>
         }
+        @if (input.controls.name.invalid) {
+        <mat-error class="truncate">Introduce un nombre válido</mat-error>
         }
-    </div>
-    <button mat-icon-button type="button" [matMenuTriggerFor]="rowInputs" class="self-center">
-        <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #rowInputs="matMenu">
-        <ng-template matMenuContent let-rowIndex="data">
-            <button mat-menu-item (click)="removeRow()">
-                <mat-icon class="text-red-600">delete</mat-icon>
-                <span class="text-red-600">Eliminar fila</span>
-            </button>
-        </ng-template>
-    </mat-menu>
+    </mat-form-field>
+    }
+    }
 </div>

@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { Format, PERMISSIONS, ROW_TYPES, RowType, User } from '@habilident/types';
-import { CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { RowSingleComponent, SingleRowFormType } from '../row-single/row-single.component';
+import { FieldsConfig, Format, PERMISSIONS, ROW_TYPES, RowType, User } from '@habilident/types';
+import { CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { createSingleRow, RowSingleComponent, SingleRowFormType } from '../row-single/row-single.component';
 import { FormatsService } from '@shared/services/formats.service';
-import { AreaRowFormType, RowAreaComponent } from '../row-area/row-area.component';
-import { RowTableComponent, TableRowFormType } from '../row-table/row-table.component';
+import { AreaRowFormType, createAreaRow, RowAreaComponent } from '../row-area/row-area.component';
+import { createTableRow, RowTableComponent, TableRowFormType } from '../row-table/row-table.component';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { Router } from '@angular/router';
 import { PATHS } from 'src/app/app.routes';
@@ -36,16 +36,19 @@ export type FormatFormType = {
   rows: FormArray<FormatRowFormType>;
 };
 
+const createRowMap = {
+  [ROW_TYPES.SINGLE]: (fb: FormBuilder, fields?: FieldsConfig[]) => createSingleRow(fb, fields),
+  [ROW_TYPES.AREA]: (fb: FormBuilder, fields?: FieldsConfig) => createAreaRow(fb, fields),
+  [ROW_TYPES.TABLE]: (fb: FormBuilder, fields?: FieldsConfig[][]) => createTableRow(fb, fields),
+};
+
 @Component({
   selector: 'app-format',
   imports: [
     ReactiveFormsModule,
     MaterialModule,
     PermissionDirective,
-    RowSingleComponent,
-    RowAreaComponent,
-    RowTableComponent,
-    CdkDropList,
+    CdkDropList, CdkDragHandle,
   ],
   providers: [UsersService],
   templateUrl: './format.component.html',
@@ -60,6 +63,12 @@ export default class FormatComponent implements OnInit {
   private readonly parametersService = inject(ParametersService);
   private readonly usersService = inject(UsersService);
   private readonly router = inject(Router);
+
+  readonly componentMap = {
+    [ROW_TYPES.SINGLE]: RowSingleComponent,
+    [ROW_TYPES.AREA]: RowAreaComponent,
+    [ROW_TYPES.TABLE]: RowTableComponent,
+  };
 
   formatId = input<string>();
   format = computed<Format | null>(() => this.formatsService.data().find(format => format._id === this.formatId()) ?? null);
@@ -108,7 +117,7 @@ export default class FormatComponent implements OnInit {
     });
 
     format.rows.forEach((row) => {
-      // this.formatForm.controls.rows.push( );
+      this.addRow(row.type)
     });
   }
 
@@ -126,8 +135,8 @@ export default class FormatComponent implements OnInit {
     }
   }
 
-  addRow(type: RowType): void {
-    // this.formatForm.controls.rows.push( );
+  addRow(type: RowType, fields?: any) {
+    this.formatForm.controls.rows.push(createRowMap[type](this.formBuilder, fields));
   }
 
   removeRow(rowIndex: number): void {
@@ -157,4 +166,5 @@ export default class FormatComponent implements OnInit {
   goToFormats() {
     this.router.navigate([PATHS.FORMATS]);
   }
+
 }

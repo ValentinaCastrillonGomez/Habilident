@@ -35,28 +35,7 @@
         </mat-form-field>
 
         @for (row of recordForm.controls.rows.controls; track row; let rowIndex = $index) {
-        @if(row.controls.type.value === rowTypes.SINGLE){
-        <div class="flex gap-x-2">
-            @for (input of row.controls.fields.controls[0].controls; track input; let columnIndex = $index) {
-            <app-record-input class="w-full overflow-x-hidden pt-2" [input]="input"></app-record-input>
-            }
-        </div>
-        }
-        @if(row.controls.type.value === rowTypes.AREA){
-        @let input = row.controls.fields.controls.controls[0];
-        @if(input.controls.type.value=='text'){
-        <mat-form-field appearance="outline" class="w-full" [formGroup]="input">
-            <mat-label>{{input.controls.name.value}}</mat-label>
-            <textarea matInput formControlName="value" [required]="input.controls.required.value"></textarea>
-            @if (input.controls.value.invalid) {
-            <mat-error class="truncate">Introduce un valor válido</mat-error>
-            }
-        </mat-form-field>
-        }
-        }
-        @if(row.controls.type.value === rowTypes.TABLE){
-        <app-record-table [fields]="row.controls.fields"></app-record-table>
-        }
+
         }
     </div>
 </form>

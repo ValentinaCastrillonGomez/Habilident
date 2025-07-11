@@ -1,22 +1,19 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Format, PERMISSIONS, Record, ROW_TYPES } from '@habilident/types';
 import { RecordsService } from '@features/records/services/records.service';
-import { RecordTableComponent } from '../record-table/record-table.component';
-import { RecordInputComponent } from '../record-input/record-input.component';
 import { FormatsService } from '@shared/services/formats.service';
 import { PATHS } from 'src/app/app.routes';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { Router } from '@angular/router';
+import { FormatRowFormType } from '@features/formats/components/format/format.component';
 
 @Component({
     selector: 'app-record',
     imports: [
         MaterialModule,
         ReactiveFormsModule,
-        RecordTableComponent,
-        RecordInputComponent,
         PermissionDirective,
     ],
     providers: [RecordsService],
@@ -41,7 +38,7 @@ export default class RecordComponent implements OnInit {
 
     recordForm = this.formBuilder.group({
         dateEffective: this.formBuilder.control<Date | null>(null),
-        rows: this.formBuilder.array<FormGroup>([]),
+        rows: this.formBuilder.array<FormatRowFormType>([]) as FormArray,
     });
 
     ngOnInit(): void {

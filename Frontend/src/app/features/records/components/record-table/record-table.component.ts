@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, Input } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { INPUT_TYPES, InputTypes } from '@habilident/types';
+import { INPUT_TYPES, InputType } from '@habilident/types';
 import { RecordInputComponent } from '../record-input/record-input.component';
 import { ParametersService } from '@shared/services/parameters.service';
 
@@ -22,7 +22,7 @@ export class RecordTableComponent {
 
   @Input() fields!: FormArray<FormArray<FormGroup<{
     name: FormControl<string>;
-    type: FormControl<InputTypes>;
+    type: FormControl<InputType>;
     required: FormControl<boolean>;
     value: FormControl<string>;
   }>>>;

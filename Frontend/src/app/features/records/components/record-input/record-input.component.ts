@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, Input, } f
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ParametersService } from '@shared/services/parameters.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { INPUT_TYPES, InputTypes } from '@habilident/types';
+import { INPUT_TYPES, InputType } from '@habilident/types';
 
 @Component({
   selector: 'app-record-input',
@@ -19,7 +19,7 @@ export class RecordInputComponent {
 
   @Input() input!: FormGroup<{
     name: FormControl<string>;
-    type: FormControl<InputTypes>;
+    type: FormControl<InputType>;
     required: FormControl<boolean>;
     value: FormControl<string>;
   }>;

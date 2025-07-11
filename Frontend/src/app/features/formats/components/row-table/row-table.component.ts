@@ -1,29 +1,37 @@
-import { ChangeDetectionStrategy, Component, computed, inject, Input, OnInit, output } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, computed, inject, Input, output } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { INPUT_TYPES, InputType, Parameter, ROW_TYPES } from '@habilident/types';
-import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { FieldsConfig, INPUT_TYPES, InputType, Parameter, ROW_TYPES } from '@habilident/types';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ParametersService } from '@shared/services/parameters.service';
-import { FieldsConfigFormType } from '../fields-config/fields-config.component';
+import { createFieldFormGroup, FieldsConfigFormType } from '../fields-config/fields-config.component';
 
 export type TableRowFormType = {
   type: FormControl<typeof ROW_TYPES.TABLE>;
   fields: FormArray<FormArray<FormGroup<FieldsConfigFormType>>>;
 };
 
+export function createTableRow(fb: FormBuilder, table: FieldsConfig[][] = []): FormGroup<TableRowFormType> {
+  return fb.group<TableRowFormType>({
+    type: fb.nonNullable.control(ROW_TYPES.TABLE),
+    fields: fb.nonNullable.array(
+      table.map(row => fb.array(row.map(field => createFieldFormGroup(fb, field))))
+    ),
+  });
+};
+
 @Component({
   selector: 'app-row-table',
   imports: [
     MaterialModule,
-    CdkDrag, CdkDragHandle, CdkDropList,
+    CdkDrag, CdkDropList,
     ReactiveFormsModule,
   ],
   templateUrl: './row-table.component.html',
   styleUrl: './row-table.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RowTableComponent implements OnInit {
-  private readonly formBuilder = inject(FormBuilder);
+export class RowTableComponent {
   private readonly parametersService = inject(ParametersService);
   readonly inputTypes = INPUT_TYPES;
 
@@ -31,21 +39,8 @@ export class RowTableComponent implements OnInit {
   remove = output<void>();
   options = computed<Parameter[]>(() => this.parametersService.data());
 
-  ngOnInit(): void {
-    if (!this.row.controls.fields.length) {
-      this.row.controls.fields.push(this.formBuilder.array<FormGroup<FieldsConfigFormType>>([]));
-      this.addInput(0, INPUT_TYPES.TEXT);
-    };
-  }
-
   addInput(index: number, type: InputType): void {
-    this.row.controls.fields.controls[index].push(this.formBuilder.group<FieldsConfigFormType>({
-      name: this.formBuilder.nonNullable.control('', Validators.required),
-      type: this.formBuilder.nonNullable.control(type),
-      required: this.formBuilder.nonNullable.control(true),
-      value: this.formBuilder.nonNullable.control(''),
-      reference: this.formBuilder.control(null)
-    }));
+
   }
 
   removeInput(rowIndex: number, columnIndex: number): void {

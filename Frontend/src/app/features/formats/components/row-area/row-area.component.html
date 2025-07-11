@@ -1,26 +1,9 @@
-<div class="flex border-dashed border-black/50" cdkDrag>
-    <button mat-icon-button type="button" matTooltip="Arrastrar" matTooltipPosition="before" class="self-center"
-        cdkDragHandle>
-        <mat-icon>drag_indicator</mat-icon>
-    </button>
-    <mat-form-field appearance="outline" class="w-full mt-5" [formGroup]="row">
-        <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?">
-        </mat-checkbox>
-        <mat-label>Texto en area</mat-label>
-        <input matInput type="text" formControlName="name" required>
-        @if (row.controls.fields.controls.name.invalid) {
-        <mat-error class="truncate">Introduce un nombre válido</mat-error>
-        }
-    </mat-form-field>
-    <button mat-icon-button type="button" [matMenuTriggerFor]="rowInputs" class="self-center">
-        <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #rowInputs="matMenu">
-        <ng-template matMenuContent let-rowIndex="data">
-            <button mat-menu-item (click)="removeRow()">
-                <mat-icon class="text-red-600">delete</mat-icon>
-                <span class="text-red-600">Eliminar fila</span>
-            </button>
-        </ng-template>
-    </mat-menu>
-</div>
+<mat-form-field appearance="outline" class="w-full mt-5" [formGroup]="row">
+    <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?">
+    </mat-checkbox>
+    <mat-label>Texto en area</mat-label>
+    <input matInput type="text" formControlName="name" required>
+    @if (row.controls.fields.controls.name.invalid) {
+    <mat-error class="truncate">Introduce un nombre válido</mat-error>
+    }
+</mat-form-field>
