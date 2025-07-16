@@ -13,6 +13,6 @@ export type Alert = {
     frequency: Frequency | null;
     often: number | null;
     startAt: Date | null;
-    hours: string[] | null;
-    responsibleUser: User | null;
+    hours: string[];
+    responsibleUser: User[];
 };

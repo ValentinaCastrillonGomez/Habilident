@@ -1,8 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { Format, FormatRow } from '@habilident/types';
+import { Format, FormatRow, Alert } from '@habilident/types';
 import { AlertSchema } from './alert.entity';
-import { Alert } from '@habilident/types/dist/alert';
 
 export type FormatDocument = HydratedDocument<FormatEntity>;
 

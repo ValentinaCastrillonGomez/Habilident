@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { AppPaginatorIntl } from './material.paginator';
 
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MAT_ICON_DEFAULT_OPTIONS, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,6 +31,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTimepickerModule } from '@angular/material/timepicker';
 import { APP_FORMATS, AppDateAdapter } from './material-date.adapter';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   exports: [
@@ -61,6 +63,8 @@ import { APP_FORMATS, AppDateAdapter } from './material-date.adapter';
     MatChipsModule,
     MatBadgeModule,
     MatTimepickerModule,
+    MatAutocompleteModule,
+    MatButtonToggleModule,
   ],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: APP_FORMATS },
@@ -69,6 +73,7 @@ import { APP_FORMATS, AppDateAdapter } from './material-date.adapter';
     { provide: MAT_PAGINATOR_DEFAULT_OPTIONS, useValue: { hidePageSize: true, showFirstLastButtons: true } },
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { maxWidth: '90vw', disableClose: true, hasBackdrop: true, } },
     { provide: MAT_ICON_DEFAULT_OPTIONS, useValue: { fontSet: 'material-symbols-outlined' } },
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
   ]
 })
 export class MaterialModule { }

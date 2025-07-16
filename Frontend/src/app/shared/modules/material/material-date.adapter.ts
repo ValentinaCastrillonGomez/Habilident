@@ -6,15 +6,15 @@ import moment from "moment";
 export const APP_FORMATS = {
     parse: {
         dateInput: 'DD/MM/YYYY',
-        timeInput: 'HH:mm',
+        timeInput: 'hh:mm a',
     },
     display: {
         dateInput: 'dd/MM/YYYY',
-        monthYearLabel: 'MMM YYYY',
+        monthYearLabel: 'MMMM YYYY',
         dateA11yLabel: 'fullDate',
-        monthYearA11yLabel: 'MMM YYYY',
-        timeInput: 'HH:mm',
-        timeOptionLabel: 'HH:mm'
+        monthYearA11yLabel: 'MMMM YYYY',
+        timeInput: 'hh:mm a',
+        timeOptionLabel: 'hh:mm a'
     }
 };
 

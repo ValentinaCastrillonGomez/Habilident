@@ -5,8 +5,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ERROR_MESSAGES } from 'src/shared/consts/errors.const';
-import { Format, User } from '@habilident/types';
-import { Alert, FREQUENCIES, Frequency } from '@habilident/types/dist/alert';
+import { Format, User, Alert, FREQUENCIES, Frequency } from '@habilident/types';
 
 @Injectable()
 export class FormatsService extends GenericService<FormatDocument, FormatEntity> {

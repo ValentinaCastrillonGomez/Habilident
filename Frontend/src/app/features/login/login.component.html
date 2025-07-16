@@ -8,7 +8,7 @@
     </mat-card-header>
     <mat-card-content>
       <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-6">
-        <mat-form-field appearance="outline" class="w-full">
+        <mat-form-field class="w-full">
           <mat-label>Correo electrónico</mat-label>
           <input matInput type="email" id="email" formControlName="email" required>
           @if (loginForm.controls.email.invalid) {
@@ -16,7 +16,7 @@
           }
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="w-full">
+        <mat-form-field class="w-full">
           <mat-label>Contraseña</mat-label>
           <input matInput [type]="hide() ? 'password' : 'text'" id="password" formControlName="password" required>
           <button mat-icon-button matSuffix (click)="clickEvent($event)" type="button">

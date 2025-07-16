@@ -1,26 +1,34 @@
-import { ChangeDetectionStrategy, Component, computed, inject, Input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { FieldsConfig, INPUT_TYPES, Parameter, ROW_TYPES } from '@habilident/types';
+import { FieldsConfig, INPUT_TYPES, InputType, ROW_TYPES } from '@habilident/types';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { ParametersService } from '@shared/services/parameters.service';
-import { createFieldFormGroup, FieldsConfigFormType } from '../fields-config/fields-config.component';
+import { createFieldFormGroup, FieldsConfigComponent, FieldsConfigForm } from '../fields-config/fields-config.component';
 
-export type SingleRowFormType = {
+export type SingleRowForm = {
   type: FormControl<typeof ROW_TYPES.SINGLE>;
-  fields: FormArray<FormGroup<FieldsConfigFormType>>;
+  fields: FormArray<FormGroup<FieldsConfigForm>>;
 };
 
-export function createSingleRow(fb: FormBuilder, fields: FieldsConfig[] = []): FormGroup<SingleRowFormType> {
-  return fb.group<SingleRowFormType>({
+const rowDefault: FieldsConfig[] = [{
+  name: '',
+  type: INPUT_TYPES.TEXT,
+  required: false,
+  value: '',
+  reference: null,
+}];
+
+export function createSingleRow(fb: FormBuilder, fields: FieldsConfig[] = rowDefault): FormGroup<SingleRowForm> {
+  return fb.group<SingleRowForm>({
     type: fb.nonNullable.control(ROW_TYPES.SINGLE),
-    fields: fb.array(fields.map(field => createFieldFormGroup(fb, field))),
+    fields: fb.array(fields.map(field => createFieldFormGroup(fb, field.type, field))),
   });
 };
 
 @Component({
   selector: 'app-row-single',
   imports: [
+    FieldsConfigComponent,
     MaterialModule,
     CdkDrag, CdkDropList,
     ReactiveFormsModule,
@@ -31,23 +39,16 @@ export function createSingleRow(fb: FormBuilder, fields: FieldsConfig[] = []): F
 })
 export class RowSingleComponent {
   private readonly formBuilder = inject(FormBuilder);
-  private readonly parametersService = inject(ParametersService);
-  readonly inputTypes = INPUT_TYPES;
+  @Input({ required: true }) row!: FormGroup<SingleRowForm>;
 
-  @Input({ required: true }) row!: FormGroup<SingleRowFormType>;
-  remove = output<void>();
-  options = computed<Parameter[]>(() => this.parametersService.data());
-
-  addColumn(): void {
-    this.row.controls.fields.push(createFieldFormGroup(this.formBuilder));
+  addColumn(type?: InputType): void {
+    this.row.controls.fields.push(createFieldFormGroup(this.formBuilder, type));
   }
 
   removeColumn(columnIndex: number): void {
-    this.row.controls.fields.removeAt(columnIndex);
-  }
-
-  removeRow(): void {
-    this.remove.emit();
+    if (this.row.controls.fields.length > 1) {
+      this.row.controls.fields.removeAt(columnIndex);
+    }
   }
 
   drop(event: CdkDragDrop<FormArray>) {

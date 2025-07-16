@@ -13,13 +13,13 @@ export class AlertsSocket {
 
     sendAlerts(format: Format) {
         const { alert } = format;
-        const clientId = alert.responsibleUser._id;
+        const user = alert.responsibleUser[0];
 
         //TODO: guardar notificaciones
 
-        (this.server.sockets.sockets.has(clientId))
-            ? this.server.to(clientId).emit('notifications', format)
-            : this.formatsService.sendEmail(format, alert.responsibleUser);
+        (this.server.sockets.sockets.has(user._id))
+            ? this.server.to(user._id).emit('notifications', format)
+            : this.formatsService.sendEmail(format, user);
     }
 
 }

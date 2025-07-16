@@ -3,7 +3,7 @@
     <mat-dialog-content class="mat-typography">
         <div class="mt-2 mb-4 space-y-4">
             <div class="flex gap-x-4">
-                <mat-form-field appearance="outline" class="w-full">
+                <mat-form-field class="w-full">
                     <mat-label>Nombres</mat-label>
                     <input matInput type="text" id="firstNames" formControlName="firstNames" required>
                     @if (userForm.controls.firstNames.invalid) {
@@ -11,7 +11,7 @@
                     }
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="w-full">
+                <mat-form-field class="w-full">
                     <mat-label>Apellidos</mat-label>
                     <input matInput type="text" id="lastNames" formControlName="lastNames" required>
                     @if (userForm.controls.lastNames.invalid) {
@@ -19,7 +19,7 @@
                     }
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="w-full">
+                <mat-form-field class="w-full">
                     <mat-label>Tipo de documento</mat-label>
                     <mat-select id="typeDocument" formControlName="typeDocument" required>
                         @for (option of typesDocuments(); track option) {
@@ -31,7 +31,7 @@
                     }
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="w-full">
+                <mat-form-field class="w-full">
                     <mat-label>Número de documento</mat-label>
                     <input matInput type="number" id="numberDocument" formControlName="numberDocument" required>
                     @if (userForm.controls.numberDocument.invalid) {
@@ -40,7 +40,7 @@
                 </mat-form-field>
             </div>
             <div class="flex gap-x-4">
-                <mat-form-field appearance="outline" class="w-full">
+                <mat-form-field class="w-full">
                     <mat-label>Correo electrónico</mat-label>
                     <input matInput type="email" id="email" formControlName="email" required>
                     @if (userForm.controls.email.invalid) {
@@ -48,7 +48,7 @@
                     }
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="w-full">
+                <mat-form-field class="w-full">
                     <mat-label>Dirección</mat-label>
                     <input matInput type="text" id="address" formControlName="address" required>
                     @if (userForm.controls.address.invalid) {
@@ -56,7 +56,7 @@
                     }
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="w-full">
+                <mat-form-field class="w-full">
                     <mat-label>Teléfono</mat-label>
                     <input matInput type="number" id="phone" formControlName="phone" required>
                     @if (userForm.controls.phone.invalid) {
@@ -65,7 +65,7 @@
                 </mat-form-field>
             </div>
             <div class="flex gap-4">
-                <mat-form-field appearance="outline" class="w-full">
+                <mat-form-field class="w-full">
                     <mat-label>Fecha de nacimiento</mat-label>
                     <input matInput [matDatepicker]="picker" [max]="maxDate" id="birthday" formControlName="birthday"
                         required>
@@ -78,7 +78,7 @@
                     }
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="w-full">
+                <mat-form-field class="w-full">
                     <mat-label>Genero</mat-label>
                     <mat-select id="gender" formControlName="gender" required>
                         @for (option of genders(); track option) {
@@ -90,7 +90,7 @@
                     }
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="w-full">
+                <mat-form-field class="w-full">
                     <mat-label>Oficia</mat-label>
                     <input matInput type="text" id="office" formControlName="office" required>
                     @if (userForm.controls.office.invalid) {
@@ -98,7 +98,7 @@
                     }
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="w-full">
+                <mat-form-field class="w-full">
                     <mat-label>Cargo</mat-label>
                     <input matInput type="text" id="position" formControlName="position" required>
                     @if (userForm.controls.position.invalid) {
@@ -107,7 +107,7 @@
                 </mat-form-field>
             </div>
             <div class="flex gap-4">
-                <mat-form-field appearance="outline" class="w-full">
+                <mat-form-field class="w-full">
                     <mat-label>Rol</mat-label>
                     <mat-select id="roles" formControlName="roles" multiple required>
                         @for (role of roles(); track role._id) {
@@ -119,7 +119,7 @@
                     }
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="w-full">
+                <mat-form-field class="w-full">
                     <mat-label>Contraseña</mat-label>
                     <input matInput type="password" id="password" formControlName="password" [required]="isNew">
                     @if (userForm.controls.password.invalid) {

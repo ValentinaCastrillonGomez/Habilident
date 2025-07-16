@@ -7,7 +7,7 @@ import { FormatsService } from '@shared/services/formats.service';
 import { PATHS } from 'src/app/app.routes';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { Router } from '@angular/router';
-import { FormatRowFormType } from '@features/formats/components/format/format.component';
+import { FormatRowForm } from '@features/formats/components/format/format.component';
 
 @Component({
     selector: 'app-record',
@@ -38,7 +38,7 @@ export default class RecordComponent implements OnInit {
 
     recordForm = this.formBuilder.group({
         dateEffective: this.formBuilder.control<Date | null>(null),
-        rows: this.formBuilder.array<FormatRowFormType>([]) as FormArray,
+        rows: this.formBuilder.array<FormatRowForm>([]) as FormArray,
     });
 
     ngOnInit(): void {

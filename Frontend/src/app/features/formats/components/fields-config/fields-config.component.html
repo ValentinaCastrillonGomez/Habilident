@@ -1,1 +1,14 @@
-<p>fields-config works!</p>
+<mat-form-field class="mt-2" [formGroup]="field">
+    <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?">
+    </mat-checkbox>
+    <mat-label>{{field.controls.type.value}}</mat-label>
+
+    <input #input matInput type="text" formControlName="name" (focus)="focus()" (blur)="blur()" required>
+
+    <button matSuffix mat-icon-button type="button" matTooltip="Eliminar campo" (click)="remove.emit()">
+        <mat-icon>close</mat-icon>
+    </button>
+    @if (field.controls.name.invalid) {
+    <mat-error class="truncate">Introduce un nombre válido</mat-error>
+    }
+</mat-form-field>

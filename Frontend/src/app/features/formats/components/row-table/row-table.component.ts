@@ -1,21 +1,20 @@
-import { ChangeDetectionStrategy, Component, computed, inject, Input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { FieldsConfig, INPUT_TYPES, InputType, Parameter, ROW_TYPES } from '@habilident/types';
-import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { FieldsConfig, INPUT_TYPES, Parameter, ROW_TYPES } from '@habilident/types';
 import { ParametersService } from '@shared/services/parameters.service';
-import { createFieldFormGroup, FieldsConfigFormType } from '../fields-config/fields-config.component';
+import { createFieldFormGroup, FieldsConfigForm } from '../fields-config/fields-config.component';
 
-export type TableRowFormType = {
+export type TableRowForm = {
   type: FormControl<typeof ROW_TYPES.TABLE>;
-  fields: FormArray<FormArray<FormGroup<FieldsConfigFormType>>>;
+  fields: FormArray<FormArray<FormGroup<FieldsConfigForm>>>;
 };
 
-export function createTableRow(fb: FormBuilder, table: FieldsConfig[][] = []): FormGroup<TableRowFormType> {
-  return fb.group<TableRowFormType>({
+export function createTableRow(fb: FormBuilder, table: FieldsConfig[][] = []): FormGroup<TableRowForm> {
+  return fb.group<TableRowForm>({
     type: fb.nonNullable.control(ROW_TYPES.TABLE),
     fields: fb.nonNullable.array(
-      table.map(row => fb.array(row.map(field => createFieldFormGroup(fb, field))))
+      table.map(row => fb.array(row.map(field => createFieldFormGroup(fb, field.type, field))))
     ),
   });
 };
@@ -24,7 +23,6 @@ export function createTableRow(fb: FormBuilder, table: FieldsConfig[][] = []): F
   selector: 'app-row-table',
   imports: [
     MaterialModule,
-    CdkDrag, CdkDropList,
     ReactiveFormsModule,
   ],
   templateUrl: './row-table.component.html',
@@ -35,23 +33,7 @@ export class RowTableComponent {
   private readonly parametersService = inject(ParametersService);
   readonly inputTypes = INPUT_TYPES;
 
-  @Input({ required: true }) row!: FormGroup<TableRowFormType>;
-  remove = output<void>();
+  @Input({ required: true }) row!: FormGroup<TableRowForm>;
   options = computed<Parameter[]>(() => this.parametersService.data());
 
-  addInput(index: number, type: InputType): void {
-
-  }
-
-  removeInput(rowIndex: number, columnIndex: number): void {
-    this.row.controls.fields.removeAt(columnIndex);
-  }
-
-  removeRow(): void {
-    this.remove.emit();
-  }
-
-  drop(event: CdkDragDrop<FormArray>) {
-    moveItemInArray(this.row.controls.fields.controls, event.previousIndex, event.currentIndex);
-  }
 }

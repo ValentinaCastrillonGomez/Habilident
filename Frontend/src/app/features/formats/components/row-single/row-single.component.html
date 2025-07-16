@@ -1,19 +1,13 @@
-<div cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)"
-    class="flex gap-x-3 w-full overflow-hidden">
-    @for (input of row.controls.fields.controls; track input; let columnIndex = $index) {
-    <mat-form-field appearance="outline" class="w-full mt-5 horizontal" [formGroup]="input" cdkDrag>
-        <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?">
-        </mat-checkbox>
-        <mat-label>Campo </mat-label>
-        <input matInput type="text" formControlName="name" required>
-        @if(row.controls.fields.controls.length > 1){
-        <button matSuffix mat-icon-button type="button" matTooltip="Eliminar campo" (click)="removeColumn($index)">
-            <mat-icon>delete</mat-icon>
-        </button>
+<div class="flex justify-between">
+    <div cdkDropList cdkDropListOrientation="mixed" (cdkDropListDropped)="drop($event)" class="flex flex-wrap gap-x-2">
+        @for (field of row.controls.fields.controls; track field; let columnIndex = $index) {
+        <div cdkDrag>
+            <app-fields-config [field]="field" (remove)="removeColumn($index)"></app-fields-config>
+        </div>
         }
-        @if (input.controls.name.invalid) {
-        <mat-error class="truncate">Introduce un nombre válido</mat-error>
-        }
-    </mat-form-field>
-    }
+    </div>
+    <button mat-icon-button type="button" matTooltip="Agregar campo" class="self-center invisible group-hover:visible"
+        (click)="addColumn()">
+        <mat-icon>variable_add</mat-icon>
+    </button>
 </div>

@@ -1,0 +1,74 @@
+<div [formGroup]="alertForm">
+    <div class="flex gap-4">
+        <mat-form-field class="w-full">
+            <mat-label>Peridiocidad</mat-label>
+            <mat-select id="frequency" formControlName="frequency">
+                @for (option of frequencies; track option) {
+                <mat-option [value]="option">{{option}}</mat-option>
+                }
+            </mat-select>
+            @if (alertForm.controls.frequency.invalid) {
+            <mat-error>Introduce una peridiocidad válida</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+            <mat-label>Cada cuanto</mat-label>
+            <input matInput type="number" id="often" formControlName="often" required />
+            @if (alertForm.controls.often.invalid) {
+            <mat-error>Introduce un número válido</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+            <mat-label>Fecha de inicio</mat-label>
+            <input matInput [matDatepicker]="picker" id="startAt" formControlName="startAt" required
+                [value]="alertForm.controls.startAt.value" />
+
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+
+            @if (alertForm.controls.startAt.invalid) {
+            <mat-error>Introduce una fecha válida</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+            <mat-label>Hora de notificación</mat-label>
+            <input matInput [matTimepicker]="timepicker" id="timeStart" formControlName="startAt" required
+                [value]="alertForm.controls.startAt.value" />
+
+            <mat-timepicker-toggle matSuffix [for]="timepicker"></mat-timepicker-toggle>
+            <mat-timepicker #timepicker />
+
+            @if (alertForm.controls.startAt.invalid) {
+            <mat-error>Introduce una hora válida</mat-error>
+            }
+        </mat-form-field>
+    </div>
+    <div class="flex gap-4">
+        <mat-form-field class="w-full">
+            <mat-label>Responsable</mat-label>
+            <mat-chip-grid #chipGrid>
+                @for (option of alertForm.controls.responsibleUser.controls; track option) {
+                <mat-chip-row (removed)="remove($index)">
+                    {{option.value}}
+                    <button matChipRemove><mat-icon>cancel</mat-icon></button>
+                </mat-chip-row>
+                }
+            </mat-chip-grid>
+            <input #userInput [formControl]="currentUser" [matChipInputSeparatorKeyCodes]="[]"
+                [matChipInputFor]="chipGrid" [matAutocomplete]="auto" (matChipInputTokenEnd)="add($event)" />
+
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event); userInput.value = ''">
+                @for (user of users(); track user) {
+                <mat-option [value]="user">{{user.firstNames}} {{user.lastNames}}</mat-option>
+                }
+            </mat-autocomplete>
+
+            @if (alertForm.controls.responsibleUser.invalid) {
+            <mat-error>Introduce responsables válidos</mat-error>
+            }
+        </mat-form-field>
+    </div>
+</div>

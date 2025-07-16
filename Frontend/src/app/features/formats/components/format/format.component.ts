@@ -1,39 +1,30 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { FieldsConfig, Format, PERMISSIONS, ROW_TYPES, RowType, User } from '@habilident/types';
-import { CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { createSingleRow, RowSingleComponent, SingleRowFormType } from '../row-single/row-single.component';
+import { FieldsConfig, PERMISSIONS, ROW_TYPES, RowType } from '@habilident/types';
+import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { createSingleRow, RowSingleComponent, SingleRowForm } from '../row-single/row-single.component';
 import { FormatsService } from '@shared/services/formats.service';
-import { AreaRowFormType, createAreaRow, RowAreaComponent } from '../row-area/row-area.component';
-import { createTableRow, RowTableComponent, TableRowFormType } from '../row-table/row-table.component';
+import { AreaRowForm, createAreaRow, RowAreaComponent } from '../row-area/row-area.component';
+import { createTableRow, RowTableComponent, TableRowForm } from '../row-table/row-table.component';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { Router } from '@angular/router';
 import { PATHS } from 'src/app/app.routes';
 import { ParametersService } from '@shared/services/parameters.service';
 import { UsersService } from '@features/users/services/users.service';
-import { FREQUENCIES, Frequency } from '@habilident/types/dist/alert';
+import { AlertComponent, AlertForm } from '../alert/alert.component';
 
-export type FormatRowFormType =
-  | FormGroup<SingleRowFormType>
-  | FormGroup<AreaRowFormType>
-  | FormGroup<TableRowFormType>;
+export type FormatRowForm =
+  | FormGroup<SingleRowForm>
+  | FormGroup<AreaRowForm>
+  | FormGroup<TableRowForm>;
 
-export type AlertFormType = {
-  state: FormControl<boolean>;
-  frequency: FormControl<Frequency | null>;
-  often: FormControl<number | null>;
-  startAt: FormControl<Date | null>;
-  hours: FormControl<string[] | null>;
-  responsibleUser: FormControl<any>;
-};
-
-export type FormatFormType = {
+export type FormatForm = {
   name: FormControl<string>;
   state: FormControl<boolean>;
   block: FormControl<boolean>;
-  alert: FormGroup<AlertFormType>;
-  rows: FormArray<FormatRowFormType>;
+  alert: FormGroup<AlertForm>;
+  rows: FormArray<FormatRowForm>;
 };
 
 const createRowMap = {
@@ -45,10 +36,12 @@ const createRowMap = {
 @Component({
   selector: 'app-format',
   imports: [
+    AlertComponent,
+    FormsModule,
     ReactiveFormsModule,
     MaterialModule,
     PermissionDirective,
-    CdkDropList, CdkDragHandle,
+    CdkDropList, CdkDrag, CdkDragHandle,
   ],
   providers: [UsersService],
   templateUrl: './format.component.html',
@@ -61,7 +54,6 @@ export default class FormatComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly formatsService = inject(FormatsService);
   private readonly parametersService = inject(ParametersService);
-  private readonly usersService = inject(UsersService);
   private readonly router = inject(Router);
 
   readonly componentMap = {
@@ -70,24 +62,22 @@ export default class FormatComponent implements OnInit {
     [ROW_TYPES.TABLE]: RowTableComponent,
   };
 
+  alertCheck = signal<boolean>(false);
   formatId = input<string>();
-  format = computed<Format | null>(() => this.formatsService.data().find(format => format._id === this.formatId()) ?? null);
-  frequencies: Frequency[] = Object.values(FREQUENCIES);
-  users = computed<User[]>(() => this.usersService.data() || []);
 
-  formatForm = this.formBuilder.group<FormatFormType>({
+  formatForm = this.formBuilder.group<FormatForm>({
     name: this.formBuilder.nonNullable.control('', [Validators.required]),
     state: this.formBuilder.nonNullable.control(true),
     block: this.formBuilder.nonNullable.control(false),
-    alert: this.formBuilder.group<AlertFormType>({
+    alert: this.formBuilder.group<AlertForm>({
       state: this.formBuilder.nonNullable.control(false),
       frequency: this.formBuilder.control(null),
       often: this.formBuilder.control(null),
       startAt: this.formBuilder.control(null),
-      hours: this.formBuilder.control([]),
-      responsibleUser: this.formBuilder.control(null),
+      hours: this.formBuilder.nonNullable.control([]),
+      responsibleUser: this.formBuilder.array([]),
     }),
-    rows: this.formBuilder.array<FormatRowFormType>([]) as FormArray,
+    rows: this.formBuilder.nonNullable.array<FormatRowForm>([]) as FormArray,
   });
 
   ngOnInit(): void {
@@ -97,41 +87,40 @@ export default class FormatComponent implements OnInit {
   private async setForm() {
     await this.formatsService.load();
     await this.parametersService.load();
-    await this.usersService.load();
 
-    const format = this.format();
+    const formatId = this.formatId();
 
-    if (!format) {
+    if (!formatId) {
       this.addRow(ROW_TYPES.SINGLE);
 
       this.formatForm.reset();
       return;
     }
 
+    const format = await this.formatsService.get(formatId);
+
     this.formatForm.patchValue({
       ...format,
       alert: {
         ...format.alert,
-        responsibleUser: format.alert.responsibleUser?._id
+        responsibleUser: format.alert.responsibleUser.map(user => user._id)
       }
     });
 
-    format.rows.forEach((row) => {
-      this.addRow(row.type)
-    });
+    format.rows.forEach((row) => this.addRow(row.type, row.fields));
   }
 
   alertChange(state: boolean) {
-    const controls = this.formatForm.controls.alert.controls;
+    const controls = Object.keys(this.formatForm.controls.alert.controls);
+    for (const key of controls) {
+      const control = this.formatForm.controls.alert.get(key)!;
 
-    if (state) {
-      controls.frequency.setValidators(Validators.required);
-      controls.startAt.setValidators(Validators.required);
-      controls.responsibleUser.setValidators(Validators.required);
-    } else {
-      controls.frequency.clearValidators();
-      controls.startAt.clearValidators();
-      controls.responsibleUser.clearValidators();
+      if (state) {
+        control.addValidators(Validators.required)
+      } else {
+        control.clearValidators();
+      }
+      control.updateValueAndValidity();
     }
   }
 
@@ -165,6 +154,6 @@ export default class FormatComponent implements OnInit {
 
   goToFormats() {
     this.router.navigate([PATHS.FORMATS]);
-  }
 
+  }
 }

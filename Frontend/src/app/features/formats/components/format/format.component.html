@@ -1,4 +1,4 @@
-<form [formGroup]="formatForm" (ngSubmit)="save()">
+<form [formGroup]="formatForm" (ngSubmit)="save()" (keydown.enter)="$event.preventDefault()">
     <div class="flex items-center justify-between mb-3">
         <div class="flex items-center gap-x-2">
             <button mat-icon-button type="button" (click)="goToFormats()"
@@ -23,7 +23,7 @@
     <mat-divider></mat-divider>
     <div class="my-7">
         <div class="flex gap-4">
-            <mat-form-field appearance="outline" class="w-full">
+            <mat-form-field class="w-full">
                 <mat-label>Nombre del formato</mat-label>
                 <input matInput type="text" id="name" formControlName="name" required />
                 @if (formatForm.controls.name.invalid) {
@@ -43,57 +43,7 @@
         </div>
 
         @if(alert.checked){
-        <div class="flex gap-4" formGroupName="alert">
-            <mat-form-field appearance="outline" class="w-full">
-                <mat-label>Peridiocidad</mat-label>
-                <mat-select id="frequency" formControlName="frequency">
-                    @for (option of frequencies; track option) {
-                    <mat-option [value]="option">{{option}}</mat-option>
-                    }
-                </mat-select>
-                @if (formatForm.controls.alert.controls.frequency.invalid) {
-                <mat-error>Introduce una peridiocidad válida</mat-error>
-                }
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="w-full">
-                <mat-label>Responsable</mat-label>
-                <mat-select id="responsibleUser" formControlName="responsibleUser">
-                    @for (user of users(); track user._id) {
-                    <mat-option [value]="user._id">{{user.firstNames}} {{user.lastNames}}</mat-option>
-                    }
-                </mat-select>
-                @if (formatForm.controls.alert.controls.responsibleUser.invalid) {
-                <mat-error>Introduce una peridiocidad válida</mat-error>
-                }
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="w-full">
-                <mat-label>Fecha de inicio</mat-label>
-                <input matInput [matDatepicker]="picker" id="startAt" formControlName="startAt"
-                    [value]="formatForm.controls.alert.controls.startAt.value" />
-
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-
-                @if (formatForm.controls.alert.controls.startAt.invalid) {
-                <mat-error>Introduce una fecha de inicio válida</mat-error>
-                }
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="w-full">
-                <mat-label>Hora de notificación</mat-label>
-                <input matInput [matTimepicker]="timepicker" id="timeStart" formControlName="startAt"
-                    [value]="formatForm.controls.alert.controls.startAt.value" />
-
-                <mat-timepicker-toggle matSuffix [for]="timepicker"></mat-timepicker-toggle>
-                <mat-timepicker #timepicker />
-
-                @if (formatForm.controls.alert.controls.startAt.invalid) {
-                <mat-error>Introduce una hora de notificación válida</mat-error>
-                }
-            </mat-form-field>
-        </div>
+        <app-alert [alertForm]="formatForm.controls.alert"></app-alert>
         }
 
         <section formArrayName="rows">
@@ -101,25 +51,35 @@
 
             <div cdkDropList (cdkDropListDropped)="drop($event)">
                 @for (row of formatForm.controls.rows.controls; track row; let i = $index) {
-                <div class="flex border-dashed border-black/50 bg-sky-300/20" cdkDrag>
-                    <button mat-icon-button type="button" matTooltip="Arrastrar" matTooltipPosition="before"
-                        class="self-center" cdkDragHandle>
+                <div class="flex justify-between items-center group" cdkDrag>
+                    <button mat-icon-button type="button" matTooltip="Arrastrar fila"
+                        class="invisible group-hover:visible" cdkDragHandle>
                         <mat-icon>drag_indicator</mat-icon>
                     </button>
 
-                    <ng-container *ngComponentOutlet="componentMap[row.controls.type.value]; inputs: {row}" />
+                    <div class="flex-1 border-dashed border-transparent group-hover:border-black/50">
+                        <ng-container *ngComponentOutlet="componentMap[row.controls.type.value]; inputs: {row}" />
+                    </div>
 
-                    <button mat-icon-button type="button" (click)="removeRow(i)" class="self-center">
+                    <button mat-icon-button type="button" matTooltip="Eliminar fila"
+                        class="invisible group-hover:visible" (click)="removeRow(i)">
                         <mat-icon class="text-red-600">delete</mat-icon>
-                        <span class="text-red-600">Eliminar fila</span>
                     </button>
                 </div>
                 }
             </div>
 
-            <button mat-button type="button" class="text-center" (click)="addRow(rowTypes.SINGLE)">
-                <mat-icon>add</mat-icon>Añadir fila
-            </button>
+            <div class="text-center">
+                <button mat-button type="button" class="text-center" (click)="addRow(rowTypes.SINGLE)">
+                    <mat-icon>add</mat-icon>Añadir fila
+                </button>
+                <button mat-button type="button" class="text-center" (click)="addRow(rowTypes.AREA)">
+                    <mat-icon>add</mat-icon>Añadir area
+                </button>
+                <button mat-button type="button" class="text-center" (click)="addRow(rowTypes.TABLE)">
+                    <mat-icon>add</mat-icon>Añadir tabla
+                </button>
+            </div>
         </section>
     </div>
 </form>

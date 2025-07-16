@@ -1,18 +1,18 @@
-import { ChangeDetectionStrategy, Component, Input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FieldsConfig, ROW_TYPES } from '@habilident/types';
-import { createFieldFormGroup, FieldsConfigFormType } from '../fields-config/fields-config.component';
+import { createFieldFormGroup, FieldsConfigForm } from '../fields-config/fields-config.component';
 
-export type AreaRowFormType = {
+export type AreaRowForm = {
   type: FormControl<typeof ROW_TYPES.AREA>;
-  fields: FormGroup<FieldsConfigFormType>;
+  fields: FormGroup<FieldsConfigForm>;
 };
 
-export function createAreaRow(fb: FormBuilder, field?: FieldsConfig): FormGroup<AreaRowFormType> {
-  return fb.group<AreaRowFormType>({
+export function createAreaRow(fb: FormBuilder, field?: FieldsConfig): FormGroup<AreaRowForm> {
+  return fb.group<AreaRowForm>({
     type: fb.nonNullable.control(ROW_TYPES.AREA),
-    fields: createFieldFormGroup(fb, field),
+    fields: createFieldFormGroup(fb, field?.type, field),
   });
 };
 
@@ -27,6 +27,5 @@ export function createAreaRow(fb: FormBuilder, field?: FieldsConfig): FormGroup<
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RowAreaComponent {
-  @Input({ required: true }) row!: FormGroup<AreaRowFormType>;
-  remove = output<void>();
+  @Input({ required: true }) row!: FormGroup<AreaRowForm>;
 }

@@ -1,6 +1,6 @@
 @switch(input.controls.type.value){
 @case ('select') {
-<mat-form-field appearance="outline" class="w-full" [formGroup]="input">
+<mat-form-field class="w-full" [formGroup]="input">
     @if (!isTable()) {
     <mat-label>{{select()?.name}}</mat-label>
     }
@@ -15,7 +15,7 @@
 </mat-form-field>
 }
 @case ('date') {
-<mat-form-field appearance="outline" class="w-full" [formGroup]="input">
+<mat-form-field class="w-full" [formGroup]="input">
     @if (!isTable()) {
     <mat-label>{{input.controls.name.value}}</mat-label>
     }
@@ -28,7 +28,7 @@
 </mat-form-field>
 }
 @default{
-<mat-form-field appearance="outline" class="w-full" [formGroup]="input">
+<mat-form-field class="w-full" [formGroup]="input">
     @if (!isTable()) {
     <mat-label>{{input.controls.name.value}}</mat-label>
     }
