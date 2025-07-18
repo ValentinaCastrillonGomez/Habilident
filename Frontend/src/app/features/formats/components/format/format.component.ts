@@ -9,7 +9,6 @@ import { AreaRowForm, createAreaRow, RowAreaComponent } from '../row-area/row-ar
 import { createTableRow, RowTableComponent, TableRowForm } from '../row-table/row-table.component';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { Router } from '@angular/router';
-import { PATHS } from 'src/app/app.routes';
 import { ParametersService } from '@shared/services/parameters.service';
 import { UsersService } from '@features/users/services/users.service';
 import { AlertComponent, AlertForm } from '../alert/alert.component';
@@ -41,7 +40,7 @@ const createRowMap = {
     ReactiveFormsModule,
     MaterialModule,
     PermissionDirective,
-    CdkDropList, CdkDrag, CdkDragHandle,
+    CdkDropList, CdkDragHandle, CdkDrag
   ],
   providers: [UsersService],
   templateUrl: './format.component.html',
@@ -124,8 +123,13 @@ export default class FormatComponent implements OnInit {
     }
   }
 
+  getRow(row: FormatRowForm) {
+    return row as any;
+  }
+
   addRow(type: RowType, fields?: any) {
     this.formatForm.controls.rows.push(createRowMap[type](this.formBuilder, fields));
+    
   }
 
   removeRow(rowIndex: number): void {
@@ -143,17 +147,11 @@ export default class FormatComponent implements OnInit {
 
     const format = this.formatForm.getRawValue();
 
-    const result = await this.formatsService.save(format, this.formatId());
-    if (result) this.goToFormats();
+    await this.formatsService.save(format, this.formatId());
   }
 
   async remove(id: string) {
-    const result = await this.formatsService.delete(id);
-    if (result) this.goToFormats();
+    await this.formatsService.delete(id);
   }
 
-  goToFormats() {
-    this.router.navigate([PATHS.FORMATS]);
-
-  }
 }

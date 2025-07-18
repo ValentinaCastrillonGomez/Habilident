@@ -1,11 +1,6 @@
 <form [formGroup]="formatForm" (ngSubmit)="save()" (keydown.enter)="$event.preventDefault()">
     <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center gap-x-2">
-            <button mat-icon-button type="button" (click)="goToFormats()"
-                matTooltip="Atras"><mat-icon>arrow_back</mat-icon>
-            </button>
-            <h6 class="mb-0">Detalle del formato</h6>
-        </div>
+        <h6 class="mb-0">Detalle del formato</h6>
         <div class="flex items-center gap-x-2">
             @let formatSelected = formatId();
             <button mat-stroked-button type="submit"
@@ -46,9 +41,21 @@
         <app-alert [alertForm]="formatForm.controls.alert"></app-alert>
         }
 
-        <section formArrayName="rows">
+        <div class="flex justify-between items-center mb-1">
             <span class="font-bold">Campos</span>
-
+            <div class="flex gap-x-1">
+                <button mat-button type="button" class="text-center" (click)="addRow(rowTypes.SINGLE)">
+                    <mat-icon>add</mat-icon>Añadir fila
+                </button>
+                <button mat-button type="button" class="text-center" (click)="addRow(rowTypes.AREA)">
+                    <mat-icon>add</mat-icon>Añadir area
+                </button>
+                <button mat-button type="button" class="text-center" (click)="addRow(rowTypes.TABLE)">
+                    <mat-icon>add</mat-icon>Añadir tabla
+                </button>
+            </div>
+        </div>
+        <section formArrayName="rows">
             <div cdkDropList (cdkDropListDropped)="drop($event)">
                 @for (row of formatForm.controls.rows.controls; track row; let i = $index) {
                 <div class="flex justify-between items-center group" cdkDrag>
@@ -67,18 +74,6 @@
                     </button>
                 </div>
                 }
-            </div>
-
-            <div class="text-center">
-                <button mat-button type="button" class="text-center" (click)="addRow(rowTypes.SINGLE)">
-                    <mat-icon>add</mat-icon>Añadir fila
-                </button>
-                <button mat-button type="button" class="text-center" (click)="addRow(rowTypes.AREA)">
-                    <mat-icon>add</mat-icon>Añadir area
-                </button>
-                <button mat-button type="button" class="text-center" (click)="addRow(rowTypes.TABLE)">
-                    <mat-icon>add</mat-icon>Añadir tabla
-                </button>
             </div>
         </section>
     </div>

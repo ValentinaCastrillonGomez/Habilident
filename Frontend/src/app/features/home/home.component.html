@@ -1,16 +1,16 @@
 <app-navbar></app-navbar>
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="absolute bottom-0 left-0 right-0 top-16">
   <mat-sidenav mode="side" opened [fixedInViewport]="true" fixedTopGap="64"
     class="border-0 border-solid border-r border-r-slate-400 rounded-tr-none rounded-br-none">
-    <div class="flex flex-col h-full">
-      <app-navlist class="flex-1 overflow-y-auto" *appPermission="permissions.READ_RECORDS"></app-navlist>
-
-      <div class="text-center p-4" *appPermission="permissions.READ_FORMATS">
-        <button mat-button [routerLink]="paths.FORMATS">
-          <mat-icon>folder_managed</mat-icon> Gestionar formatos
-        </button>
-      </div>
+    <div class="flex justify-center mt-2">
+      <button mat-button [routerLink]="paths.FORMAT" *appPermission="permissions.CREATE_FORMATS">
+        <mat-icon>add</mat-icon> Crear formato
+      </button>
     </div>
+    <app-formats *appPermission="permissions.READ_RECORDS"></app-formats>
+  </mat-sidenav>
+  <mat-sidenav #sidenav mode="over" position="end" [fixedInViewport]="true" fixedTopGap="64" [disableClose]="true">
+    <app-fields-config [sidenav]="sidenav"></app-fields-config>
   </mat-sidenav>
   <mat-sidenav-content class="bg-white">
     <main class="mx-10 my-5">

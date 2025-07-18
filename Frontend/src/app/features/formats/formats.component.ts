@@ -1,17 +1,16 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@shared/services/formats.service';
 import { Format, PERMISSIONS } from '@habilident/types';
 import { PermissionDirective } from '@shared/directives/permission.directive';
-import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
-import { MatPaginator } from '@angular/material/paginator';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { PATHS } from 'src/app/app.routes';
 
 @Component({
   selector: 'app-formats',
   imports: [
     RouterLink,
+    RouterLinkActive,
     MaterialModule,
     PermissionDirective,
   ],
@@ -19,34 +18,15 @@ import { PATHS } from 'src/app/app.routes';
   styleUrl: './formats.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class FormatsComponent implements AfterViewInit {
+export class FormatsComponent implements OnInit {
   readonly permissions = PERMISSIONS;
   readonly paths = PATHS;
   private readonly formatsService = inject(FormatsService);
 
-  private readonly searchTerms = new BehaviorSubject<string>('');
-  private readonly actions = new Subject<void>();
+  formats = computed<Format[]>(() => this.formatsService.data());
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  dataSource = signal<Format[]>([]);
-  totalRecords = 0;
-  pageSize = 10;
-  displayedColumns: string[] = ['name', 'state', 'actions'];
-
-  ngAfterViewInit() {
-    merge(
-      this.searchTerms.pipe(debounceTime(300), distinctUntilChanged()),
-      this.actions,
-      this.paginator.page)
-      .subscribe(async () => {
-        const { data, totalRecords } = await this.formatsService.getPage(this.paginator.pageIndex, this.paginator.pageSize, this.searchTerms.getValue());
-        this.dataSource.set(data);
-        this.totalRecords = totalRecords;
-      });
-  }
-
-  search(term: string): void {
-    this.searchTerms.next(term);
+  ngOnInit(): void {
+    this.formatsService.load();
   }
 
 }

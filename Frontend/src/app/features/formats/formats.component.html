@@ -1,54 +1,18 @@
-<div class="flex items-center justify-between mb-3">
-    <div class="flex items-center gap-x-2">
-        <h6 class="mb-0">Listado de formatos</h6>
-        <button mat-stroked-button [routerLink]="[paths.HOME, paths.FORMAT]"
-            *appPermission="permissions.CREATE_FORMATS">
-            <mat-icon>add</mat-icon>Añadir
-        </button>
-    </div>
-
-    <mat-form-field subscriptSizing="dynamic">
-        <mat-label>Filtrar formatos</mat-label>
-        <input matInput #filter id="filterRoles" (input)="search(filter.value)">
-        <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
-</div>
-<mat-card appearance="outlined">
-    <mat-card-content>
-        <mat-table [dataSource]="dataSource()">
-            <ng-container matColumnDef="name">
-                <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-            </ng-container>
-
-            <!-- <ng-container matColumnDef="name">
-                <mat-header-cell *matHeaderCellDef> Alarma </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-            </ng-container> -->
-
-            <ng-container matColumnDef="state">
-                <mat-header-cell *matHeaderCellDef> Estado </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.state ? 'Activo' : 'Inactivo'}} </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="actions">
-                <mat-header-cell *matHeaderCellDef>&nbsp;</mat-header-cell>
-                <mat-cell *matCellDef="let element" class="justify-end">
-                    <button mat-icon-button class="invisible group-hover:visible" matTooltip="Ver formato"
-                        [routerLink]="[paths.HOME, paths.FORMAT, element._id]">
-                        <mat-icon>visibility</mat-icon>
-                    </button>
-                </mat-cell>
-            </ng-container>
-
-            <div *matNoDataRow class="text-center">
-                No hay datos que coincidan con el filtro.
-            </div>
-
-            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;" class="group"></mat-row>
-        </mat-table>
-        <mat-divider></mat-divider>
-        <mat-paginator [length]="totalRecords" [pageSize]="pageSize"></mat-paginator>
-    </mat-card-content>
-</mat-card>
+<mat-nav-list>
+    @for (format of formats(); track format._id) {
+    <mat-list-item class="group" routerLinkActive #rla="routerLinkActive" [activated]="rla.isActive">
+        @let folder = rla.isActive ? 'folder_open' : 'folder';
+        <mat-icon matListItemIcon>{{folder}}</mat-icon>
+        <div class="flex items-center justify-between">
+            <span class="truncate w-full" [routerLink]="[paths.FORMATS, format._id, paths.RECORDS]"
+                [title]="format.name | titlecase">
+                {{format.name | titlecase}}
+            </span>
+            <button mat-icon-button class="invisible group-hover:visible" matTooltip="Configurar formato"
+                *appPermission="permissions.READ_FORMATS" [routerLink]="[paths.FORMAT, format._id]">
+                <mat-icon>settings</mat-icon>
+            </button>
+        </div>
+    </mat-list-item>
+    }
+</mat-nav-list>

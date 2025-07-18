@@ -1,13 +1,25 @@
 <div class="flex justify-between">
-    <div cdkDropList cdkDropListOrientation="mixed" (cdkDropListDropped)="drop($event)" class="flex flex-wrap gap-x-2">
+    <div cdkDropList cdkDropListOrientation="mixed" (cdkDropListDropped)="drop($event)"
+        class="flex flex-1 flex-wrap gap-x-2">
         @for (field of row.controls.fields.controls; track field; let columnIndex = $index) {
-        <div cdkDrag>
-            <app-fields-config [field]="field" (remove)="removeColumn($index)"></app-fields-config>
+        <div class="flex-1" cdkDrag>
+            <mat-form-field class="w-full mt-2 group/input">
+                <mat-label>{{field.controls.type.value}}</mat-label>
+                <input matInput type="text" [value]="field.controls.name.value" class="cursor-pointer"
+                    (dblclick)="openFieldConfig(field)" readonly required>
+
+                @if(columnIndex === row.controls.fields.controls.length - 1) {
+                <button matSuffix mat-icon-button type="button" matTooltip="Agregar campo"
+                    class="self-center invisible group-hover:visible" (click)="addColumn($event)">
+                    <mat-icon>variable_add</mat-icon>
+                </button>
+                }
+
+                <mat-hint class="invisible group-hover/input:visible">
+                    Doble click para configurar
+                </mat-hint>
+            </mat-form-field>
         </div>
         }
     </div>
-    <button mat-icon-button type="button" matTooltip="Agregar campo" class="self-center invisible group-hover:visible"
-        (click)="addColumn()">
-        <mat-icon>variable_add</mat-icon>
-    </button>
 </div>

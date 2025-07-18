@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { NavbarComponent } from '@core/components/navbar/navbar.component';
-import { NavlistComponent } from '@core/components/navlist/navlist.component';
+import { NavbarComponent } from '@core/components/navbar/navbar.component'; 
+import { FieldsConfigComponent } from '@features/formats/components/fields-config/fields-config.component';
+import { FormatsComponent } from '@features/formats/formats.component';
 import { PERMISSIONS } from '@habilident/types';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { MaterialModule } from '@shared/modules/material/material.module';
@@ -14,7 +15,8 @@ import { PATHS } from 'src/app/app.routes';
     RouterOutlet,
     RouterLink,
     NavbarComponent,
-    NavlistComponent,
+    FormatsComponent,
+    FieldsConfigComponent,
     MaterialModule,
     PermissionDirective,
   ],

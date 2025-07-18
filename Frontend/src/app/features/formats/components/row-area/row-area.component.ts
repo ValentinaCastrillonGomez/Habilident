@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FieldsConfig, ROW_TYPES } from '@habilident/types';
 import { createFieldFormGroup, FieldsConfigForm } from '../fields-config/fields-config.component';
+import { FormatsService } from '@shared/services/formats.service';
 
 export type AreaRowForm = {
   type: FormControl<typeof ROW_TYPES.AREA>;
@@ -12,7 +13,7 @@ export type AreaRowForm = {
 export function createAreaRow(fb: FormBuilder, field?: FieldsConfig): FormGroup<AreaRowForm> {
   return fb.group<AreaRowForm>({
     type: fb.nonNullable.control(ROW_TYPES.AREA),
-    fields: createFieldFormGroup(fb, field?.type, field),
+    fields: createFieldFormGroup(fb, field),
   });
 };
 
@@ -27,5 +28,11 @@ export function createAreaRow(fb: FormBuilder, field?: FieldsConfig): FormGroup<
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RowAreaComponent {
+  private readonly formatsService = inject(FormatsService);
+
   @Input({ required: true }) row!: FormGroup<AreaRowForm>;
+
+  openFieldConfig(field: FormGroup<FieldsConfigForm>): void {
+    this.formatsService.setInput(field, this.row);
+  }
 }

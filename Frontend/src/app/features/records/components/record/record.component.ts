@@ -31,7 +31,7 @@ export default class RecordComponent implements OnInit {
     private readonly router = inject(Router);
 
     formatId = input<string>();
-    format = computed<Format | null>(() => this.formatsService.data().find(format => format._id === this.formatId()) ?? null);
+    format = computed<Format | null>(() => null);
 
     recordId = input<string>();
     record: Record | null = null;

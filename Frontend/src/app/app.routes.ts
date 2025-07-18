@@ -57,11 +57,6 @@ export const routes: Routes = [
         loadComponent: () => import('@features/records/components/record/record.component'),
       },
       {
-        path: `${PATHS.FORMATS}`,
-        canMatch: [() => permissionGuard(PERMISSIONS.READ_FORMATS)],
-        loadComponent: () => import('@features/formats/formats.component'),
-      },
-      {
         path: `${PATHS.FORMAT}/:formatId`,
         canMatch: [() => permissionGuard(PERMISSIONS.READ_FORMATS)],
         loadComponent: () => import('@features/formats/components/format/format.component'),

@@ -1,14 +1,73 @@
-<mat-form-field class="mt-2" [formGroup]="field">
-    <mat-checkbox matPrefix formControlName="required" matTooltip="¿Campo obligatorio?">
-    </mat-checkbox>
-    <mat-label>{{field.controls.type.value}}</mat-label>
+@if(field){
+<div [formGroup]="field" class="flex flex-col p-5">
+    <h6>Configuración del campo</h6>
 
-    <input #input matInput type="text" formControlName="name" (focus)="focus()" (blur)="blur()" required>
-
-    <button matSuffix mat-icon-button type="button" matTooltip="Eliminar campo" (click)="remove.emit()">
-        <mat-icon>close</mat-icon>
-    </button>
-    @if (field.controls.name.invalid) {
-    <mat-error class="truncate">Introduce un nombre válido</mat-error>
+    @if(!isArea){
+    <mat-form-field class="w-full mt-2">
+        <mat-label>Tipo de campo</mat-label>
+        <mat-select formControlName="type" required>
+            @for (type of typeInputs; track type) {
+            <mat-option [value]="type">{{type}}</mat-option>
+            }
+        </mat-select>
+        @if (field.controls.type.invalid) {
+        <mat-error class="truncate">Introduce un tipo válido</mat-error>
+        }
+    </mat-form-field>
     }
-</mat-form-field>
+
+    <mat-form-field class="w-full mt-2">
+        <mat-label>Nombre del campo</mat-label>
+        <input matInput type="text" formControlName="name" required>
+        @if (field.controls.name.invalid) {
+        <mat-error class="truncate">Introduce un nombre válido</mat-error>
+        }
+    </mat-form-field>
+
+    @if ( inputTypes.LABEL !== this.field.controls.type.value) {
+    <mat-checkbox formControlName="required">¿Campo obligatorio?</mat-checkbox>
+
+    <mat-form-field class="w-full mt-2">
+        <mat-label>Valor por defecto</mat-label>
+        <input matInput type="text" formControlName="value">
+    </mat-form-field>
+    }
+
+    @if ( inputTypes.SELECT === this.field.controls.type.value) {
+    <mat-form-field class="w-full mt-2">
+        <mat-label>Referencia</mat-label>
+        <mat-select formControlName="reference" required>
+            @for (parameter of parameters(); track parameter) {
+            <mat-option [value]="parameter._id">{{parameter.name}}</mat-option>
+            }
+        </mat-select>
+        @if (field.controls.reference.invalid) {
+        <mat-error class="truncate">Introduce un referencia válida</mat-error>
+        }
+    </mat-form-field>
+    }
+
+    @if ( inputTypes.RECORD === this.field.controls.type.value) {
+    <mat-form-field class="w-full mt-2">
+        <mat-label>Referencia</mat-label>
+        <mat-select id="reference" formControlName="reference" required>
+            @for (format of formats(); track format) {
+            <mat-option [value]="format._id">{{format.name}}</mat-option>
+            }
+        </mat-select>
+        @if (field.controls.reference.invalid) {
+        <mat-error class="truncate">Introduce un referencia válida</mat-error>
+        }
+    </mat-form-field>
+    }
+
+    <div class="flex justify-end gap-2 mt-4">
+        <button mat-button (click)="delete()" class="text-red-600">
+            <mat-icon>delete</mat-icon>Borrar
+        </button>
+        <button mat-flat-button (click)="save()">
+            <mat-icon>save</mat-icon>Guardar
+        </button>
+    </div>
+</div>
+}
