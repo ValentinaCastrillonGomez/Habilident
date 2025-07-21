@@ -55,19 +55,18 @@
     <div class="flex gap-4">
         <mat-form-field class="w-full">
             <mat-label>Responsable</mat-label>
-            <mat-chip-grid #chipGrid required>
-                @for (option of alertForm.controls.responsibleUser.controls; track option) {
-                <mat-chip-row (removed)="remove($index)">
-                    {{option.value.firstNames}} {{option.value.lastNames}}
+            <mat-chip-grid #chipGrid formControlName="responsibleUser" required>
+                @for (option of alertForm.controls.responsibleUser.value; track option._id) {
+                <mat-chip-row (removed)="remove($index)" [value]="option">
+                    {{option.firstNames}} {{option.lastNames}}
                     <button matChipRemove><mat-icon>cancel</mat-icon></button>
                 </mat-chip-row>
                 }
+                <input #userInput [(ngModel)]="currentUser" [ngModelOptions]="{standalone: true}"
+                    [matChipInputSeparatorKeyCodes]="[]" [matChipInputFor]="chipGrid" [matAutocomplete]="auto" />
             </mat-chip-grid>
-            <input #userInput [(ngModel)]="currentUser" [ngModelOptions]="{standalone: true}"
-                [matChipInputSeparatorKeyCodes]="[]" [matChipInputFor]="chipGrid" [matAutocomplete]="auto" />
-
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event); userInput.value = ''">
-                @for (user of filteredadUsers(); track user) {
+                @for (user of filteredUsers(); track user) {
                 <mat-option [value]="user">{{user.firstNames}} {{user.lastNames}}</mat-option>
                 }
             </mat-autocomplete>

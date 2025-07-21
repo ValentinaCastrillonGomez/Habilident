@@ -1,8 +1,10 @@
 <div class="border border-solid border-collapse">
-    <div class="flex flex-row w-full gap-x-2 bg-sky-100">
+    <div class="flex gap-2 bg-sky-100">
         @for (field of header.controls; track field; let columnIndex = $index) {
-        <app-field class="flex flex-1" [field]="field" [rowType]="row.controls.type.value"
-            [isDelete]=" header.controls.length > 2" (remove)="removeColumn(columnIndex)"></app-field>
+        <div class="flex-1 min-w-0">
+            <app-field [field]="field" [rowType]="row.controls.type.value" [isDelete]=" header.controls.length > 2"
+                (remove)="removeColumn(columnIndex)"></app-field>
+        </div>
         }
         <div class="flex flex-col self-center">
             <button mat-icon-button type="button" matTooltip="Agregar columna" (click)="addColumn()">
@@ -14,9 +16,11 @@
         </div>
     </div>
     @for (rowInputs of row.controls.fields.controls.slice(1); track rowInputs; let rowIndex = $index) {
-    <div class="flex flex-row w-full gap-x-2">
+    <div class="flex gap-2">
         @for (field of rowInputs.controls; track field; let columnIndex = $index) {
-        <app-field class="flex flex-1" [field]="field" [rowType]="row.controls.type.value"></app-field>
+        <div class="flex-1 min-w-0">
+            <app-field [field]="field" [rowType]="row.controls.type.value"></app-field>
+        </div>
         }
         <button mat-icon-button type="button" matTooltip="Eliminar fila"
             [ngClass]="row.controls.fields.controls.length > 2 ? 'visible' : 'invisible'"

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, Input, model } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { UsersService } from '@features/users/services/users.service';
 import { FREQUENCIES, Frequency, User } from '@habilident/types';
@@ -11,7 +11,7 @@ export type AlertForm = {
   often: FormControl<number | null>;
   startAt: FormControl<Date | null>;
   hours: FormControl<string[]>;
-  responsibleUser: FormArray<any>;
+  responsibleUser: FormControl<any[]>;
 };
 
 @Component({
@@ -26,7 +26,6 @@ export type AlertForm = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlertComponent {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly usersService = inject(UsersService);
 
   @Input({ required: true }) alertForm!: FormGroup<AlertForm>;
@@ -35,12 +34,12 @@ export class AlertComponent {
   readonly availableTimes = this.generateTimeOptions();
 
   readonly currentUser = model('');
-  readonly filteredadUsers = computed(() => {
+  readonly filteredUsers = computed(() => {
     const currentUser = this.currentUser();
     const query = typeof currentUser === 'string' ? currentUser.toLowerCase() : '';
 
     return query
-      ? this.users().filter(user => user.firstNames.toLowerCase().includes(query))
+      ? this.users().filter(user => `${user.firstNames} ${user.lastNames}`.toLowerCase().includes(query))
       : this.users().slice();
   });
 
@@ -53,12 +52,15 @@ export class AlertComponent {
   }
 
   remove(index: number): void {
-    this.alertForm.controls.responsibleUser.removeAt(index);
+    const users = this.alertForm.controls.responsibleUser.value || [];
+    users.splice(index, 1);
+    this.alertForm.controls.responsibleUser.setValue([...users]);
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    if (!this.alertForm.controls.responsibleUser.controls.find(control => control.value._id === event.option.value._id)) {
-      this.alertForm.controls.responsibleUser.push(this.formBuilder.control(event.option.value));
+    const users = this.alertForm.controls.responsibleUser.value || [];
+    if (!this.alertForm.controls.responsibleUser.value.find(control => control._id === event.option.value._id)) {
+      this.alertForm.controls.responsibleUser.setValue([...users, event.option.value]);
     }
     event.option.deselect();
   }

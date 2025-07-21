@@ -1,14 +1,11 @@
-<div class="flex justify-between">
-    <div cdkDropList cdkDropListOrientation="mixed" (cdkDropListDropped)="drop($event)"
-        class="flex flex-1 flex-wrap gap-x-2">
-        @for (field of row.controls.fields.controls; track field; let columnIndex = $index) {
-        <div class="flex-1" cdkDrag>
-            <app-field [field]="field" [rowType]="row.controls.type.value"
-                [isDelete]="row.controls.fields.controls.length > 1" (remove)="removeColumn(columnIndex)"></app-field>
-        </div>
-        }
-        <button mat-icon-button type="button" matTooltip="Agregar campo" class="self-center" (click)="addColumn()">
-            <mat-icon>variable_add</mat-icon>
-        </button>
+<div cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)" class="flex gap-2">
+    @for (field of row.controls.fields.controls; track field; let columnIndex = $index) {
+    <div class="flex-1 min-w-0" cdkDrag matTooltip="Arrastrar campo">
+        <app-field [field]="field" [rowType]="row.controls.type.value"
+            [isDelete]="row.controls.fields.controls.length > 1" (remove)="removeColumn(columnIndex)"></app-field>
     </div>
+    }
+    <button mat-icon-button type="button" matTooltip="Agregar campo" class="self-center" (click)="addColumn()">
+        <mat-icon>variable_add</mat-icon>
+    </button>
 </div>

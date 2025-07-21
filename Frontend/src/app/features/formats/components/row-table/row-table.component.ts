@@ -42,7 +42,6 @@ export function createTableRow(fb: FormBuilder, table: FieldsConfig[][] = rowsDe
 })
 export class RowTableComponent {
   private readonly formBuilder = inject(FormBuilder);
-
   @Input({ required: true }) row!: FormGroup<TableRowForm>;
 
   get header() {

@@ -8,7 +8,6 @@ import { FormatsService } from '@shared/services/formats.service';
 import { AreaRowForm, createAreaRow, RowAreaComponent } from '../row-area/row-area.component';
 import { createTableRow, RowTableComponent, TableRowForm } from '../row-table/row-table.component';
 import { PermissionDirective } from '@shared/directives/permission.directive';
-import { Router } from '@angular/router';
 import { ParametersService } from '@shared/services/parameters.service';
 import { UsersService } from '@features/users/services/users.service';
 import { AlertComponent, AlertForm } from '../alert/alert.component';
@@ -53,7 +52,6 @@ export default class FormatComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly formatsService = inject(FormatsService);
   private readonly parametersService = inject(ParametersService);
-  private readonly router = inject(Router);
 
   readonly componentMap = {
     [ROW_TYPES.SINGLE]: RowSingleComponent,
@@ -74,7 +72,7 @@ export default class FormatComponent implements OnInit {
       often: this.formBuilder.control(null),
       startAt: this.formBuilder.control(null),
       hours: this.formBuilder.nonNullable.control([]),
-      responsibleUser: this.formBuilder.nonNullable.array([]),
+      responsibleUser: this.formBuilder.nonNullable.control([]),
     }),
     rows: this.formBuilder.nonNullable.array<FormatRowForm>([]) as FormArray,
   });
@@ -98,13 +96,7 @@ export default class FormatComponent implements OnInit {
 
     const format = await this.formatsService.get(formatId);
 
-    this.formatForm.patchValue({
-      ...format,
-      alert: {
-        ...format.alert,
-        responsibleUser: format.alert.responsibleUser.map(user => user._id)
-      }
-    });
+    this.formatForm.patchValue(format);
 
     format.rows.forEach((row) => this.addRow(row.type, row.fields));
   }
