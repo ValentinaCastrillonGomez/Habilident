@@ -1,16 +1,8 @@
-<div class="w-full overflow-auto">
-    <div class="flex flex-nowrap w-full bg-sky-100 border border-solid border-collapse">
+<div class="border border-solid border-collapse">
+    <div class="flex flex-row w-full gap-x-2 bg-sky-100">
         @for (field of header.controls; track field; let columnIndex = $index) {
-        <div class="flex">
-            <mat-form-field class="w-full mt-2">
-                <mat-label>{{field.controls.type.value}}</mat-label>
-                <input matInput type="text" readonly required>
-            </mat-form-field>
-            <button mat-icon-button type="button" matTooltip="Eliminar columna" class="text-red-600 self-center"
-                (click)="removeColumn(columnIndex)">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div>
+        <app-field class="flex flex-1" [field]="field" [rowType]="row.controls.type.value"
+            [isDelete]=" header.controls.length > 2" (remove)="removeColumn(columnIndex)"></app-field>
         }
         <div class="flex flex-col self-center">
             <button mat-icon-button type="button" matTooltip="Agregar columna" (click)="addColumn()">
@@ -22,17 +14,13 @@
         </div>
     </div>
     @for (rowInputs of row.controls.fields.controls.slice(1); track rowInputs; let rowIndex = $index) {
-    <div class="flex flex-row w-full border border-solid border-collapse">
+    <div class="flex flex-row w-full gap-x-2">
         @for (field of rowInputs.controls; track field; let columnIndex = $index) {
-        <div class="flex flex-1">
-            <mat-form-field class="w-full mt-2">
-                <mat-label>{{field.controls.type.value}}</mat-label>
-                <input matInput type="text" readonly required>
-            </mat-form-field>
-        </div>
+        <app-field class="flex flex-1" [field]="field" [rowType]="row.controls.type.value"></app-field>
         }
         <button mat-icon-button type="button" matTooltip="Eliminar fila"
-            class="text-red-600 self-center invisible group-hover:visible" (click)="removeRow(rowIndex + 1)">
+            [ngClass]="row.controls.fields.controls.length > 2 ? 'visible' : 'invisible'"
+            class="text-red-600 self-center" (click)="removeRow(rowIndex + 1)">
             <mat-icon>close</mat-icon>
         </button>
     </div>

@@ -65,13 +65,15 @@
                     </button>
 
                     <div class="flex-1 border-dashed border-transparent group-hover:border-black/50">
-                        <ng-container *ngComponentOutlet="componentMap[row.controls.type.value]; inputs: {row}" />
+                        <ng-container *ngComponentOutlet="componentMap[row.controls.type.value]; inputs: {row }" />
                     </div>
 
-                    <button mat-icon-button type="button" matTooltip="Eliminar fila"
-                        class="invisible group-hover:visible" (click)="removeRow(i)">
-                        <mat-icon class="text-red-600">delete</mat-icon>
-                    </button>
+                    <div class="flex flex-col items-center gap-x-2">
+                        <button mat-icon-button type="button" matTooltip="Eliminar fila"
+                            class="invisible group-hover:visible" (click)="removeRow(i)">
+                            <mat-icon class="text-red-600">delete</mat-icon>
+                        </button>
+                    </div>
                 </div>
                 }
             </div>

@@ -2,7 +2,7 @@
     <div class="flex gap-4">
         <mat-form-field class="w-full">
             <mat-label>Peridiocidad</mat-label>
-            <mat-select id="frequency" formControlName="frequency">
+            <mat-select id="frequency" formControlName="frequency" required>
                 @for (option of frequencies; track option) {
                 <mat-option [value]="option">{{option}}</mat-option>
                 }
@@ -34,14 +34,20 @@
         </mat-form-field>
 
         <mat-form-field class="w-full">
-            <mat-label>Hora de notificación</mat-label>
-            <input matInput [matTimepicker]="timepicker" id="timeStart" formControlName="startAt" required
-                [value]="alertForm.controls.startAt.value" />
-
-            <mat-timepicker-toggle matSuffix [for]="timepicker"></mat-timepicker-toggle>
-            <mat-timepicker #timepicker />
-
-            @if (alertForm.controls.startAt.invalid) {
+            <mat-label>Horas de notificación</mat-label>
+            <mat-select formControlName="hours" multiple required>
+                <mat-select-trigger>
+                    {{alertForm.controls.hours.value[0] || ''}}
+                    @if ((alertForm.controls.hours.value.length || 0) > 1) {
+                    <span> (+{{(alertForm.controls.hours.value.length || 0) - 1}}
+                        {{alertForm.controls.hours.value.length === 2 ? 'otro' : 'otros'}}) </span>
+                    }
+                </mat-select-trigger>
+                @for (time of availableTimes; track time) {
+                <mat-option [value]="time"> {{ time }} </mat-option>
+                }
+            </mat-select>
+            @if (alertForm.controls.hours.invalid) {
             <mat-error>Introduce una hora válida</mat-error>
             }
         </mat-form-field>
@@ -49,19 +55,19 @@
     <div class="flex gap-4">
         <mat-form-field class="w-full">
             <mat-label>Responsable</mat-label>
-            <mat-chip-grid #chipGrid>
+            <mat-chip-grid #chipGrid required>
                 @for (option of alertForm.controls.responsibleUser.controls; track option) {
                 <mat-chip-row (removed)="remove($index)">
-                    {{option.value}}
+                    {{option.value.firstNames}} {{option.value.lastNames}}
                     <button matChipRemove><mat-icon>cancel</mat-icon></button>
                 </mat-chip-row>
                 }
             </mat-chip-grid>
-            <input #userInput [formControl]="currentUser" [matChipInputSeparatorKeyCodes]="[]"
-                [matChipInputFor]="chipGrid" [matAutocomplete]="auto" (matChipInputTokenEnd)="add($event)" />
+            <input #userInput [(ngModel)]="currentUser" [ngModelOptions]="{standalone: true}"
+                [matChipInputSeparatorKeyCodes]="[]" [matChipInputFor]="chipGrid" [matAutocomplete]="auto" />
 
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event); userInput.value = ''">
-                @for (user of users(); track user) {
+                @for (user of filteredadUsers(); track user) {
                 <mat-option [value]="user">{{user.firstNames}} {{user.lastNames}}</mat-option>
                 }
             </mat-autocomplete>

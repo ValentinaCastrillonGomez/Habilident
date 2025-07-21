@@ -20,7 +20,7 @@ export class AlertEntity {
     @Prop({ required: false, default: null })
     hours: string[] | null;
 
-    @Prop({ type: Types.ObjectId, ref: 'UserEntity', required: false, default: null })
-    responsibleUser: UserEntity | null;
+    @Prop({ type: [Types.ObjectId], ref: 'UserEntity', required: false, default: null })
+    responsibleUser: UserEntity[] | null;
 }
 export const AlertSchema = SchemaFactory.createForClass(AlertEntity);

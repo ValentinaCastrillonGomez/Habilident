@@ -33,6 +33,6 @@ export class RowAreaComponent {
   @Input({ required: true }) row!: FormGroup<AreaRowForm>;
 
   openFieldConfig(field: FormGroup<FieldsConfigForm>): void {
-    this.formatsService.setInput(field, this.row);
+    this.formatsService.setInput(field, this.row.controls.type.value);
   }
 }

@@ -1,11 +1,10 @@
 import { Component, computed, inject, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
-import { FieldsConfig, Format, INPUT_TYPES, InputType, Parameter, ROW_TYPES } from '@habilident/types';
+import { FieldsConfig, Format, INPUT_TYPES, InputType, Parameter, ROW_TYPES, RowType } from '@habilident/types';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@shared/services/formats.service';
 import { ParametersService } from '@shared/services/parameters.service';
-import { FormatRowForm } from '../format/format.component';
 
 export type FieldsConfigForm = {
   name: FormControl<string>;
@@ -25,7 +24,7 @@ export const inputDefault: FieldsConfig = {
 
 export function createFieldFormGroup(fb: FormBuilder, field: FieldsConfig = inputDefault): FormGroup<FieldsConfigForm> {
   return fb.group<FieldsConfigForm>({
-    name: fb.nonNullable.control(field.name),
+    name: fb.nonNullable.control(field.name, [Validators.required]),
     type: fb.nonNullable.control(field.type),
     required: fb.nonNullable.control(field.required),
     value: fb.nonNullable.control(field.value),
@@ -49,7 +48,7 @@ export class FieldsConfigComponent implements OnInit {
   readonly typeInputs = Object.values(INPUT_TYPES);
 
   @Input({ required: true }) sidenav!: MatSidenav;
-  fieldConfig: { form: FormGroup<FieldsConfigForm>, row: FormatRowForm } | null = null;
+  fieldConfig: { form: FormGroup<FieldsConfigForm>, rowType: RowType } | null = null;
   parameters = computed<Parameter[]>(() => this.parametersService.data());
   formats = computed<Format[]>(() => this.formatsService.data());
 
@@ -58,7 +57,7 @@ export class FieldsConfigComponent implements OnInit {
   }
 
   get isArea() {
-    return this.fieldConfig?.row.controls.type.value === ROW_TYPES.AREA;
+    return this.fieldConfig?.rowType === ROW_TYPES.AREA;
   }
 
   ngOnInit(): void {
@@ -71,12 +70,12 @@ export class FieldsConfigComponent implements OnInit {
   save() {
     this.field?.markAllAsTouched();
     if (this.field?.invalid) return;
+    this.close();
+  }
+
+  close() {
     this.sidenav.close();
     this.fieldConfig = null;
   }
 
-  delete() {
-    this.sidenav.close();
-    this.fieldConfig = null;
-  }
 }

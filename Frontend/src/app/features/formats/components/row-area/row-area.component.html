@@ -1,8 +1,13 @@
-<mat-form-field class="w-full mt-2 group/input" (dblclick)="openFieldConfig(row.controls.fields)">
+<mat-form-field class="w-full mt-2 group/input" [formGroup]="row.controls.fields">
     <mat-label>Texto en area</mat-label>
-    <input matInput type="text" [value]="row.controls.fields.controls.name.value" readonly required>
+    <input matInput type="text" class="cursor-pointer" [value]="row.controls.fields.controls.name.value"
+        formControlName="name" (dblclick)="openFieldConfig(row.controls.fields)" readonly required>
 
-    <mat-hint class="invisible group-hover/input:visible">
-        Doble click para configurar
-    </mat-hint>
+    @if (row.controls.fields.controls.name.invalid) {
+    <mat-error class="truncate">
+        Campo inválido<span class="invisible group-hover/input:visible">, Doble click para configurar</span>
+    </mat-error>
+    }
+
+    <mat-hint class="invisible group-hover/input:visible"> Doble click para configurar </mat-hint>
 </mat-form-field>

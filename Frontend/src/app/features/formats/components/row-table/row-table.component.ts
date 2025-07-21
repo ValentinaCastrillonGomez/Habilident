@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { FieldsConfig, INPUT_TYPES, Parameter, ROW_TYPES } from '@habilident/types';
-import { ParametersService } from '@shared/services/parameters.service';
+import { FieldsConfig, INPUT_TYPES, ROW_TYPES } from '@habilident/types';
 import { createFieldFormGroup, FieldsConfigForm, inputDefault } from '../fields-config/fields-config.component';
+import { FieldComponent } from '../field/field.component';
 
 export type TableRowForm = {
   type: FormControl<typeof ROW_TYPES.TABLE>;
@@ -32,6 +32,7 @@ export function createTableRow(fb: FormBuilder, table: FieldsConfig[][] = rowsDe
 @Component({
   selector: 'app-row-table',
   imports: [
+    FieldComponent,
     MaterialModule,
     ReactiveFormsModule,
   ],
@@ -61,18 +62,13 @@ export class RowTableComponent {
   }
 
   removeColumn(index: number) {
-    if (this.header.length > 2) {
-      this.row.controls.fields.controls.forEach((row) => {
-        row.removeAt(index);
-      });
-    }
+    this.row.controls.fields.controls.forEach((row) => {
+      row.removeAt(index);
+    });
   }
 
   removeRow(index: number) {
-    const rows = this.row.controls.fields;
-    if (rows.length > 2) {
-      rows.removeAt(index);
-    }
+    this.row.controls.fields.removeAt(index);
   }
 
 }

@@ -74,7 +74,7 @@ export default class FormatComponent implements OnInit {
       often: this.formBuilder.control(null),
       startAt: this.formBuilder.control(null),
       hours: this.formBuilder.nonNullable.control([]),
-      responsibleUser: this.formBuilder.array([]),
+      responsibleUser: this.formBuilder.nonNullable.array([]),
     }),
     rows: this.formBuilder.nonNullable.array<FormatRowForm>([]) as FormArray,
   });
@@ -123,13 +123,8 @@ export default class FormatComponent implements OnInit {
     }
   }
 
-  getRow(row: FormatRowForm) {
-    return row as any;
-  }
-
   addRow(type: RowType, fields?: any) {
     this.formatForm.controls.rows.push(createRowMap[type](this.formBuilder, fields));
-    
   }
 
   removeRow(rowIndex: number): void {
@@ -145,8 +140,14 @@ export default class FormatComponent implements OnInit {
 
     if (this.formatForm.invalid) return;
 
-    const format = this.formatForm.getRawValue();
-
+    const formatValue = this.formatForm.getRawValue();
+    const format = {
+      ...formatValue,
+      alert: {
+        ...formatValue.alert,
+        responsibleUser: formatValue.alert.responsibleUser.map(user => user._id)
+      }
+    };
     await this.formatsService.save(format, this.formatId());
   }
 

@@ -4,7 +4,7 @@ import { MaterialModule } from '@shared/modules/material/material.module';
 import { FieldsConfig, ROW_TYPES } from '@habilident/types';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { createFieldFormGroup, FieldsConfigForm, inputDefault } from '../fields-config/fields-config.component';
-import { FormatsService } from '@shared/services/formats.service';
+import { FieldComponent } from '../field/field.component';
 
 export type SingleRowForm = {
   type: FormControl<typeof ROW_TYPES.SINGLE>;
@@ -23,6 +23,7 @@ export function createSingleRow(fb: FormBuilder, fields: FieldsConfig[] = rowDef
 @Component({
   selector: 'app-row-single',
   imports: [
+    FieldComponent,
     MaterialModule,
     CdkDrag, CdkDropList,
     ReactiveFormsModule,
@@ -33,22 +34,19 @@ export function createSingleRow(fb: FormBuilder, fields: FieldsConfig[] = rowDef
 })
 export class RowSingleComponent {
   private readonly formBuilder = inject(FormBuilder);
-  private readonly formatsService = inject(FormatsService);
   @Input({ required: true }) row!: FormGroup<SingleRowForm>;
 
-  addColumn($event: MouseEvent): void {
-    $event.stopPropagation();
+  addColumn(): void {
     const field = createFieldFormGroup(this.formBuilder);
     this.row.controls.fields.push(field);
-    this.openFieldConfig(field);
+  }
+
+  removeColumn(index: number): void {
+    this.row.controls.fields.removeAt(index);
   }
 
   drop(event: CdkDragDrop<FormArray>) {
     moveItemInArray(this.row.controls.fields.controls, event.previousIndex, event.currentIndex);
-  }
-
-  openFieldConfig(field: FormGroup<FieldsConfigForm>): void {
-    this.formatsService.setInput(field, this.row);
   }
 
 }
