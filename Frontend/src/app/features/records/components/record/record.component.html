@@ -4,7 +4,7 @@
             <button mat-icon-button type="button" (click)="goToRecords()"
                 matTooltip="Atras"><mat-icon>arrow_back</mat-icon>
             </button>
-            <h6 class="mb-0">Guardar Registro - <span>{{format()?.name | titlecase}}</span></h6>
+            <h6 class="mb-0">Guardar Registro - <span>{{format?.name | titlecase}}</span></h6>
         </div>
         <div class="flex items-center gap-x-2">
             @let recordSelected = recordId();
@@ -35,7 +35,7 @@
         </mat-form-field>
 
         @for (row of recordForm.controls.rows.controls; track row; let rowIndex = $index) {
-
+        <ng-container *ngComponentOutlet="componentMap[row.controls.type.value]; inputs: {row}" />
         }
     </div>
 </form>

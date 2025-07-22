@@ -1,13 +1,22 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { Format, PERMISSIONS, Record, ROW_TYPES } from '@habilident/types';
+import { Format, PERMISSIONS, Record, ROW_TYPES, RowType } from '@habilident/types';
 import { RecordsService } from '@features/records/services/records.service';
 import { FormatsService } from '@shared/services/formats.service';
 import { PATHS } from 'src/app/app.routes';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { Router } from '@angular/router';
-import { FormatRowForm } from '@features/formats/components/format/format.component';
+import { createRowMap, FormatRowForm } from '@features/formats/components/format/format.component';
+import { RecordTableComponent } from '../record-table/record-table.component';
+import { RecordAreaComponent } from '../record-area/record-area.component';
+import { RecordSingleComponent } from '../record-single/record-single.component';
+import { ParametersService } from '@shared/services/parameters.service';
+
+export type RecordForm = {
+    dateEffective: FormControl<Date | null>;
+    rows: FormArray<FormatRowForm>;
+};
 
 @Component({
     selector: 'app-record',
@@ -27,16 +36,23 @@ export default class RecordComponent implements OnInit {
     readonly rowTypes = ROW_TYPES;
     private readonly recordsService = inject(RecordsService);
     private readonly formatsService = inject(FormatsService);
+    private readonly parametersService = inject(ParametersService);
     private readonly formBuilder = inject(FormBuilder);
     private readonly router = inject(Router);
 
-    formatId = input<string>();
-    format = computed<Format | null>(() => null);
+    readonly componentMap = {
+        [ROW_TYPES.SINGLE]: RecordSingleComponent,
+        [ROW_TYPES.AREA]: RecordAreaComponent,
+        [ROW_TYPES.TABLE]: RecordTableComponent,
+    };
+
+    formatId = input.required<string>();
+    format: Format | null = null;
 
     recordId = input<string>();
     record: Record | null = null;
 
-    recordForm = this.formBuilder.group({
+    recordForm = this.formBuilder.group<RecordForm>({
         dateEffective: this.formBuilder.control<Date | null>(null),
         rows: this.formBuilder.array<FormatRowForm>([]) as FormArray,
     });
@@ -47,46 +63,25 @@ export default class RecordComponent implements OnInit {
 
     private async setForm() {
         await this.formatsService.load();
+        await this.parametersService.load();
+
+        this.format = await this.formatsService.get(this.formatId());
 
         this.recordForm.reset();
         this.recordForm.controls.dateEffective.setValue(new Date());
 
         const recordId = this.recordId();
         if (!recordId) {
-            this.buildFormNewRecord();
+            this.format.rows.forEach((row) => this.addRow(row.type, row.fields));
             return;
         }
 
-        this.record = await this.recordsService.get(recordId) ?? null;
-        this.buildFormUpdateRecord();
+        this.record = await this.recordsService.get(recordId);
+        this.record.rows.forEach((row) => this.addRow(row.type, row.fields));
     }
 
-    buildFormNewRecord() {
-        // this.format()?.rows.forEach((row) =>
-        //     this.recordForm.controls.rows.push(this.formBuilder.group({
-        //         type: this.formBuilder.control(row.type),
-        //         fields: this.formBuilder.array([this.formBuilder.array(row.fields.map(input => this.formBuilder.group({
-        //             name: this.formBuilder.control(input.name),
-        //             type: this.formBuilder.control(input.type),
-        //             required: this.formBuilder.control(input.required),
-        //             value: this.formBuilder.control('', input.required ? [Validators.required] : []),
-        //         })))]),
-        //     }))
-        // );
-    }
-
-    buildFormUpdateRecord() {
-        // this.record!.rows.forEach((row) =>
-        //     this.recordForm.controls.rows.push(this.formBuilder.group({
-        //         type: this.formBuilder.control(row.type),
-        //         fields: this.formBuilder.array(row.fields.map(fields => this.formBuilder.array(fields.map(input => this.formBuilder.group({
-        //             name: this.formBuilder.control(input.name),
-        //             type: this.formBuilder.control(input.type),
-        //             required: this.formBuilder.control(input.required),
-        //             value: this.formBuilder.control(input.value ?? '', input.required ? [Validators.required] : []),
-        //         }))))),
-        //     }))
-        // );
+    addRow(type: RowType, fields?: any) {
+        this.recordForm.controls.rows.push(createRowMap[type](this.formBuilder, fields));
     }
 
     async save() {

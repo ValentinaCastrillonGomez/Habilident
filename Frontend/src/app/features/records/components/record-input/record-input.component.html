@@ -1,24 +1,23 @@
 @switch(input.controls.type.value){
-@case ('select') {
+@case (inputTypes.LABEL) {
+<span>{{input.controls.name.value}}</span>
+}
+@case (inputTypes.SELECT) {
 <mat-form-field class="w-full" [formGroup]="input">
-    @if (!isTable()) {
-    <mat-label>{{select()?.name}}</mat-label>
-    }
+    <mat-label>{{input.controls.name.value}}</mat-label>
     <mat-select formControlName="value" [required]="input.controls.required.value">
-        @for (option of select()?.options; track option) {
+        @for (option of select?.options; track option) {
         <mat-option [value]="option">{{option}}</mat-option>
         }
     </mat-select>
     @if (input.controls.value.invalid) {
-    <mat-error class="truncate">Introduce una opción válido</mat-error>
+    <mat-error class="truncate">Introduce una opción válida</mat-error>
     }
 </mat-form-field>
 }
-@case ('date') {
+@case (inputTypes.DATE) {
 <mat-form-field class="w-full" [formGroup]="input">
-    @if (!isTable()) {
     <mat-label>{{input.controls.name.value}}</mat-label>
-    }
     <input matInput [matDatepicker]="picker" formControlName="value" [required]="input.controls.required.value">
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
@@ -29,9 +28,7 @@
 }
 @default{
 <mat-form-field class="w-full" [formGroup]="input">
-    @if (!isTable()) {
     <mat-label>{{input.controls.name.value}}</mat-label>
-    }
     <input matInput [type]="input.controls.type.value" id="name" formControlName="value"
         [required]="input.controls.required.value">
     @if (input.controls.value.invalid) {

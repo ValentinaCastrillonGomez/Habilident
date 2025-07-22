@@ -1,16 +1,16 @@
-<table class="mb-3 border-collapse w-full">
+<table class="mb-3 border-collapse w-full table-fixed">
     <thead>
         <tr>
-            @for (header of displayedColumns(); track $index) {
-            <th>{{header}}</th>
+            @for (head of this.row.controls.fields.controls[0].controls; track $index) {
+            <th><app-record-input [input]="head" [isTable]="true"></app-record-input></th>
             }
         </tr>
     </thead>
     <tbody>
-        @for (row of fields.controls; track $index) {
+        @for (row of row.controls.fields.controls.slice(1); track $index) {
         <tr>
             @for (column of row.controls; track $index) {
-            <td><app-record-input [input]="column" [isTable]="true"></app-record-input></td>
+            <td class="text-center"><app-record-input [input]="column" [isTable]="true"></app-record-input></td>
             }
         </tr>
         }

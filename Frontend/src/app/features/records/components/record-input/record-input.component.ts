@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, Input, } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject, input, Input, OnInit, } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ParametersService } from '@shared/services/parameters.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { INPUT_TYPES, InputType } from '@habilident/types';
+import { INPUT_TYPES, Parameter } from '@habilident/types';
+import { FieldsConfigForm } from '@features/formats/components/fields-config/fields-config.component';
 
 @Component({
   selector: 'app-record-input',
@@ -14,18 +15,18 @@ import { INPUT_TYPES, InputType } from '@habilident/types';
   styleUrl: './record-input.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecordInputComponent {
+export class RecordInputComponent implements OnInit {
+
   private readonly parametersService = inject(ParametersService);
+  readonly inputTypes = INPUT_TYPES;
 
-  @Input() input!: FormGroup<{
-    name: FormControl<string>;
-    type: FormControl<InputType>;
-    required: FormControl<boolean>;
-    value: FormControl<string>;
-  }>;
+  @Input() input!: FormGroup<FieldsConfigForm>;
   isTable = input<boolean>(false);
-  select = computed(() => (this.input.controls.type.value === INPUT_TYPES.SELECT) ?
-    this.parametersService.data().find(parameter => parameter._id === this.input.controls.name.value)
-    : undefined);
+  select: Parameter | null = null;
 
+  ngOnInit(): void {
+    this.select = (this.input.controls.type.value === INPUT_TYPES.SELECT) ?
+      this.parametersService.data().find(parameter => parameter._id === this.input.controls.name.value) ?? null
+      : null;
+  }
 }

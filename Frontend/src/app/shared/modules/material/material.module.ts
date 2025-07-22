@@ -33,6 +33,7 @@ import { MatTimepickerModule } from '@angular/material/timepicker';
 import { APP_FORMATS, AppDateAdapter } from './material-date.adapter';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { TextFieldModule } from '@angular/cdk/text-field';
 
 @NgModule({
   exports: [
@@ -65,6 +66,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatTimepickerModule,
     MatAutocompleteModule,
     MatButtonToggleModule,
+    TextFieldModule
   ],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: APP_FORMATS },

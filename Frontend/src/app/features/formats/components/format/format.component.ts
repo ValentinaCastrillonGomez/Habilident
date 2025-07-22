@@ -25,7 +25,7 @@ export type FormatForm = {
   rows: FormArray<FormatRowForm>;
 };
 
-const createRowMap = {
+export const createRowMap = {
   [ROW_TYPES.SINGLE]: (fb: FormBuilder, fields?: FieldsConfig[]) => createSingleRow(fb, fields),
   [ROW_TYPES.AREA]: (fb: FormBuilder, fields?: FieldsConfig) => createAreaRow(fb, fields),
   [ROW_TYPES.TABLE]: (fb: FormBuilder, fields?: FieldsConfig[][]) => createTableRow(fb, fields),
