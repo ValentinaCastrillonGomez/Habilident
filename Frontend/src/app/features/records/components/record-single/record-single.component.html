@@ -1,5 +1,5 @@
-<div class="flex gap-x-2">
+<div class="flex gap-2">
     @for (input of row.controls.fields.controls; track input; let columnIndex = $index) {
-    <app-record-input class="w-full overflow-x-hidden pt-2" [input]="input"></app-record-input>
+    <app-record-input class="flex-1 min-w-0" [input]="input"></app-record-input>
     }
 </div>

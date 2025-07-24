@@ -11,6 +11,10 @@ import { PermissionDirective } from '@shared/directives/permission.directive';
 import { ParametersService } from '@shared/services/parameters.service';
 import { UsersService } from '@features/users/services/users.service';
 import { AlertComponent, AlertForm } from '../alert/alert.component';
+import { ActivatedRoute } from '@angular/router';
+import { filter } from 'rxjs';
+
+const PARAM_ID = 'formatId';
 
 export type FormatRowForm =
   | FormGroup<SingleRowForm>
@@ -52,6 +56,7 @@ export default class FormatComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly formatsService = inject(FormatsService);
   private readonly parametersService = inject(ParametersService);
+  private readonly route = inject(ActivatedRoute);
 
   readonly componentMap = {
     [ROW_TYPES.SINGLE]: RowSingleComponent,
@@ -78,7 +83,7 @@ export default class FormatComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.setForm();
+    this.route.params.pipe(filter(param => param[PARAM_ID])).subscribe(_ => this.setForm());
   }
 
   private async setForm() {
@@ -87,15 +92,15 @@ export default class FormatComponent implements OnInit {
 
     const formatId = this.formatId();
 
+    this.formatForm.controls.rows.clear();
+    this.formatForm.reset();
+
     if (!formatId) {
       this.addRow(ROW_TYPES.SINGLE);
-
-      this.formatForm.reset();
       return;
     }
 
     const format = await this.formatsService.get(formatId);
-
     this.formatForm.patchValue(format);
 
     format.rows.forEach((row) => this.addRow(row.type, row.fields));

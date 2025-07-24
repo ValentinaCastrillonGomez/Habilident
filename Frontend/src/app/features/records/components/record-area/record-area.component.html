@@ -1,6 +1,6 @@
 <mat-form-field class="w-full" [formGroup]="row.controls.fields">
     <mat-label>{{row.controls.fields.controls.name.value}}</mat-label>
-    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3" cdkAutosizeMinRows="5"
+    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
         formControlName="value" [required]="row.controls.fields.controls.required.value"></textarea>
     @if (row.controls.fields.controls.value.invalid) {
     <mat-error class="truncate">Introduce un valor válido</mat-error>

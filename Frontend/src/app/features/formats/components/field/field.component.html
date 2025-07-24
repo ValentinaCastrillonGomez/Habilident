@@ -1,7 +1,7 @@
 <mat-form-field class="w-full mt-2 group/input" [formGroup]="field">
     <mat-label>{{field.controls.type.value}}</mat-label>
     <input matInput type="text" class="cursor-pointer" [value]="field.controls.name.value" formControlName="name"
-        (dblclick)="openFieldConfig(field)" readonly required>
+        (dblclick)="openFieldConfig(field)" readonly [required]="!isTable">
     @if(isDelete()){
     <button matSuffix mat-icon-button type="button" matTooltip="Eliminar {{isTable ? 'columna' : 'campo'}}"
         class="invisible group-hover/input:visible" (click)="remove.emit()">

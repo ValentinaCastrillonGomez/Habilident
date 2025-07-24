@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, Input, OnInit, } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, Input, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ParametersService } from '@shared/services/parameters.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
@@ -15,18 +15,14 @@ import { FieldsConfigForm } from '@features/formats/components/fields-config/fie
   styleUrl: './record-input.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecordInputComponent implements OnInit {
-
+export class RecordInputComponent {
   private readonly parametersService = inject(ParametersService);
   readonly inputTypes = INPUT_TYPES;
 
-  @Input() input!: FormGroup<FieldsConfigForm>;
+  @Input({ required: true }) input!: FormGroup<FieldsConfigForm>;
   isTable = input<boolean>(false);
-  select: Parameter | null = null;
+  select = computed<Parameter | null>(() => (this.input.controls.type.value === INPUT_TYPES.SELECT) ?
+    this.parametersService.data().find(parameter => parameter._id === this.input.controls.reference.value) ?? null : null
+  );
 
-  ngOnInit(): void {
-    this.select = (this.input.controls.type.value === INPUT_TYPES.SELECT) ?
-      this.parametersService.data().find(parameter => parameter._id === this.input.controls.name.value) ?? null
-      : null;
-  }
 }

@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Content, PageOrientation } from 'pdfmake/interfaces';
 import PdfPrinter from 'pdfmake';
 import { RecordsService } from 'src/features/records/records.service';
-import { FieldsConfig, INPUT_TYPES, ROW_TYPES, Parameter } from '@habilident/types';
-import { ParametersService } from 'src/features/parameters/parameters.service';
+import { INPUT_TYPES, ROW_TYPES } from '@habilident/types';
 import { FormatsService } from 'src/features/formats/formats.service';
 
 const fonts = {
@@ -22,12 +21,10 @@ export class ReportsService {
     constructor(
         private readonly recordsService: RecordsService,
         private readonly formatsService: FormatsService,
-        private readonly parametersService: ParametersService,
     ) { }
 
     async getRecordReport(id: string) {
         const record = await this.recordsService.findById(id);
-        const parameters = await this.parametersService.findAll();
 
         const data: Content[] = record.rows.map<Content>(row => {
             if (row.type === ROW_TYPES.SINGLE) {
@@ -35,7 +32,7 @@ export class ReportsService {
                     {
                         columns: row.fields.map(field => ({
                             text: [
-                                { text: `${this.getNameField(field, parameters.data)}: `, bold: true },
+                                { text: `${field.name}: `, bold: true },
                                 { text: field.type === INPUT_TYPES.DATE ? new Date(field.value).toLocaleDateString() : field.value, decoration: 'underline' }
                             ]
                         }))
@@ -45,8 +42,8 @@ export class ReportsService {
             }
             if (row.type === ROW_TYPES.AREA) {
                 return [
-                    { text: `${row.fields[0][0].name}: `, bold: true, alignment: 'center' },
-                    { text: row.fields[0][0].value, decoration: 'underline', alignment: 'justify' },
+                    { text: `${row.fields.name}: `, bold: true, alignment: 'center' },
+                    { text: row.fields.value, decoration: 'underline', alignment: 'justify' },
                     '\n',
                 ];
             }
@@ -57,12 +54,12 @@ export class ReportsService {
                             headerRows: 1, widths: '*',
                             body: [
                                 row.fields[0].map(field => ({
-                                    text: this.getNameField(field, parameters.data),
+                                    text: field.value,
                                     bold: true,
                                     alignment: 'center',
                                     fillColor: '#cce5ff'
                                 })),
-                                ...row.fields.map(field => field.map(input => input.type === INPUT_TYPES.DATE ? new Date(input.value).toLocaleDateString() : input.value)),
+                                ...row.fields.slice(1).map(field => field.map(input => input.type === INPUT_TYPES.DATE ? new Date(input.value).toLocaleDateString() : input.value)),
                             ]
                         }
                     },
@@ -78,12 +75,11 @@ export class ReportsService {
     async getFormatReport(id: string, start: string, end: string) {
         const format = await this.formatsService.findById(id);
         const { data } = await this.recordsService.findAll(0, 0, id, start, end);
-        const parameters = await this.parametersService.findAll();
 
         const head = format.rows
             .filter(row => row.type === ROW_TYPES.SINGLE)
             .flatMap(row => row.fields.map(field => ({
-                text: this.getNameField(field, parameters.data),
+                text: field.name,
                 bold: true,
                 alignment: 'center',
                 fillColor: '#cce5ff'
@@ -95,8 +91,8 @@ export class ReportsService {
             .filter(row => row.type === ROW_TYPES.SINGLE)
             .flatMap(row => row.fields.map(field => field)))
             .map(row => head.map(column => {
-                const field = row.find(field => column.text === this.getNameField(field, parameters.data));
-                return field?.type === INPUT_TYPES.DATE ? new Date(field.value).toLocaleDateString() : field?.value || '[No registrado]';
+                const field = row.find(field => column.text === field.name);
+                return field?.type === INPUT_TYPES.DATE ? new Date(field.value).toLocaleDateString() : field?.value || '';
             }));
 
         let content: Content = {
@@ -114,13 +110,6 @@ export class ReportsService {
         }
 
         return this.createPdf(format.name, content, 'landscape');
-    }
-
-    getNameField(field: FieldsConfig, parameters: Parameter[]) {
-        if (field.type === INPUT_TYPES.SELECT) {
-            return parameters.find(parameter => parameter._id.equals(field.name)).name;
-        }
-        return field.name;
     }
 
     private createPdf(title: string, content: Content, orientation: PageOrientation = 'portrait') {

@@ -1,13 +1,17 @@
 <form [formGroup]="recordForm" (ngSubmit)="save()">
     <div class="flex items-center justify-between mb-3">
+
+        @let recordSelected = recordId();
         <div class="flex items-center gap-x-2">
-            <button mat-icon-button type="button" (click)="goToRecords()"
-                matTooltip="Atras"><mat-icon>arrow_back</mat-icon>
+            <h6 class="mb-0">Registro de <span>{{format?.name | titlecase}}</span></h6>
+
+            @if(recordSelected){
+            <button mat-button type="button" (click)="print(recordSelected)">
+                <mat-icon>print</mat-icon> Imprimir
             </button>
-            <h6 class="mb-0">Guardar Registro - <span>{{format?.name | titlecase}}</span></h6>
+            }
         </div>
         <div class="flex items-center gap-x-2">
-            @let recordSelected = recordId();
             <button mat-stroked-button type="submit"
                 *appPermission="[permissions.CREATE_RECORDS, permissions.UPDATE_RECORDS]">
                 <mat-icon>save</mat-icon> Guardar
@@ -34,7 +38,7 @@
             }
         </mat-form-field>
 
-        @for (row of recordForm.controls.rows.controls; track row; let rowIndex = $index) {
+        @for (row of rows(); track row; let rowIndex = $index) {
         <ng-container *ngComponentOutlet="componentMap[row.controls.type.value]; inputs: {row}" />
         }
     </div>

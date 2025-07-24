@@ -9,6 +9,7 @@ import { PermissionDirective } from '@shared/directives/permission.directive';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PATHS } from 'src/app/app.routes';
 import moment from 'moment';
+import { ReportsService } from '@shared/services/reports.service';
 
 const PARAM_ID = 'formatId';
 
@@ -29,6 +30,7 @@ export default class RecordsComponent implements AfterViewInit {
     readonly permissions = PERMISSIONS;
     readonly paths = PATHS;
     private readonly recordsService = inject(RecordsService);
+    private readonly reportsService = inject(ReportsService);
     private readonly route = inject(ActivatedRoute);
 
     private readonly searchTerms = new Subject<any>();
@@ -67,6 +69,10 @@ export default class RecordsComponent implements AfterViewInit {
 
     search() {
         this.searchTerms.next(this.range.value);
+    }
+
+    print() {
+        this.reportsService.print(`formats/${this.formatId}`);
     }
 
 }

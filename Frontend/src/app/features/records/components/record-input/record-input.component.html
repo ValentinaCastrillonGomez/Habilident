@@ -2,16 +2,25 @@
 @case (inputTypes.LABEL) {
 <span>{{input.controls.name.value}}</span>
 }
+@case (inputTypes.NUMBER) {
+<mat-form-field class="w-full" [formGroup]="input">
+    <mat-label>{{input.controls.name.value}}</mat-label>
+    <input matInput type="number" formControlName="value" [required]="input.controls.required.value">
+    @if (input.controls.value.invalid) {
+    <mat-error>Introduce un valor válido</mat-error>
+    }
+</mat-form-field>
+}
 @case (inputTypes.SELECT) {
 <mat-form-field class="w-full" [formGroup]="input">
     <mat-label>{{input.controls.name.value}}</mat-label>
     <mat-select formControlName="value" [required]="input.controls.required.value">
-        @for (option of select?.options; track option) {
+        @for (option of select()?.options; track option) {
         <mat-option [value]="option">{{option}}</mat-option>
         }
     </mat-select>
     @if (input.controls.value.invalid) {
-    <mat-error class="truncate">Introduce una opción válida</mat-error>
+    <mat-error>Introduce una opción válida</mat-error>
     }
 </mat-form-field>
 }
@@ -22,17 +31,25 @@
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
     @if (input.controls.value.invalid) {
-    <mat-error class="truncate">Introduce una fecha válida</mat-error>
+    <mat-error>Introduce una fecha válida</mat-error>
     }
 </mat-form-field>
 }
+<!-- TODO: Implement other input types
+ @case (inputTypes.IMAGE) {
+}
+@case (inputTypes.SIGNATURE) {
+}
+@case (inputTypes.USER) {
+}
+@case (inputTypes.RECORD) {
+} -->
 @default{
 <mat-form-field class="w-full" [formGroup]="input">
     <mat-label>{{input.controls.name.value}}</mat-label>
-    <input matInput [type]="input.controls.type.value" id="name" formControlName="value"
-        [required]="input.controls.required.value">
+    <input matInput type="text" formControlName="value" [required]="input.controls.required.value">
     @if (input.controls.value.invalid) {
-    <mat-error class="truncate">Introduce un valor válido</mat-error>
+    <mat-error>Introduce un valor válido</mat-error>
     }
 </mat-form-field>
 }

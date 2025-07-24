@@ -1,18 +1,20 @@
 <mat-nav-list>
     @for (format of formats(); track format._id) {
-    <mat-list-item class="group" routerLinkActive #rla="routerLinkActive" [activated]="rla.isActive">
+    <mat-list-item class="group" [routerLink]="[paths.FORMATS, format._id, paths.RECORDS]" routerLinkActive
+        #rla="routerLinkActive" [activated]="rla.isActive">
         @let folder = rla.isActive ? 'folder_open' : 'folder';
         <mat-icon matListItemIcon>{{folder}}</mat-icon>
         <div class="flex items-center justify-between">
-            <span class="truncate w-full" [routerLink]="[paths.FORMATS, format._id, paths.RECORDS]"
-                [title]="format.name | titlecase">
+            <span class="truncate w-full" [title]="format.name | titlecase">
                 {{format.name | titlecase}}
             </span>
             <button mat-icon-button class="invisible group-hover:visible" matTooltip="Configurar formato"
-                *appPermission="permissions.READ_FORMATS" [routerLink]="[paths.FORMAT, format._id]">
+                *appPermission="permissions.READ_FORMATS" (click)="$event.stopPropagation()"
+                [routerLink]="[paths.FORMAT, format._id]">
                 <mat-icon>settings</mat-icon>
             </button>
         </div>
+        <a class="hidden" [routerLink]="[paths.FORMATS, format._id, paths.RECORD]"> nuevo registro </a>
     </mat-list-item>
     }
 </mat-nav-list>

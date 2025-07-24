@@ -24,7 +24,7 @@ export const inputDefault: FieldsConfig = {
 
 export function createFieldFormGroup(fb: FormBuilder, field: FieldsConfig = inputDefault): FormGroup<FieldsConfigForm> {
   return fb.group<FieldsConfigForm>({
-    name: fb.nonNullable.control(field.name, [Validators.required]),
+    name: fb.nonNullable.control(field.name),
     type: fb.nonNullable.control(field.type),
     required: fb.nonNullable.control(field.required),
     value: fb.nonNullable.control(field.value),
@@ -58,6 +58,10 @@ export class FieldsConfigComponent implements OnInit {
 
   get isArea() {
     return this.fieldConfig?.rowType === ROW_TYPES.AREA;
+  }
+
+  get isTable() {
+    return this.fieldConfig?.rowType === ROW_TYPES.TABLE;
   }
 
   ngOnInit(): void {
