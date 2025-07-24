@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, View
 import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Record, PERMISSIONS } from '@habilident/types';
-import { filter, merge, Subject, tap } from 'rxjs';
+import { filter, merge, tap } from 'rxjs';
 import { RecordsService } from './services/records.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PermissionDirective } from '@shared/directives/permission.directive';
