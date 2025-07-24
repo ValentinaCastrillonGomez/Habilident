@@ -13,9 +13,13 @@ export class ReportsService {
     private readonly pdf = new Subject<string>();
     pdf$ = this.pdf.asObservable();
 
-    async print(path: string, start = '', end = '') {
-        const pdf = await firstValueFrom(this.http.get(`${this.api}/${path}`, { responseType: 'blob', params: { start, end } }));
+    async printRecord(recordId: string) {
+        const pdf = await firstValueFrom(this.http.get(`${this.api}/record/${recordId}`, { responseType: 'blob' }));
         this.pdf.next(URL.createObjectURL(pdf));
     }
 
+    async printRecords(formatId: string, start = '', end = '') {
+        const pdf = await firstValueFrom(this.http.get(`${this.api}/records/${formatId}`, { responseType: 'blob', params: { start, end } }));
+        this.pdf.next(URL.createObjectURL(pdf));
+    }
 }

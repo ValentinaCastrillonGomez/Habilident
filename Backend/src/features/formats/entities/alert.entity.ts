@@ -22,5 +22,8 @@ export class AlertEntity {
 
     @Prop({ type: [Types.ObjectId], ref: 'UserEntity', required: false, default: null })
     responsibleUser: UserEntity[] | null;
+
+    @Prop({ required: true, default: true })
+    block: boolean;
 }
 export const AlertSchema = SchemaFactory.createForClass(AlertEntity);

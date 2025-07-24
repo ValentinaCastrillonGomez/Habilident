@@ -2,14 +2,14 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, View
 import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Record, PERMISSIONS } from '@habilident/types';
-import { filter, merge, Subject } from 'rxjs';
+import { filter, merge, Subject, tap } from 'rxjs';
 import { RecordsService } from './services/records.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PATHS } from 'src/app/app.routes';
-import moment from 'moment';
 import { ReportsService } from '@shared/services/reports.service';
+import moment from 'moment';
 
 const PARAM_ID = 'formatId';
 
@@ -33,14 +33,12 @@ export default class RecordsComponent implements AfterViewInit {
     private readonly reportsService = inject(ReportsService);
     private readonly route = inject(ActivatedRoute);
 
-    private readonly searchTerms = new Subject<any>();
-
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
     dataSource = signal<Record[]>([]);
     totalRecords = 0;
-    pageSize = 10;
-    displayedColumns: string[] = ['dateEffective', 'userCreate', 'dateCreate', 'userLastUpdate', 'dateLastUpdate', 'actions'];
+    pageSize = 1;
+    displayedColumns: string[] = ['dateEffective', 'actions'];
     range = new FormGroup({
         start: new FormControl<Date | null>(null),
         end: new FormControl<Date | null>(null),
@@ -49,30 +47,36 @@ export default class RecordsComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         merge(
-            this.route.params.pipe(filter(param => param[PARAM_ID])),
-            this.searchTerms,
+            this.route.params.pipe(filter(param => param[PARAM_ID]), tap(_ => {
+                this.paginator.firstPage();
+                this.range.reset();
+            })),
             this.paginator.page
         ).subscribe(() => this.loadRecords());
     }
 
-    private async loadRecords() {
+    async loadRecords() {
         this.formatId = this.route.snapshot.paramMap.get(PARAM_ID)!;
 
+        const range = this.getRange();
         const { data, totalRecords } = await this.recordsService.getPage(
             this.paginator.pageIndex, this.paginator.pageSize, this.formatId,
-            this.range.controls.start.value ? moment(this.range.controls.start.value).format('YYYY/MM/DD') : undefined,
-            this.range.controls.end.value ? moment(this.range.controls.end.value).format('YYYY/MM/DD') : undefined,
+            range.start, range.end
         );
         this.dataSource.set(data);
         this.totalRecords = totalRecords;
     }
 
-    search() {
-        this.searchTerms.next(this.range.value);
+    private getRange() {
+        return {
+            start: this.range.controls.start.value ? moment(this.range.controls.start.value).format('YYYY/MM/DD') : undefined,
+            end: this.range.controls.end.value ? moment(this.range.controls.end.value).format('YYYY/MM/DD') : undefined,
+        };
     }
 
     print() {
-        this.reportsService.print(`formats/${this.formatId}`);
+        const range = this.getRange();
+        this.reportsService.printRecords(this.formatId, range.start, range.end);
     }
 
 }

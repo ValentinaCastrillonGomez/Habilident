@@ -78,6 +78,7 @@ export default class FormatComponent implements OnInit {
       startAt: this.formBuilder.control(null),
       hours: this.formBuilder.nonNullable.control([]),
       responsibleUser: this.formBuilder.nonNullable.control([]),
+      block: this.formBuilder.nonNullable.control(false),
     }),
     rows: this.formBuilder.nonNullable.array<FormatRowForm>([]) as FormArray,
   });

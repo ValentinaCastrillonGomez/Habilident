@@ -15,4 +15,5 @@ export type Alert = {
     startAt: Date | null;
     hours: string[];
     responsibleUser: User[];
+    block: boolean;
 };

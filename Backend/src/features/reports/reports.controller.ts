@@ -11,17 +11,17 @@ import { PermissionsGuard } from '../permissions/permissions.guard';
 export class ReportsController {
   constructor(private readonly reportsService: ReportsService) { }
 
-  @Get('records/:id')
+  @Get('record/:recordId')
   @ValidPermission(PERMISSIONS.READ_RECORDS)
-  async findRecord(@Param('id') id: string, @Res() response: Response) {
-    const report = await this.reportsService.getRecordReport(id);
+  async findRecord(@Param('recordId') recordId: string, @Res() response: Response) {
+    const report = await this.reportsService.getRecordReport(recordId);
     this.sendPdf(report, response);
   }
 
-  @Get('formats/:id')
-  @ValidPermission(PERMISSIONS.READ_FORMATS)
-  async findFormat(@Param('id') id: string, @Res() response: Response, @Query() { start, end }) {
-    const report = await this.reportsService.getFormatReport(id, start, end);
+  @Get('records/:formatId')
+  @ValidPermission(PERMISSIONS.READ_RECORDS)
+  async findRecords(@Param('formatId') formatId: string, @Res() response: Response, @Query() { start, end }) {
+    const report = await this.reportsService.getRecordsReport(formatId, start, end);
     this.sendPdf(report, response);
   }
 

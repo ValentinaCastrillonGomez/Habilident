@@ -49,7 +49,6 @@ export type Format = {
     _id?: any;
     name: string;
     state: boolean;
-    block: boolean;
     alert: Alert;
     rows: FormatRow[];
 };

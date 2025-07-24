@@ -22,7 +22,7 @@
         <mat-date-range-picker #picker>
             <mat-date-range-picker-actions>
                 <button mat-button matDateRangePickerCancel>Cancelar</button>
-                <button mat-raised-button matDateRangePickerApply (click)="search()">Buscar</button>
+                <button mat-raised-button matDateRangePickerApply (click)="loadRecords()">Buscar</button>
             </mat-date-range-picker-actions>
         </mat-date-range-picker>
     </mat-form-field>
@@ -33,32 +33,6 @@
             <ng-container matColumnDef="dateEffective">
                 <mat-header-cell *matHeaderCellDef> Fecha de vigencia </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.dateEffective | date: 'dd/MM/yyyy' }}
-                </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="userCreate">
-                <mat-header-cell *matHeaderCellDef> Usuario que registro </mat-header-cell>
-                <mat-cell *matCellDef="let element">
-                    {{element.userCreate?.firstNames}} {{element.userCreate?.lastNames}}
-                </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="dateCreate">
-                <mat-header-cell *matHeaderCellDef> Fecha de registro </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.dateCreate | date: 'dd/MM/yyyy, h:mm a' }}
-                </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="userLastUpdate">
-                <mat-header-cell *matHeaderCellDef> Usuario que actualizo </mat-header-cell>
-                <mat-cell *matCellDef="let element">
-                    {{element.userLastUpdate?.firstNames}} {{element.userLastUpdate?.lastNames}}
-                </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="dateLastUpdate">
-                <mat-header-cell *matHeaderCellDef> Ultima actualización </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.dateLastUpdate | date: 'dd/MM/yyyy, h:mm a' }}
                 </mat-cell>
             </ng-container>
 

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { RecordsService } from './records.service';
 import { PERMISSIONS, Record } from '@habilident/types';
 import { JwtGuard } from '../auth/auth.guard';
@@ -12,8 +12,8 @@ export class RecordsController {
 
     @Post()
     @ValidPermission(PERMISSIONS.CREATE_RECORDS)
-    create(@Body() recordDto: Record, @Request() { user }) {
-        return this.recordsService.create({ ...recordDto, userCreate: user._id, dateCreate: new Date() });
+    create(@Body() recordDto: Record) {
+        return this.recordsService.create(recordDto);
     }
 
     @Get('/page')
@@ -30,8 +30,8 @@ export class RecordsController {
 
     @Patch(':id')
     @ValidPermission(PERMISSIONS.UPDATE_RECORDS)
-    update(@Param('id') id: string, @Body() recordDto: Record, @Request() { user }) {
-        return this.recordsService.update(id, { ...recordDto, userLastUpdate: user._id, dateLastUpdate: new Date() });
+    update(@Param('id') id: string, @Body() recordDto: Record) {
+        return this.recordsService.update(id, recordDto);
     }
 
     @Delete(':id')

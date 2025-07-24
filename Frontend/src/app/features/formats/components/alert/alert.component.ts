@@ -12,6 +12,7 @@ export type AlertForm = {
   startAt: FormControl<Date | null>;
   hours: FormControl<string[]>;
   responsibleUser: FormControl<any[]>;
+  block: FormControl<boolean>;
 };
 
 @Component({

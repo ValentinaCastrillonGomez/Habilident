@@ -15,9 +15,6 @@ export class FormatEntity implements Format {
     @Prop({ required: true, default: true })
     state: boolean;
 
-    @Prop({ required: true, default: true })
-    block: boolean;
-
     @Prop({ type: AlertSchema, required: true })
     alert: Alert;
 

@@ -10,11 +10,7 @@ export class RecordsService extends GenericService<RecordDocument, RecordEntity>
   constructor(
     @InjectModel(RecordEntity.name) private readonly recordModel: Model<RecordDocument>,
   ) {
-    super(recordModel, ['format'], [
-      { path: 'format', select: 'name' },
-      { path: 'userCreate', select: 'firstNames lastNames' },
-      { path: 'userLastUpdate', select: 'firstNames lastNames' },
-    ], 'dateEffective');
+    super(recordModel, ['format'], [{ path: 'format', select: 'name' }]);
   }
 
 }

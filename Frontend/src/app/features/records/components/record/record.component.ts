@@ -106,7 +106,7 @@ export default class RecordComponent implements OnInit {
     }
 
     print(id: string) {
-        this.reportsService.print(`records/${id}`);
+        this.reportsService.printRecord(id);
     }
 
     goToRecords() {
