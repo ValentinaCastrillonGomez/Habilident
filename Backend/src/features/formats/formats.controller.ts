@@ -11,9 +11,9 @@ export class FormatsController {
     constructor(private readonly formatsService: FormatsService) { }
 
     @Get()
-    @ValidPermission(PERMISSIONS.READ_RECORDS)
+    @ValidPermission([PERMISSIONS.READ_RECORDS, PERMISSIONS.READ_FORMATS])
     findAll() {
-        return this.formatsService.find({ state: true });
+        return this.formatsService.find({});
     }
 
     @Post()

@@ -10,6 +10,12 @@ import { ValidPermission } from '../permissions/permissions.decorator';
 export class RecordsController {
     constructor(private readonly recordsService: RecordsService) { }
 
+    @Get()
+    @ValidPermission([PERMISSIONS.READ_RECORDS])
+    findAll() {
+        return this.recordsService.find({});
+    }
+
     @Post()
     @ValidPermission(PERMISSIONS.CREATE_RECORDS)
     create(@Body() recordDto: Record) {

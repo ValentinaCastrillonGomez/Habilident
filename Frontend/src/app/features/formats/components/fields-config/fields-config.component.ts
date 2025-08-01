@@ -1,5 +1,5 @@
 import { Component, computed, inject, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
 import { FieldsConfig, Format, INPUT_TYPES, InputType, Parameter, ROW_TYPES, RowType } from '@habilident/types';
 import { MaterialModule } from '@shared/modules/material/material.module';

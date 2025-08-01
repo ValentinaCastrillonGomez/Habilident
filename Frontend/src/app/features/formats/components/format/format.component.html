@@ -56,9 +56,9 @@
             </div>
         </div>
         <section formArrayName="rows">
-            <div cdkDropList (cdkDropListDropped)="drop($event)">
+            <div cdkDropList (cdkDropListDropped)="drop($event)" class="rows-list">
                 @for (row of formatForm.controls.rows.controls; track row; let i = $index) {
-                <div class="flex justify-between items-center group" cdkDrag>
+                <div class="flex justify-between items-center group" cdkDragLockAxis="y" cdkDragBoundary=".rows-list" cdkDrag>
                     <button mat-icon-button type="button" matTooltip="Arrastrar fila"
                         class="invisible group-hover:visible" cdkDragHandle>
                         <mat-icon>drag_indicator</mat-icon>

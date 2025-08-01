@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { User } from '@habilident/types';
 import { GenericService } from '@shared/classes/generic.service';
+import { Record } from '@habilident/types';
 import { environment } from 'src/environments/environment';
 
-@Injectable()
-export class UsersService extends GenericService<User> {
+@Injectable({
+  providedIn: 'root',
+})
+export class RecordsService extends GenericService<Record> {
   protected http = inject(HttpClient);
-  protected api = environment.API_USERS;
+  protected api = environment.API_RECORDS;
 }

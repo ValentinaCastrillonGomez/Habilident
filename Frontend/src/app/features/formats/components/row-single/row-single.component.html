@@ -1,6 +1,7 @@
-<div cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)" class="flex gap-2">
+<div cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)" class="flex gap-2 columns-inputs">
     @for (field of row.controls.fields.controls; track field; let columnIndex = $index) {
-    <div class="flex-1 min-w-0" cdkDrag matTooltip="Arrastrar campo" [matTooltipShowDelay]="1000">
+    <div class="flex-1 min-w-0" matTooltip="Arrastrar campo" [matTooltipShowDelay]="1000" cdkDragLockAxis="x"
+        cdkDragBoundary=".columns-inputs" cdkDrag>
         <app-field [field]="field" [rowType]="row.controls.type.value"
             [isDelete]="row.controls.fields.controls.length > 1" (remove)="removeColumn(columnIndex)"></app-field>
     </div>

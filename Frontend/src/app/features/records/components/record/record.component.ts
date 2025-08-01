@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } fro
 import { FormArray, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Format, FormatRow, PERMISSIONS, Record, ROW_TYPES } from '@habilident/types';
-import { RecordsService } from '@features/records/services/records.service';
+import { RecordsService } from '@shared/services/records.service';
 import { FormatsService } from '@shared/services/formats.service';
 import { PATHS } from 'src/app/app.routes';
 import { PermissionDirective } from '@shared/directives/permission.directive';
@@ -13,6 +13,7 @@ import { RecordAreaComponent } from '../record-area/record-area.component';
 import { RecordSingleComponent } from '../record-single/record-single.component';
 import { ParametersService } from '@shared/services/parameters.service';
 import { ReportsService } from '@shared/services/reports.service';
+import { UsersService } from '@shared/services/users.service';
 
 export type RecordForm = {
     dateEffective: FormControl<Date | null>;
@@ -36,6 +37,7 @@ export default class RecordComponent implements OnInit {
     readonly paths = PATHS;
     readonly rowTypes = ROW_TYPES;
     private readonly recordsService = inject(RecordsService);
+    private readonly usersService = inject(UsersService);
     private readonly formatsService = inject(FormatsService);
     private readonly parametersService = inject(ParametersService);
     private readonly reportsService = inject(ReportsService);
@@ -63,6 +65,9 @@ export default class RecordComponent implements OnInit {
 
     ngOnInit(): void {
         this.setForm();
+
+        this.usersService.load();
+        this.recordsService.load();
     }
 
     private async setForm() {

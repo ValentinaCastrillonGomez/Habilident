@@ -9,7 +9,7 @@ import { AreaRowForm, createAreaRow, RowAreaComponent } from '../row-area/row-ar
 import { createTableRow, RowTableComponent, TableRowForm } from '../row-table/row-table.component';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { ParametersService } from '@shared/services/parameters.service';
-import { UsersService } from '@features/users/services/users.service';
+import { UsersService } from '@shared/services/users.service';
 import { AlertComponent, AlertForm } from '../alert/alert.component';
 import { ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs';
@@ -84,13 +84,16 @@ export default class FormatComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.initFom();
     this.route.params.pipe(filter(param => param[PARAM_ID])).subscribe(_ => this.setForm());
   }
 
-  private async setForm() {
+  private async initFom() {
     await this.formatsService.load();
     await this.parametersService.load();
+  }
 
+  private async setForm() {
     const formatId = this.formatId();
 
     this.formatForm.controls.rows.clear();

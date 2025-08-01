@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { User, Signature, Role, TYPE_PARAMETERS } from '@habilident/types';
-import { UsersService } from '../../services/users.service';
+import { UsersService } from '../../../../shared/services/users.service';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { RolesService } from '@features/roles/services/roles.service';
 import { ParametersService } from '@shared/services/parameters.service';
 import moment from 'moment';
+import { toBase64 } from '@shared/utils/base64.util';
 
 @Component({
   selector: 'app-user',
@@ -81,7 +82,7 @@ export class UserComponent implements OnInit {
     if (file) {
       const signature: Signature = {
         name: file.name,
-        image: await this.toBase64(file),
+        image: await toBase64(file),
       };
 
       this.signaturefile.set(signature);
@@ -89,14 +90,6 @@ export class UserComponent implements OnInit {
     }
   }
 
-  private toBase64(file: any) {
-    return new Promise<any>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-    });
-  }
 
   clearSignature(fileInput: HTMLInputElement) {
     this.signaturefile.set(null);

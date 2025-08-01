@@ -1,6 +1,6 @@
 @switch(input.controls.type.value){
 @case (inputTypes.LABEL) {
-<span>{{input.controls.name.value}}</span>
+<p class="text-center">{{input.controls.name.value}}</p>
 }
 @case (inputTypes.NUMBER) {
 <mat-form-field class="w-full" [formGroup]="input">
@@ -35,15 +35,53 @@
     }
 </mat-form-field>
 }
-<!-- TODO: Implement other input types
- @case (inputTypes.IMAGE) {
+@case (inputTypes.IMAGE) {
+<div class="flex items-center mb-4">
+    <input hidden #fileInput (change)="onFileSelected($event)" type="file" id="file" accept="image/*">
+    <button mat-icon-button type="button" (click)="fileInput.click()" matTooltip="Elegir imagen">
+        <mat-icon>image_arrow_up</mat-icon>
+    </button>
+    @if (signaturefile()) {
+    <span class="truncate flex-1"> {{signaturefile()?.name}} </span>
+    <button mat-icon-button type="button" (click)="clearSignature(fileInput)" matTooltip="Borrar imagen">
+        <mat-icon class="text-red-600">close</mat-icon>
+    </button>
+    }@else{
+    <span> Sin imagen </span>
+    }
+</div>
 }
+<!-- TODO: Implement other input types
 @case (inputTypes.SIGNATURE) {
 }
+} -->
 @case (inputTypes.USER) {
+<mat-form-field class="w-full" [formGroup]="input">
+    <mat-label>{{input.controls.name.value}}</mat-label>
+    <mat-select formControlName="value" [required]="input.controls.required.value">
+        @for (option of users(); track option) {
+        <mat-option [value]="option.firstNames + ' ' + option.lastNames">{{option.firstNames}}
+            {{option.lastNames}}</mat-option>
+        }
+    </mat-select>
+    @if (input.controls.value.invalid) {
+    <mat-error>Introduce una opción válida</mat-error>
+    }
+</mat-form-field>
 }
 @case (inputTypes.RECORD) {
-} -->
+<mat-form-field class="w-full" [formGroup]="input">
+    <mat-label>{{input.controls.name.value}}</mat-label>
+    <mat-select formControlName="value" [required]="input.controls.required.value">
+        @for (option of records(); track option) {
+        <mat-option [value]="option._id">{{option._id}}</mat-option>
+        }
+    </mat-select>
+    @if (input.controls.value.invalid) {
+    <mat-error>Introduce una opción válida</mat-error>
+    }
+</mat-form-field>
+}
 @default{
 <mat-form-field class="w-full" [formGroup]="input">
     <mat-label>{{input.controls.name.value}}</mat-label>

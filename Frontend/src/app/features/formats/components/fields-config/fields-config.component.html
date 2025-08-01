@@ -15,20 +15,20 @@
         }
     </mat-form-field>
     }
-    @if(inputTypes.LABEL === this.field.controls.type.value || !isTable){
+    @if(inputTypes.LABEL === field.controls.type.value || !isTable){
     <mat-form-field class="w-full mt-2">
         <mat-label>Nombre del campo</mat-label>
-        <input matInput type="text" formControlName="name" required>
+        <input matInput type="text" formControlName="name" [required]="!isTable">
         @if (field.controls.name.invalid) {
         <mat-error class="truncate">Introduce un nombre válido</mat-error>
         }
     </mat-form-field>
     }
-    @if (inputTypes.LABEL !== this.field.controls.type.value) {
+    @if (inputTypes.LABEL !== field.controls.type.value) {
     <mat-checkbox formControlName="required">¿Campo obligatorio?</mat-checkbox>
     }
 
-    @if (inputTypes.SELECT === this.field.controls.type.value) {
+    @if (inputTypes.SELECT === field.controls.type.value) {
     <mat-form-field class="w-full mt-2">
         <mat-label>Referencia</mat-label>
         <mat-select formControlName="reference" required>
@@ -42,7 +42,7 @@
     </mat-form-field>
     }
 
-    @if (inputTypes.RECORD === this.field.controls.type.value) {
+    @if (inputTypes.RECORD === field.controls.type.value) {
     <mat-form-field class="w-full mt-2">
         <mat-label>Referencia</mat-label>
         <mat-select id="reference" formControlName="reference" required>
@@ -56,7 +56,7 @@
     </mat-form-field>
     }
 
-    @if (inputTypes.LABEL !== this.field.controls.type.value) {
+    @if(inputTypes.TEXT === field.controls.type.value){
     <mat-form-field class="w-full mt-2">
         <mat-label>Valor por defecto</mat-label>
         <input matInput type="text" formControlName="value">

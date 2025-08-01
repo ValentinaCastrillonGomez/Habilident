@@ -1,8 +1,10 @@
-<table class="mb-3 border-collapse w-full table-fixed">
+<table class="mb-3 border-collapse w-full table-fixed border border-solid border-black/50">
     <thead>
         <tr>
             @for (head of this.row.controls.fields.controls[0].controls; track $index) {
-            <th><app-record-input [input]="head" [isTable]="true"></app-record-input></th>
+            <th class="border border-solid border-black/50"
+                [ngClass]="inputTypes.LABEL === head.controls.type.value ? 'bg-sky-100': ''"><app-record-input
+                    [input]="head" [isTable]="true"></app-record-input></th>
             }
         </tr>
     </thead>
@@ -10,7 +12,10 @@
         @for (row of row.controls.fields.controls.slice(1); track $index) {
         <tr>
             @for (column of row.controls; track $index) {
-            <td class="text-center"><app-record-input [input]="column" [isTable]="true"></app-record-input></td>
+            <td class="border border-solid border-black/50 text-center"
+                [ngClass]="inputTypes.LABEL === column.controls.type.value ? 'bg-sky-100': ''">
+                <app-record-input [input]="column" [isTable]="true"></app-record-input>
+            </td>
             }
         </tr>
         }

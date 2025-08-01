@@ -83,12 +83,17 @@ export class ReportsService {
 
     private getRowSingle(row: SingleRow) {
         return {
-            columns: row.fields.map(field => ({
-                text: [
+            columns: row.fields.map(field => ((field.type === INPUT_TYPES.LABEL)
+                ? {
+                    text: this.getInput(field),
+                    alignment: 'center',
+                }
+                : [
                     { text: `${field.name}: `, bold: true },
-                    { text: this.getInput(field) }
+                    this.getInput(field)
                 ]
-            }))
+            )),
+            
         };
     }
 
@@ -103,21 +108,23 @@ export class ReportsService {
         return {
             table: {
                 headerRows: 1, widths: '*',
-                body: [
-                    row.fields[0].map(field => ({
-                        text: field.name,
+                body: row.fields.map(field => field.map(input => ((input.type === INPUT_TYPES.LABEL)
+                    ? {
+                        text: this.getInput(input),
                         bold: true,
                         alignment: 'center',
                         fillColor: '#cce5ff'
-                    })),
-                    ...row.fields.slice(1).map(field => field.map(input => this.getInput(input))),
-                ]
+                    }
+                    : this.getInput(input)))),
             }
         };
     }
 
     private getInput(input: FieldsConfig) {
         switch (input?.type) {
+            case INPUT_TYPES.IMAGE: {
+                return { image: input?.reference, fit: [100, 100] };
+            }
             case INPUT_TYPES.DATE: {
                 const date = new Date(input.value);
                 return !isNaN(date.getTime()) ? date.toLocaleDateString() : '';

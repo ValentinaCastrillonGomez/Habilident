@@ -13,6 +13,7 @@ import { ParametersModule } from './features/parameters/parameters.module';
 import { ReportsModule } from './features/reports/reports.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { AlertsModule } from './features/alerts/alerts.module';
 
 @Module({
   imports: [
@@ -40,7 +41,8 @@ import { MailerModule } from '@nestjs-modules/mailer';
     FormatsModule,
     RecordsModule,
     ParametersModule,
-    ReportsModule
+    ReportsModule,
+    AlertsModule
   ],
   controllers: [AppController],
   providers: [AppService],
