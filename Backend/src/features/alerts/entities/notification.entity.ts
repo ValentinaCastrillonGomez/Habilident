@@ -16,8 +16,8 @@ export class NotificationEntity implements Notification {
     @Prop({ required: true })
     dateGenerated: Date;
 
-    @Prop({ type: [Types.ObjectId], ref: 'UserEntity', required: true })
-    users: UserEntity[];
+    @Prop({ type: Types.ObjectId, ref: 'UserEntity', required: true })
+    user: UserEntity;
 
     @Prop({ required: false, default: true })
     state: boolean;

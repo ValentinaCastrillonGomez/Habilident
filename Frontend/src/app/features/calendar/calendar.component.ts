@@ -6,7 +6,7 @@ import esLocale from '@fullcalendar/core/locales/es-us';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { FormatsService } from '@shared/services/formats.service';
+import { FormatsService } from '@features/formats/services/formats.service';
 import moment from 'moment';
 
 @Component({

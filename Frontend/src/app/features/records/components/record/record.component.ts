@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } fro
 import { FormArray, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { Format, FormatRow, PERMISSIONS, Record, ROW_TYPES } from '@habilident/types';
-import { RecordsService } from '@shared/services/records.service';
-import { FormatsService } from '@shared/services/formats.service';
+import { RecordsService } from '@features/records/services/records.service';
+import { FormatsService } from '@features/formats/services/formats.service';
 import { PATHS } from 'src/app/app.routes';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { Router } from '@angular/router';
@@ -11,9 +11,9 @@ import { createRowMap, FormatRowForm } from '@features/formats/components/format
 import { RecordTableComponent } from '../record-table/record-table.component';
 import { RecordAreaComponent } from '../record-area/record-area.component';
 import { RecordSingleComponent } from '../record-single/record-single.component';
-import { ParametersService } from '@shared/services/parameters.service';
+import { ParametersService } from '@features/parameters/services/parameters.service';
 import { ReportsService } from '@shared/services/reports.service';
-import { UsersService } from '@shared/services/users.service';
+import { UsersService } from '@features/users/services/users.service';
 
 export type RecordForm = {
     dateEffective: FormControl<Date | null>;

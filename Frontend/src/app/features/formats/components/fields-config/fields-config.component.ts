@@ -3,8 +3,8 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angul
 import { MatSidenav } from '@angular/material/sidenav';
 import { FieldsConfig, Format, INPUT_TYPES, InputType, Parameter, ROW_TYPES, RowType } from '@habilident/types';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { FormatsService } from '@shared/services/formats.service';
-import { ParametersService } from '@shared/services/parameters.service';
+import { FormatsService } from '@features/formats/services/formats.service';
+import { ParametersService } from '@features/parameters/services/parameters.service';
 
 export type FieldsConfigForm = {
   name: FormControl<string>;

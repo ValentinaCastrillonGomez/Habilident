@@ -2,8 +2,8 @@
     <div class="flex">
         @for (field of header.controls; track field; let columnIndex = $index) {
         <div class="flex-1 min-w-0 px-1" [ngClass]="inputTypes.LABEL === field.controls.type.value ? 'bg-sky-100': ''">
-            <app-field [field]="field" [rowType]="row.controls.type.value" [isDelete]=" header.controls.length > 2"
-                (remove)="removeColumn(columnIndex)"></app-field>
+            <app-format-input [field]="field" [rowType]="row.controls.type.value" [isDelete]=" header.controls.length > 2"
+                (remove)="removeColumn(columnIndex)"></app-format-input>
         </div>
         }
         <div class="flex flex-col self-center">
@@ -19,7 +19,7 @@
     <div class="flex">
         @for (field of rowInputs.controls; track field; let columnIndex = $index) {
         <div class="flex-1 min-w-0 px-1" [ngClass]="inputTypes.LABEL === field.controls.type.value ? 'bg-sky-100': ''">
-            <app-field [field]="field" [rowType]="row.controls.type.value"></app-field>
+            <app-format-input [field]="field" [rowType]="row.controls.type.value"></app-format-input>
         </div>
         }
         <button mat-icon-button type="button" matTooltip="Eliminar fila"

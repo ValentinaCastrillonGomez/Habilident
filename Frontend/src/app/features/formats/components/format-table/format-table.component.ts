@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } f
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FieldsConfig, INPUT_TYPES, ROW_TYPES } from '@habilident/types';
 import { createFieldFormGroup, FieldsConfigForm, inputDefault } from '../fields-config/fields-config.component';
-import { FieldComponent } from '../field/field.component';
+import { FormatInputComponent } from '../format-input/format-input.component';
 
 export type TableRowForm = {
   type: FormControl<typeof ROW_TYPES.TABLE>;
@@ -30,17 +30,17 @@ export function createTableRow(fb: FormBuilder, table: FieldsConfig[][] = rowsDe
 };
 
 @Component({
-  selector: 'app-row-table',
+  selector: 'app-format-table',
   imports: [
-    FieldComponent,
+    FormatInputComponent,
     MaterialModule,
     ReactiveFormsModule,
   ],
-  templateUrl: './row-table.component.html',
-  styleUrl: './row-table.component.scss',
+  templateUrl: './format-table.component.html',
+  styleUrl: './format-table.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RowTableComponent {
+export class FormatTableComponent {
   private readonly formBuilder = inject(FormBuilder);
   @Input({ required: true }) row!: FormGroup<TableRowForm>;
   readonly inputTypes = INPUT_TYPES;

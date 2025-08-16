@@ -4,7 +4,7 @@ import { MaterialModule } from '@shared/modules/material/material.module';
 import { FieldsConfig, ROW_TYPES } from '@habilident/types';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { createFieldFormGroup, FieldsConfigForm, inputDefault } from '../fields-config/fields-config.component';
-import { FieldComponent } from '../field/field.component';
+import { FormatInputComponent } from '../format-input/format-input.component';
 
 export type SingleRowForm = {
   type: FormControl<typeof ROW_TYPES.SINGLE>;
@@ -21,18 +21,18 @@ export function createSingleRow(fb: FormBuilder, fields: FieldsConfig[] = rowDef
 };
 
 @Component({
-  selector: 'app-row-single',
+  selector: 'app-format-single',
   imports: [
-    FieldComponent,
+    FormatInputComponent,
     MaterialModule,
     CdkDrag, CdkDropList,
     ReactiveFormsModule,
   ],
-  templateUrl: './row-single.component.html',
-  styleUrl: './row-single.component.scss',
+  templateUrl: './format-single.component.html',
+  styleUrl: './format-single.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RowSingleComponent {
+export class FormatSingleComponent {
   private readonly formBuilder = inject(FormBuilder);
   @Input({ required: true }) row!: FormGroup<SingleRowForm>;
 

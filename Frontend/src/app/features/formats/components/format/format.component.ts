@@ -3,14 +3,14 @@ import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFo
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FieldsConfig, PERMISSIONS, ROW_TYPES, RowType } from '@habilident/types';
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { createSingleRow, RowSingleComponent, SingleRowForm } from '../row-single/row-single.component';
-import { FormatsService } from '@shared/services/formats.service';
-import { AreaRowForm, createAreaRow, RowAreaComponent } from '../row-area/row-area.component';
-import { createTableRow, RowTableComponent, TableRowForm } from '../row-table/row-table.component';
+import { createSingleRow, FormatSingleComponent, SingleRowForm } from '../format-single/format-single.component';
+import { FormatsService } from '@features/formats/services/formats.service';
+import { AreaRowForm, createAreaRow, FormatAreaComponent } from '../format-area/format-area.component';
+import { createTableRow, FormatTableComponent, TableRowForm } from '../format-table/format-table.component';
 import { PermissionDirective } from '@shared/directives/permission.directive';
-import { ParametersService } from '@shared/services/parameters.service';
-import { UsersService } from '@shared/services/users.service';
-import { AlertComponent, AlertForm } from '../alert/alert.component';
+import { ParametersService } from '@features/parameters/services/parameters.service';
+import { UsersService } from '@features/users/services/users.service';
+import { FormatAlertComponent, AlertForm } from '../format-alert/format-alert.component';
 import { ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs';
 
@@ -38,7 +38,7 @@ export const createRowMap = {
 @Component({
   selector: 'app-format',
   imports: [
-    AlertComponent,
+    FormatAlertComponent,
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
@@ -59,9 +59,9 @@ export default class FormatComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
   readonly componentMap = {
-    [ROW_TYPES.SINGLE]: RowSingleComponent,
-    [ROW_TYPES.AREA]: RowAreaComponent,
-    [ROW_TYPES.TABLE]: RowTableComponent,
+    [ROW_TYPES.SINGLE]: FormatSingleComponent,
+    [ROW_TYPES.AREA]: FormatAreaComponent,
+    [ROW_TYPES.TABLE]: FormatTableComponent,
   };
 
   alertCheck = signal<boolean>(false);

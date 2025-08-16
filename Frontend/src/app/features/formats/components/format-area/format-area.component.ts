@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angul
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FieldsConfig, ROW_TYPES } from '@habilident/types';
 import { createFieldFormGroup, FieldsConfigForm } from '../fields-config/fields-config.component';
-import { FormatsService } from '@shared/services/formats.service';
+import { FormatsService } from '@features/formats/services/formats.service';
 
 export type AreaRowForm = {
   type: FormControl<typeof ROW_TYPES.AREA>;
@@ -18,16 +18,16 @@ export function createAreaRow(fb: FormBuilder, field?: FieldsConfig): FormGroup<
 };
 
 @Component({
-  selector: 'app-row-area',
+  selector: 'app-format-area',
   imports: [
     MaterialModule,
     ReactiveFormsModule,
   ],
-  templateUrl: './row-area.component.html',
-  styleUrl: './row-area.component.scss',
+  templateUrl: './format-area.component.html',
+  styleUrl: './format-area.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RowAreaComponent {
+export class FormatAreaComponent {
   private readonly formatsService = inject(FormatsService);
 
   @Input({ required: true }) row!: FormGroup<AreaRowForm>;

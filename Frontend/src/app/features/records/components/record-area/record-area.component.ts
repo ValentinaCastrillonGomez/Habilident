@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AreaRowForm } from '@features/formats/components/row-area/row-area.component';
+import { AreaRowForm } from '@features/formats/components/format-area/format-area.component';
 import { MaterialModule } from '@shared/modules/material/material.module';
 
 @Component({

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { SingleRowForm } from '@features/formats/components/row-single/row-single.component';
+import { SingleRowForm } from '@features/formats/components/format-single/format-single.component';
 import { RecordInputComponent } from '../record-input/record-input.component';
 
 @Component({

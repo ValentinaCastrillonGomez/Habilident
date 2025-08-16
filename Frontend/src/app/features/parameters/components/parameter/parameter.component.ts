@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatChipEditedEvent, MatChipInputEvent } from "@angular/material/chips";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { ParametersService } from "@shared/services/parameters.service";
+import { ParametersService } from "@features/parameters/services/parameters.service";
 import { MaterialModule } from "@shared/modules/material/material.module";
 import { Parameter } from "@habilident/types";
 

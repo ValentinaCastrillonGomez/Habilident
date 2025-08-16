@@ -3,9 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { firstValueFrom, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class ReportsService {
     protected http = inject(HttpClient);
     protected api = environment.API_REPORTS;

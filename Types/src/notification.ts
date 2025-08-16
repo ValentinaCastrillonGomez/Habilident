@@ -4,6 +4,6 @@ import { User } from "./user";
 export type Notification = {
     format: Format;
     dateGenerated: Date;
-    users: User[];
+    user: User;
     state: boolean;
 };

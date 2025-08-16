@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, Input, model } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { UsersService } from '@shared/services/users.service';
+import { UsersService } from '@features/users/services/users.service';
 import { FREQUENCIES, Frequency, User } from '@habilident/types';
 import { MaterialModule } from '@shared/modules/material/material.module';
 
@@ -16,17 +16,17 @@ export type AlertForm = {
 };
 
 @Component({
-  selector: 'app-alert',
+  selector: 'app-format-alert',
   imports: [
     ReactiveFormsModule,
     FormsModule,
     MaterialModule,
   ],
-  templateUrl: './alert.component.html',
-  styleUrl: './alert.component.scss',
+  templateUrl: './format-alert.component.html',
+  styleUrl: './format-alert.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AlertComponent {
+export class FormatAlertComponent {
   private readonly usersService = inject(UsersService);
 
   @Input({ required: true }) alertForm!: FormGroup<AlertForm>;

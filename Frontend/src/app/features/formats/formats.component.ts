@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { FormatsService } from '@shared/services/formats.service';
+import { FormatsService } from '@features/formats/services/formats.service';
 import { Format, PERMISSIONS } from '@habilident/types';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { RouterLink, RouterLinkActive } from '@angular/router';

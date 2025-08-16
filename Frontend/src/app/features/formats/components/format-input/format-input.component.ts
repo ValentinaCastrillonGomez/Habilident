@@ -1,20 +1,20 @@
 import { Component, EventEmitter, inject, input, Input, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormatsService } from '@shared/services/formats.service';
+import { FormatsService } from '@features/formats/services/formats.service';
 import { FieldsConfigForm } from '../fields-config/fields-config.component';
 import { ROW_TYPES, RowType } from '@habilident/types';
 import { MaterialModule } from '@shared/modules/material/material.module';
 
 @Component({
-  selector: 'app-field',
+  selector: 'app-format-input',
   imports: [
     MaterialModule,
     ReactiveFormsModule,
   ],
-  templateUrl: './field.component.html',
-  styleUrl: './field.component.scss'
+  templateUrl: './format-input.component.html',
+  styleUrl: './format-input.component.scss'
 })
-export class FieldComponent {
+export class FormatInputComponent {
   private readonly formatsService = inject(FormatsService);
   @Input({ required: true }) field!: FormGroup<FieldsConfigForm>;
   @Input({ required: true }) rowType!: RowType;

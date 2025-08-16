@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, ViewChild, inject, ChangeDetectionStrategy, signal } from '@angular/core';
-import { UsersService } from '../../shared/services/users.service';
+import { UsersService } from './services/users.service';
 import { Role, User } from '@habilident/types';
 import { MatPaginator } from '@angular/material/paginator';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';

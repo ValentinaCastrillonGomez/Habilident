@@ -7,9 +7,7 @@ import { Subject } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { FieldsConfigForm } from '@features/formats/components/fields-config/fields-config.component';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class FormatsService extends GenericService<Format> {
   protected http = inject(HttpClient);
   protected api = environment.API_FORMATS;
