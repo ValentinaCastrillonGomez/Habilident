@@ -17,7 +17,7 @@ import { toBase64 } from '@shared/utils/base64.util';
   ],
   providers: [UsersService, RolesService],
   templateUrl: './user.component.html',
-  styleUrl: './user.component.scss',
+  styleUrls: ['./user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserComponent implements OnInit {
@@ -76,18 +76,18 @@ export class UserComponent implements OnInit {
     }
   }
 
-  async onFileSelected(event: any) {
-    const file = event.target.files[0];
+  async onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
 
-    if (file) {
-      const signature: Signature = {
-        name: file.name,
-        image: await toBase64(file),
-      };
+    const signature: Signature = {
+      name: file.name,
+      image: await toBase64(file),
+    };
 
-      this.signaturefile.set(signature);
-      this.userForm.controls.signature.setValue(signature);
-    }
+    this.signaturefile.set(signature);
+    this.userForm.controls.signature.setValue(signature);
   }
 
 
