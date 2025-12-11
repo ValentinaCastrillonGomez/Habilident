@@ -19,8 +19,7 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 .cdk-drag-placeholder {
     opacity: 0;
