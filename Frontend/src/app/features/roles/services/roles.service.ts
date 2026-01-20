@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { GenericService } from '@shared/classes/generic.service';
-import { Role } from '@habilident/types';
+import { Role } from '@doclify/types';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 

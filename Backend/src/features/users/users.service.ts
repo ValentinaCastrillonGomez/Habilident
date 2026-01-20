@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserDocument, UserEntity } from 'src/features/users/entities/user.entity';
 import { GenericService } from 'src/shared/classes/generic.service';
-import { User } from '@habilident/types';
+import { User } from '@doclify/types';
 import { genSaltSync, hash } from 'bcrypt';
 import { RolesService } from '../roles/roles.service';
 

@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from '@core/guards/auth.guard';
 import { permissionGuard } from '@core/guards/permission.guard';
-import { PERMISSIONS } from '@habilident/types';
+import { PERMISSIONS } from '@doclify/types';
 
 export const PATHS = {
   HOME: '',

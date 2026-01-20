@@ -2,7 +2,7 @@ import { Component, EventEmitter, inject, input, Input, Output } from '@angular/
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormatsService } from '@features/formats/services/formats.service';
 import { FieldsConfigForm } from '../fields-config/fields-config.component';
-import { ROW_TYPES, RowType } from '@habilident/types';
+import { ROW_TYPES, RowType } from '@doclify/types';
 import { MaterialModule } from '@shared/modules/material/material.module';
 
 @Component({

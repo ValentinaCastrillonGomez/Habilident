@@ -1,5 +1,5 @@
 {
-  "name": "@habilident/frontend",
+  "name": "@doclify/frontend",
   "version": "0.1.0",
   "scripts": {
     "ng": "ng",
@@ -23,7 +23,7 @@
     "@fullcalendar/core": "^6.1.19",
     "@fullcalendar/daygrid": "^6.1.19",
     "@fullcalendar/list": "^6.1.19",
-    "@habilident/types": "file:../Types",
+    "@doclify/types": "file:../Types",
     "moment": "^2.30.1",
     "rxjs": "~7.8.0",
     "socket.io-client": "^4.8.1",

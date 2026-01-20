@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { Parameter } from '@habilident/types';
+import { Parameter } from '@doclify/types';
 
 export type ParameterDocument = HydratedDocument<ParameterEntity>;
 

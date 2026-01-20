@@ -1,6 +1,0 @@
-# Node
-/node_modules
-
-# Cypress
-/cypress/videos
-/cypress/screenshots

@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { signal } from "@angular/core";
-import { Page } from "@habilident/types";
+import { Page } from "@doclify/types";
 import { firstValueFrom } from "rxjs";
 import Swal from "sweetalert2";
 

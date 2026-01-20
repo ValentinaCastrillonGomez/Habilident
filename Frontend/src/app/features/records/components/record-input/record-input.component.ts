@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, Input, input, OnI
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ParametersService } from '@features/parameters/services/parameters.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { INPUT_TYPES, Parameter, Record, Signature, User } from '@habilident/types';
+import { INPUT_TYPES, Parameter, Record, Signature, User } from '@doclify/types';
 import { FieldsConfigForm } from '@features/formats/components/fields-config/fields-config.component';
 import { UsersService } from '@features/users/services/users.service';
 import { RecordsService } from '@features/records/services/records.service';

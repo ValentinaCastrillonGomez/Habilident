@@ -5,7 +5,7 @@ import { LoadingService } from '@core/services/loading.service';
 import { NotificationService } from '@core/services/notification.service';
 import { PermissionDirective } from '@shared/directives/permission.directive';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { Alert, PERMISSIONS } from '@habilident/types';
+import { Alert, PERMISSIONS } from '@doclify/types';
 import { PATHS } from 'src/app/app.routes';
 import { CdkMenuTrigger } from '@angular/cdk/menu';
 

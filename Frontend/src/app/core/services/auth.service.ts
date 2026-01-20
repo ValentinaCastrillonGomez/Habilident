@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, filter, first, firstValueFrom, map } from 'rxjs';
 import { Router } from '@angular/router';
-import { Login, Permission } from '@habilident/types';
+import { Login, Permission } from '@doclify/types';
 import { PATHS } from 'src/app/app.routes';
 import { environment } from 'src/environments/environment';
 

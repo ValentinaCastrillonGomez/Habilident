@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 import { UsersService } from 'src/features/users/users.service';
 import { compare, genSaltSync, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { Login, User } from '@habilident/types';
+import { Login, User } from '@doclify/types';
 import { Response } from 'express';
 import { ERROR_MESSAGES } from 'src/shared/consts/errors.const';
 

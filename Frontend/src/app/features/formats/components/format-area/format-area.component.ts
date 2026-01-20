@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { FieldsConfig, ROW_TYPES } from '@habilident/types';
+import { FieldsConfig, ROW_TYPES } from '@doclify/types';
 import { createFieldFormGroup, FieldsConfigForm } from '../fields-config/fields-config.component';
 import { FormatsService } from '@features/formats/services/formats.service';
 

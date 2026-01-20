@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Req, UseGuards, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Login } from '@habilident/types';
+import { Login } from '@doclify/types';
 import { Response } from 'express';
 import { JwtGuard } from './auth.guard';
 

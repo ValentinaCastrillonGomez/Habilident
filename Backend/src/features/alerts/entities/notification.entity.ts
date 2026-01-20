@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { Notification } from '@habilident/types';
+import { Notification } from '@doclify/types';
 import { UserEntity } from 'src/features/users/entities/user.entity';
 import { FormatEntity } from 'src/features/formats/entities/format.entity';
 

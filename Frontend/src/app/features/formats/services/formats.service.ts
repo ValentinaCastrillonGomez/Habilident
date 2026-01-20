@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { GenericService } from '@shared/classes/generic.service';
-import { Format, RowType } from '@habilident/types';
+import { Format, RowType } from '@doclify/types';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 import { FormGroup } from '@angular/forms';

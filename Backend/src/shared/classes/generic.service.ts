@@ -1,5 +1,5 @@
-import { Document, FilterQuery, Model, PopulateOptions } from 'mongoose';
-import { Page } from '@habilident/types';
+import { Document, QueryFilter, Model, PopulateOptions } from 'mongoose';
+import { Page } from '@doclify/types';
 import { BadRequestException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { ERROR_MESSAGES } from '../consts/errors.const';
 
@@ -16,19 +16,19 @@ export abstract class GenericService<T extends Document, G> {
     ) { }
 
     async findAll(skip = 0, limit = 0, query = '', start = '', end = ''): Promise<Page<T>> {
-        const orConditions: FilterQuery<Document> = {
+        const orConditions: QueryFilter<Document> = {
             $or: this._searchFields.map((field) => ({
                 [field]: { $regex: `.*${query}.*`, $options: 'i' }
             })),
         };
 
         if (start || end) {
-            orConditions[this._range] = {};
+            orConditions[this._range!] = {};
             if (start) {
-                orConditions[this._range]!['$gte'] = new Date(start);
+                orConditions[this._range!]['$gte'] = new Date(start);
             }
             if (end) {
-                orConditions[this._range]!['$lte'] = new Date(end);
+                orConditions[this._range!]['$lte'] = new Date(end);
             }
         }
 
@@ -38,32 +38,28 @@ export abstract class GenericService<T extends Document, G> {
         return { data, totalRecords };
     }
 
-    async find(filter: Partial<FilterQuery<T>>): Promise<T[]> {
+    async find(filter: QueryFilter<T>): Promise<T[]> {
         return this._model.find(filter).populate(this._poputale).exec();
     }
 
-    async findOne(filter: Partial<FilterQuery<T>>): Promise<T> {
+    async findOne(filter: QueryFilter<T>): Promise<T> {
         return this._model.findOne(filter).populate(this._poputale).exec();
     }
 
     async findById(id: string): Promise<T | null> {
-        return this._model.findById(id).populate(this._poputale).exec()
-            .catch(error => this.catchCastError(error));
+        return this._model.findById(id).populate(this._poputale).exec();
     }
 
     async create(dto: G): Promise<T | void> {
-        return this._model.create(dto)
-            .catch(error => this.catchDuplicateError(error));
+        return this._model.create(dto);
     }
 
     async createAll(dto: G[]): Promise<any> {
-        return this._model.insertMany(dto)
-            .catch(error => this.catchDuplicateError(error));
+        return this._model.insertMany(dto);
     }
 
     async update(id: string, dto: Partial<T>): Promise<T | void> {
-        return this._model.findOneAndUpdate({ _id: id }, dto, { new: true, })
-            .catch(error => this.catchDuplicateError(error));
+        return this._model.findOneAndUpdate({ _id: id }, dto, { new: true, }).exec();
     }
 
     async remove(id: string): Promise<T> {
@@ -73,10 +69,6 @@ export abstract class GenericService<T extends Document, G> {
     async removeAll(): Promise<boolean> {
         await this._model.deleteMany({}).exec();
         return true;
-    }
-
-    async migrate(item: G): Promise<G> {
-        return item;
     }
 
     private catchDuplicateError(error: any) {

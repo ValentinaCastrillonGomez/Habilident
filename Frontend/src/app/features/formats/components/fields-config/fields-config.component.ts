@@ -1,7 +1,7 @@
 import { Component, computed, inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
-import { FieldsConfig, Format, INPUT_TYPES, InputType, Parameter, ROW_TYPES, RowType } from '@habilident/types';
+import { FieldsConfig, Format, INPUT_TYPES, InputType, Parameter, ROW_TYPES, RowType } from '@doclify/types';
 import { MaterialModule } from '@shared/modules/material/material.module';
 import { FormatsService } from '@features/formats/services/formats.service';
 import { ParametersService } from '@features/parameters/services/parameters.service';

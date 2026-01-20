@@ -1,7 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ValidPermission } from './permissions.decorator';
-import { User } from '@habilident/types';
+import { User } from '@doclify/types';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {

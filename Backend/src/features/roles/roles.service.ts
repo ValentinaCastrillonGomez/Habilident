@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { GenericService } from 'src/shared/classes/generic.service';
 import { RoleDocument, RoleEntity } from './entities/role.entity';
 import { Model } from 'mongoose';
-import { PERMISSIONS } from '@habilident/types';
+import { PERMISSIONS } from '@doclify/types';
 
 @Injectable()
 export class RolesService extends GenericService<RoleDocument, RoleEntity> {

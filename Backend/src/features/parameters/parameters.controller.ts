@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ParametersService } from './parameters.service';
 import { JwtGuard } from '../auth/auth.guard';
-import { Parameter, PERMISSIONS } from '@habilident/types';
+import { Parameter, PERMISSIONS } from '@doclify/types';
 import { PermissionsGuard } from '../permissions/permissions.guard';
 import { ValidPermission } from '../permissions/permissions.decorator';
 

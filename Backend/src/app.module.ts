@@ -20,7 +20,7 @@ import { AlertsModule } from './features/alerts/alerts.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.MONGO_URI),
+    MongooseModule.forRoot(process.env.MONGO_URI!),
     JwtModule.register({
       global: true,
     }),

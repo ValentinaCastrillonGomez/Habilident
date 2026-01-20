@@ -1,6 +1,6 @@
 import { Injectable, signal } from "@angular/core";
 import { io } from 'socket.io-client';
-import { Alert } from "@habilident/types";
+import { Alert } from "@doclify/types";
 import { environment } from "src/environments/environment";
 
 @Injectable({

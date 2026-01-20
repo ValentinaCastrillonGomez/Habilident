@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { FieldsConfig, PERMISSIONS, ROW_TYPES, RowType } from '@habilident/types';
+import { FieldsConfig, PERMISSIONS, ROW_TYPES, RowType } from '@doclify/types';
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { createSingleRow, FormatSingleComponent, SingleRowForm } from '../format-single/format-single.component';
 import { FormatsService } from '@features/formats/services/formats.service';

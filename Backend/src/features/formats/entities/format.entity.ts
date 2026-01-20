@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { Format, FormatRow, Alert } from '@habilident/types';
+import { Format, FormatRow, Alert } from '@doclify/types';
 import { AlertSchema } from '../../alerts/entities/alert.entity';
 
 export type FormatDocument = HydratedDocument<FormatEntity>;

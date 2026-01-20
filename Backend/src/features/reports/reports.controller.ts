@@ -2,7 +2,7 @@ import { Controller, Get, Param, Query, Res, UseGuards } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { JwtGuard } from '../auth/auth.guard';
 import { Response } from 'express';
-import { PERMISSIONS } from '@habilident/types';
+import { PERMISSIONS } from '@doclify/types';
 import { ValidPermission } from '../permissions/permissions.decorator';
 import { PermissionsGuard } from '../permissions/permissions.guard';
 

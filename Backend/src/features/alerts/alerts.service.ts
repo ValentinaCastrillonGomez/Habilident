@@ -1,4 +1,4 @@
-import { Alert, Format, FREQUENCIES, Frequency, User } from '@habilident/types';
+import { Alert, Format, FREQUENCIES, Frequency, User } from '@doclify/types';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -64,7 +64,7 @@ export class AlertsService extends GenericService<NotificationDocument, Notifica
         try {
             await this.mailerService.sendMail({
                 to: user.email,
-                subject: `Notificación para el registro del formato ${format.name} - HabiliDent`,
+                subject: `Notificación para el registro del formato ${format.name} - Doclify`,
                 html: `<p>Hola ${user.firstNames},</p><br/>
           <p>Se ha generado una nueva alerta que requiere tu atención en el sistema.</p>
           <p>

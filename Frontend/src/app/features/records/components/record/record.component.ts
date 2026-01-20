@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { Format, FormatRow, PERMISSIONS, Record, ROW_TYPES } from '@habilident/types';
+import { Format, FormatRow, PERMISSIONS, Record, ROW_TYPES } from '@doclify/types';
 import { RecordsService } from '@features/records/services/records.service';
 import { FormatsService } from '@features/formats/services/formats.service';
 import { PATHS } from 'src/app/app.routes';

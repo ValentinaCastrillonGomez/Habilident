@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { User, Signature, Role, TYPE_PARAMETERS } from '@habilident/types';
+import { User, Signature, Role, TYPE_PARAMETERS } from '@doclify/types';
 import { UsersService } from '../../services/users.service';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '@shared/modules/material/material.module';

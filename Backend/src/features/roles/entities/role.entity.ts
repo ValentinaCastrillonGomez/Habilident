@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { Role, Permission, PERMISSIONS } from '@habilident/types';
+import { Role, Permission, PERMISSIONS } from '@doclify/types';
 
 export type RoleDocument = HydratedDocument<RoleEntity>;
 

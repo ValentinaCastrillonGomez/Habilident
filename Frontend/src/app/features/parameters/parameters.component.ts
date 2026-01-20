@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { ParametersService } from '@features/parameters/services/parameters.service';
 import { MaterialModule } from '@shared/modules/material/material.module';
-import { Parameter } from '@habilident/types';
+import { Parameter } from '@doclify/types';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Subject } from 'rxjs';
 import { ParameterComponent } from './components/parameter/parameter.component';
 import { PermissionDirective } from '@shared/directives/permission.directive';

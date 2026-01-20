@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Content, PageOrientation } from 'pdfmake/interfaces';
 import PdfPrinter from 'pdfmake';
 import { RecordsService } from 'src/features/records/records.service';
-import { AreaRow, FieldsConfig, INPUT_TYPES, ROW_TYPES, SingleRow, TableRow } from '@habilident/types';
+import { AreaRow, FieldsConfig, INPUT_TYPES, ROW_TYPES, SingleRow, TableRow } from '@doclify/types';
 import { FormatsService } from 'src/features/formats/formats.service';
 
 const fonts = {
